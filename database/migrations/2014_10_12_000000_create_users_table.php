@@ -18,13 +18,13 @@ class CreateUsersTable extends Migration
             
             $table->string('nombre', 30);
             $table->string('apellidos', 60);
-            $table->string('rutaImagen');
+            $table->string('rutaImagen')->nullable();
             
-            $table->integer('numAdvertencias');
-            $table->boolean('activo');
+            $table->integer('numAdvertencias')->default(0);
+            $table->boolean('activo')->default(1);
             
-            $table->longText('adv1');
-            $table->longText('adv2');
+            $table->longText('adv1')->nullable();
+            $table->longText('adv2')->nullable();
 
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();

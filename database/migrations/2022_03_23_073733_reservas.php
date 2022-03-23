@@ -20,8 +20,10 @@ class Reservas extends Migration
             
             $table->timestamps();
 
-            $table->string('horaInicio');
-            $table->string('horaFinalizacion');
+            $table->string('horaInicio')->nullable();
+            $table->string('horaFinalizacion')->nullable();
+
+            $table->integer('numLista')->nullable();
             
             $table->unsignedBigInteger('users_id');
             $table->unsignedBigInteger('pistas_id');

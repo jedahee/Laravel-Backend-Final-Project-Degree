@@ -1,0 +1,85 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Gestión de Pistas",
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/"
+        }
+    ],
+    "paths": {
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Registrar usuario en el sistema",
+                "operationId": "8a56853624e025573120a09a4c75d468",
+                "responses": {
+                    "200": {
+                        "description": "Se ha registrado correctamente"
+                    },
+                    "400": {
+                        "description": "No se ha podido registrar"
+                    }
+                }
+            }
+        },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Logear al usuario en el sistema",
+                "operationId": "4d730c449df9d7cd37cc97b2daddf8ad",
+                "responses": {
+                    "200": {
+                        "description": "Se ha logeado correctamente"
+                    },
+                    "400": {
+                        "description": "No se ha podido logear el usuario"
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Desconectar el usuario del sistema",
+                "operationId": "fe8f3429cd6979b3b4517e186505f9f9",
+                "responses": {
+                    "200": {
+                        "description": "Se ha desconectado correctamente"
+                    },
+                    "400": {
+                        "description": "No se ha podido desconectar el usuario"
+                    }
+                }
+            }
+        },
+        "/api/get-user": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Obtener usuario y ver información de este",
+                "operationId": "6c7e6fa6e5fdfc1a2f20618bb8672928",
+                "responses": {
+                    "200": {
+                        "description": "Se ha obtenido el usuario correctamente"
+                    },
+                    "400": {
+                        "description": "No se ha podido obetener la información del usuario"
+                    }
+                }
+            }
+        }
+    },
+    "security": [
+        []
+    ]
+}

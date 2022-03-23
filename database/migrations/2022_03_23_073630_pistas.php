@@ -17,12 +17,12 @@ class Pistas extends Migration
             $table->id();
             
             $table->string('nombre', 50);
-            $table->string('horaInicio');
-            $table->string('horaFinalizacion');
+            $table->string('horaInicio')->nullable();
+            $table->string('horaFinalizacion')->nullable();
             $table->string('rutaImagen');
             $table->string('direccion', 100);
             
-            $table->integer('aforo');
+            $table->integer('aforo')->nullable();
 
             $table->decimal('precioPorHora');
             

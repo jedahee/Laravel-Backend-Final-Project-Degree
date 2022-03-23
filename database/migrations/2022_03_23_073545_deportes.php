@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class Deportes extends Migration
 {
@@ -17,6 +18,17 @@ class Deportes extends Migration
             $table->id();
             $table->string('nombre', 50);
         });
+
+        // Datos insertados después de la migración
+
+        DB::table("deportes")->insert([
+            ["nombre" => "fútbol"],
+            ["nombre" => "baloncesto"],
+            ["nombre" => "pádel"],
+            ["nombre" => "tenis"],
+            ["nombre" => "rocódromo"],
+            ["nombre" => "voleibol"],
+        ]);
     }
 
     /**
