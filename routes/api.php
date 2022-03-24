@@ -21,6 +21,11 @@ use App\Http\Controllers\AuthController;
 Route::post('login', [AuthController::class, 'authenticate']);
 Route::post('register', [AuthController::class, 'register']);
 
+// Envio de email para recuperar la contraseña  
+Route::get('forgot-password/{email}', function ($email) {
+    Mail::to('jedahee02@gmail.com')->send(new \App\Mail\PasswordReset($email));
+});
+
 // Necesita autenticación
 
 Route::group(['middleware' => ['jwt.verify']], function() {
