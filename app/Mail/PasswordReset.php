@@ -18,13 +18,13 @@ class PasswordReset extends Mailable
      *
      * @return void
      */
-    public function __construct($email)
+    public function __construct($email,)
     {
-        if (User::where('email', $email)->first())
+        if (User::where('email', $email)->first()) {
             $this->email = $email;
-        else
+        } else { 
             $this->email = "";
-        
+        }
     }
 
     /**
@@ -36,7 +36,9 @@ class PasswordReset extends Mailable
     {   
         $token = Str::random(80);
         if ($this->email != "") {
-            return $this->from('jedahee02@gmail.com', 'GestionPistas - Recuperar contraseña')->subject('Recuperar de contraseña')->view("emails.resetPassword", ["token"=>$token]);
+            return $this->from('jedahee02@gmail.com', 'GestionPistas - Recuperar contraseña')
+                        ->subject('Recuperar de contraseña')
+                        ->view("emails.resetPassword", ["token"=>$token]);
         }
     }
 }
