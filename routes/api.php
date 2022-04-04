@@ -1,9 +1,11 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UpdatePassword;
+use Symfony\Component\HttpFoundation\Response;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,7 +18,6 @@ use App\Http\Controllers\UpdatePassword;
 |
 */
 
-
 //  NO necesita autenticación
 
 Route::post('login', [AuthController::class, 'authenticate']);
@@ -24,13 +25,27 @@ Route::post('register', [AuthController::class, 'register']);
 
 // Envio de email para recuperar la contraseña  
 Route::get('forgot-password/{email}', function ($email) {
+    $token = Str::random(80);
+
+    $user = User::where('email', $email)->firstOrFail();
+    
+    if ($user) {
+        $user->token_password_reset = $token;
+        $user->save();
+    }
+
     Mail::to('jedahee02@gmail.com')->send(new \App\Mail\PasswordReset($email, $token));
 });
 
-Route::get('validation-token/{get_token}', function ($get_token) {
-    // Arreglar
-        Route::post('update-password', [UpdatePassword::class, 'test']);
-    
+Route::get('validation-token/{email}/{get_token}', function ($email, $get_token) {
+    $user = User::where('email', $email)->firstOrFail();
+    if ($user && $user->token_password_reset == $get_token) {
+        return response()->json([
+            'message' => 'Token validados',
+        ], Response::HTTP_OK);
+    } else {
+        return response()->json(["msg"=>"NO"]);
+    }
 });
 
 // Necesita autenticación

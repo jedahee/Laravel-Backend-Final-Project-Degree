@@ -9,9 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UpdatePassword extends Controller
 {
-    public function test(Request $request) {
-        return response()->json([
-            'message' => 'Token validados',
-        ], Response::HTTP_OK);
+    public function test() {
+        
     }
 }
