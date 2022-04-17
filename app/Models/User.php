@@ -45,6 +45,22 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
+    // Relaciones
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function reserves()
+    {
+        return $this->hasMany(Reserve::class);
+    }
+
     // Obtener Json Web Token del usuario
 
     public function getJWTIdentifier()

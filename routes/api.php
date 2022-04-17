@@ -29,24 +29,32 @@ Route::get('forgot-password/{email}', function ($email) {
 
     $user = User::where('email', $email)->firstOrFail();
     
+    // Guardando el token generado en el usuario correspondiente
     if ($user) {
         $user->token_password_reset = $token;
         $user->save();
-    }
+    } // else -> redireccionar a página de "fallo al actualizar la cotraseña" 
 
+    // Envio de email
     Mail::to('jedahee02@gmail.com')->send(new \App\Mail\PasswordReset($email, $token));
 });
 
+// Validación del token enviado por parámetro y el token generado
 Route::get('validation-token/{email}/{get_token}', function ($email, $get_token) {
     $user = User::where('email', $email)->firstOrFail();
+    
     if ($user && $user->token_password_reset == $get_token) {
         return response()->json([
-            'message' => 'Token validados',
+            'message' => 'Token validado',
         ], Response::HTTP_OK);
-    } else {
-        return response()->json(["msg"=>"NO"]);
     }
+    
+    return response()->json(["msg"=>"NO"]);
+    
 });
+
+// Actualización de la contraseña
+Route::put('update-password/{email}/{token}', [AuthController::class, 'updatePassword']);
 
 // Necesita autenticación
 

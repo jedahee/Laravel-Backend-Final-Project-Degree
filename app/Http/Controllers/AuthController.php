@@ -182,7 +182,7 @@ class AuthController extends Controller
 
     /*
     ###################################################
-    #                  VALIDAR TOKEN                  #
+    #                OBTENER USUARIO                  #
     ###################################################
     */
 
@@ -216,5 +216,50 @@ class AuthController extends Controller
 
         //Devolvemos los datos del usuario si todo va bien.
         return response()->json(['user' => $user], 200);
+    }
+
+    /*
+    ###################################################
+    #              ACTUALIZAR CONTRASEÑA              #
+    ###################################################
+    */
+
+    /**
+    * @OA\Put(
+    *     path="/api/update-password/id/token",
+    *     tags = {"Auth"},
+    *     summary="Actualizar contraseña del usuario",
+    *     @OA\Response(
+    *         response=200,
+    *     ),
+    *     @OA\Response(
+    *         response="400",
+    *     )
+    * )
+    */
+    public function updatePassword(Request $request, $email, $token) {
+        $this->validate($request, [
+            'password' => 'required'
+        ]);
+
+        $user = User::where('email', $email)->where('token_password_reset', $token)->firstOrFail();
+        
+        if ($user) {
+            $user->update([
+                'password' => $request->password,
+            ]);
+            // Redireccionar a pagina "se actualizó la contraseña correctamente"
+            
+            // BORRAR --
+            return response()->json([
+                'msg' => "Se ha actualizado correctamente la contrasñea del usuario",
+            ], 200);
+
+        } // else -> redireccionar a página de "fallo al actualizar la cotraseña" 
+        
+        // BORRAR --
+        return response()->json([
+            'msg' => "No se ha podido actualizar la contraseña del usuario",
+        ], 400);
     }
 }
