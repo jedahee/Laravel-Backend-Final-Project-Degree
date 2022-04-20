@@ -36,7 +36,7 @@ class PasswordReset extends Mailable
     public function build()
     {   
         if ($this->email != "") {
-            return $this->from('jedahee02@gmail.com', 'GestionPistas - Recuperar contraseña')
+            return $this->from('gestionpistas@gmail.com', 'GestionPistas - Recuperar contraseña')
                         ->subject('Recuperar de contraseña')
                         ->view("emails.resetPassword", ["token"=>$this->token, "email"=>$this->email]);
         }

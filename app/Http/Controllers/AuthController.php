@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use JWTAuth;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -246,8 +247,12 @@ class AuthController extends Controller
         
         if ($user) {
             $user->update([
-                'password' => $request->password,
+                'password' => bcrypt($request->password),
             ]);
+
+            $user->token_password_reset = null;
+            $user->save();
+
             // Redireccionar a pagina "se actualizó la contraseña correctamente"
             
             // BORRAR --
@@ -260,6 +265,110 @@ class AuthController extends Controller
         // BORRAR --
         return response()->json([
             'msg' => "No se ha podido actualizar la contraseña del usuario",
+        ], 400);
+    }
+
+    /*
+    ###################################################
+    #           ACTUALIZAR NOMBRE DE USUARIO          #
+    ###################################################
+    */
+
+    /**
+    * @OA\Put(
+    *     path="/api/edit-user/id",
+    *     tags = {"Auth"},
+    *     summary="Actualizar nombre del usuario",
+    *     @OA\Response(
+    *         response=200,
+    *         description="Se ha podido actualizar el nombre de usuario"
+    *     ),
+    *     @OA\Response(
+    *         response="400",
+    *         description="No se ha podido actualizar el nombre de usuario"
+    *     )
+    * )
+    */
+
+    public function editUser(Request $request, $id) {
+        $this->validate($request, [
+            'nombre' => 'required|string|max:30',
+        ]);
+
+        try {
+            $user = User::findOrFail($id);
+        }
+        catch(Exception $e)
+        {
+            return response()->json([
+                'msg' => "No se encuentra el usuario",
+            ], 400);
+        }
+
+        if ($user) {
+            $user->update([
+                'nombre' => $request->nombre,
+            ]);
+            
+            return response()->json([
+                'msg' => "Se ha actualizado correctamente el nombre de usuario",
+            ], 200);
+
+        } 
+        return response()->json([
+            'msg' => "No se ha podido actualizar correctamente el nombre de usuario",
+        ], 400);
+    }
+
+    /*
+    ###################################################
+    #                 ACTUALIZAR CORREO               #
+    ###################################################
+    */
+
+    /**
+    * @OA\Put(
+    *     path="/api/edit-email/id",
+    *     tags = {"Auth"},
+    *     summary="Actualizar correo electrónico del usuario",
+    *     @OA\Response(
+    *         response=200,
+    *         description="Se ha podido actualizar el correo del usuario"
+    *     ),
+    *     @OA\Response(
+    *         response="400",
+    *         description="No se ha podido actualizar el correo del usuario"
+    *     )
+    * )
+    */
+
+    public function editEmail(Request $request, $id) {
+        $this->validate($request, [
+            'email' => 'required|email',
+        ]);
+
+        try {
+            $user = User::findOrFail($id);
+        }
+        catch(Exception $e)
+        {
+            return response()->json([
+                'msg' => "No se encuentra el usuario",
+            ], 400);
+        }
+
+        if ($user) {
+            $user->update([
+                'email' => $request->email,
+            ]);
+            
+            return response()->json([
+                'msg' => "Se ha actualizado correctamente el email del usuario",
+            ], 200);
+
+        } 
+        return response()->json([
+            'msg' => "No se ha podido actualizar correctamente email del de usuario",
         ], 400);
     }
 }

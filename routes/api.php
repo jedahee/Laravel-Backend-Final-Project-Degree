@@ -19,11 +19,12 @@ use Symfony\Component\HttpFoundation\Response;
 */
 
 //  NO necesita autenticación
+// ---------------------------
 
 Route::post('login', [AuthController::class, 'authenticate']);
 Route::post('register', [AuthController::class, 'register']);
 
-// Envio de email para recuperar la contraseña  
+// -- Envio de email para recuperar la contraseña --  
 Route::get('forgot-password/{email}', function ($email) {
     $token = Str::random(80);
 
@@ -36,10 +37,10 @@ Route::get('forgot-password/{email}', function ($email) {
     } // else -> redireccionar a página de "fallo al actualizar la cotraseña" 
 
     // Envio de email
-    Mail::to('jedahee02@gmail.com')->send(new \App\Mail\PasswordReset($email, $token));
+    Mail::to($email)->send(new \App\Mail\PasswordReset($email, $token));
 });
 
-// Validación del token enviado por parámetro y el token generado
+// -- Validación del token enviado por parámetro y el token generado -- 
 Route::get('validation-token/{email}/{get_token}', function ($email, $get_token) {
     $user = User::where('email', $email)->firstOrFail();
     
@@ -53,11 +54,17 @@ Route::get('validation-token/{email}/{get_token}', function ($email, $get_token)
     
 });
 
-// Actualización de la contraseña
+//  -- Actualización de la contraseña -- 
 Route::put('update-password/{email}/{token}', [AuthController::class, 'updatePassword']);
 
-// Necesita autenticación
+// -- Editar nombre de usuario --
+Route::put('edit-user/{id}', [AuthController::class, 'editUser']);
 
+// -- Editar correo del usuario --
+Route::put('edit-email/{id}', [AuthController::class, 'editEmail']);
+
+// Necesita autenticación
+// -----------------------
 Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('get-user', [AuthController::class, 'getUser']);
