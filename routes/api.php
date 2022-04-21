@@ -4,7 +4,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\UpdatePassword;
+use App\Http\Controllers\UserController;
 use Symfony\Component\HttpFoundation\Response;
 
 /*
@@ -57,15 +57,25 @@ Route::get('validation-token/{email}/{get_token}', function ($email, $get_token)
 //  -- Actualización de la contraseña -- 
 Route::put('update-password/{email}/{token}', [AuthController::class, 'updatePassword']);
 
-// -- Editar nombre de usuario --
-Route::put('edit-user/{id}', [AuthController::class, 'editUser']);
-
-// -- Editar correo del usuario --
-Route::put('edit-email/{id}', [AuthController::class, 'editEmail']);
 
 // Necesita autenticación
 // -----------------------
 Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('get-user', [AuthController::class, 'getUser']);
+    
+    // -- Editar nombre de usuario --
+    Route::put('edit-user', [UserController::class, 'editUser']);
+
+    // -- Editar correo del usuario --
+    Route::put('edit-email', [UserController::class, 'editEmail']);
+
+    // -- Obtener advertencias --
+    Route::get('get-warnings', [UserController::class, 'getWarnings']);
+
+    // -- Obtener rol del usuario --
+    Route::get('get-role', [UserController::class, 'getRole']);
+
+    // -- Borrar cuenta de usuario --
+    Route::delete('delete-account', [UserController::class, 'delAccount']);
 });
