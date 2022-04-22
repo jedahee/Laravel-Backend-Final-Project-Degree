@@ -23,6 +23,76 @@ class UserController extends Controller
 
     /*
     ###################################################
+    #                 AÑADIR ADVERTENCIA              #
+    ###################################################
+    */
+
+    /**
+    * @OA\Post(
+    *     path="/api/add-warning",
+    *     tags = {"User"},
+    *     summary="Añadir una advertencia a un usuario",
+    *     @OA\Response(
+    *         response=200,
+    *         description="La advertencia se ha añadido con éxito"
+    *     ),
+    *     @OA\Response(
+    *         response="400",
+    *         description="La advertencia no se ha podido añadir"
+    *     )
+    * )
+    */
+    public function addWarning(Request $request, $id) {
+        if ($this->user->rol_id == 1 || $this->user->rol_id == 2) {
+            $data = $request->only('adv');
+
+            $validator = Validator::make($data, [
+                'adv' => 'required|min:5|max:100|string',
+            ]);
+
+            if ($validator->fails())
+                return response()->json(['error' => $validator->messages()], 400);
+            
+            try {
+                $user = User::findOrFail($id);
+            } catch (Exception $e) {
+                return response()->json([
+                    'msg' => 'No se encuentra el usuario'
+                ], 400);        
+            }
+
+            if ($user->numAdvertencias == 0) {
+                $user->adv1 = $request->adv;
+                $user->numAdvertencias = 1;
+                $user->save();
+
+                return response()->json([
+                    'msg' => 'Primera advertencia añadida con éxito'
+                ], 200);
+
+            } else if ($user->numAdvertencias == 1) {
+                $user->adv2 = $request->adv;
+                $user->numAdvertencias = 2;
+                $user->activo = 0;
+
+                $user->save();
+                
+                
+                return response()->json([
+                    'msg' => 'Segunda advertencia añadida con éxito. La cuenta ha sido bloqueada'
+                ], 200);
+            }
+
+            $user->save();
+        }
+
+        return response()->json([
+            'msg' => 'Esta operación solo lo puede hacer un administrador o un moderador'
+        ], 400);
+    }
+
+    /*
+    ###################################################
     #               OBETENER ADVERTENCIAS             #
     ###################################################
     */

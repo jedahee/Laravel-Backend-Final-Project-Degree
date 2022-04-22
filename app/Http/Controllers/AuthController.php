@@ -71,7 +71,7 @@ class AuthController extends Controller
 
         //Devolvemos la respuesta con el token del usuario
         return response()->json([
-            'message' => 'Usuario creado',
+            'msg' => 'Usuario creado',
             'user' => $user,
         ], Response::HTTP_OK);
     }
@@ -116,19 +116,27 @@ class AuthController extends Controller
         try {
             if (!$token = JWTAuth::attempt($credentials)) {
                 //Credenciales incorrectas.
-                return response()->json(['message' => 'Login falló',], 401);
+                return response()->json(['msg' => 'Login falló',], 401);
             }
         } catch (JWTException $e) {
             //Error chungo
-            return response()->json(['message' => 'Error',], 500);
+            return response()->json(['msg' => 'Error',], 500);
         }
 
-        //Devolvemos el token
-        return response()->json([
-            'success' => true,
-            'token' => $token,
-            'user' => Auth::user()
-        ]);
+        $user = JWTAuth::user();
+
+        if ($user) {
+            if ($user->activo == 1) {
+                //Devolvemos el token
+                return response()->json([
+                    'success' => true,
+                    'token' => $token,
+                    'user' => Auth::user()
+                ]);  
+            }
+            return response()->json(['msg' => 'Cuenta bloqueada',], 400);
+        }
+        return response()->json(['msg' => 'Usuario no encontrado',], 400);
     }
 
     /*

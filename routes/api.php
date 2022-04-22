@@ -73,9 +73,13 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     // -- Obtener advertencias --
     Route::get('get-warnings', [UserController::class, 'getWarnings']);
 
+    // -- Añadir advertencia --
+    Route::post('add-warning/{id}', [UserController::class, 'addWarning']);
+
     // -- Obtener rol del usuario --
     Route::get('get-role', [UserController::class, 'getRole']);
 
     // -- Borrar cuenta de usuario --
     Route::delete('delete-account', [UserController::class, 'delAccount']);
+    
 });
