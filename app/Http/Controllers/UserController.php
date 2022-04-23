@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Validator;
 
+
 class UserController extends Controller
 {
     protected $user;
@@ -19,6 +20,87 @@ class UserController extends Controller
         $token = $request->header('Authorization');
         if($token != '')
             $this->user = JWTAuth::parseToken()->authenticate();
+    }
+
+    /*
+    ###################################################
+    #              AÑADIR FOTO DE PERFIL              #
+    ###################################################
+    */
+
+    /**
+    * @OA\Post(
+    *     path="/api/upload-image",
+    *     tags = {"User"},
+    *     summary="Actualizar la foto de perfil del usuario",
+    *     @OA\Response(
+    *         response=200,
+    *         description="La foto se ha actualizado correctamente"
+    *     ),
+    *     @OA\Response(
+    *         response="400",
+    *         description="No se ha podido actualizar la foto"
+    *     )
+    * )
+    */
+    public function uploadImage(Request $request) {
+        $data = $request->only('foto_perfil');
+
+        $validator = Validator::make($data, [
+            'foto_perfil' => 'required|image|mimes:jpg,png,jpeg,svg|max:2048|dimensions:min_width=100,min_height=100,max_width=600,max_height=600',
+        ]);
+
+        if ($validator->fails())
+            return response()->json(['error' => $validator->messages()], 400);
+        else {
+            if ($request->foto_perfil && $request->foto_perfil->isValid()) {
+                $file_name = time() . "." . $request->foto_perfil->extension();
+                $request->foto_perfil->move(public_path('images'), $file_name);
+                $path = "public/images/" . $file_name;
+                $this->user->rutaImagen = $path;
+    
+                $this->user->save();
+                return response()->json([
+                    'msg' => 'Foto actulizada con éxito',
+                    'path' => $path
+                ], 200);
+            }
+    
+            return response()->json([
+                'msg' => 'Foto no válida',
+            ], 400);
+        }
+
+        
+    }
+
+    /*
+    ###################################################
+    #              OBETENER FOTO DE PERFIL            #
+    ###################################################
+    */
+    /**
+    * @OA\Get(
+    *     path="/api/get-image",
+    *     tags = {"User"},
+    *     summary="Obtener foto de perfil del usuario",
+    *     @OA\Response(
+    *         response=200,
+    *         description="Se obtuvo la foto correctamente"
+    *     ),
+    *     @OA\Response(
+    *         response="400",
+    *         description="No se pudo obtener la foto"
+    *     )
+    * )
+    */
+    public function getImage(Request $request) {
+        
+        $path_image = User::where('id', $this->user->id)->get('rutaImagen');
+        
+        return response()->json(
+            $path_image
+        , 200);
     }
 
     /*
@@ -104,9 +186,11 @@ class UserController extends Controller
     *     summary="Obtener las advertencias del usuario puestas por algún Moderador / Administrador",
     *     @OA\Response(
     *         response=200,
+    *         description="Se obtuvo las advertencias correctamente"
     *     ),
     *     @OA\Response(
     *         response="400",
+    *         description="No se pudo obtener las advertencias"
     *     )
     * )
     */
@@ -164,9 +248,11 @@ class UserController extends Controller
     *     summary="Obtener el rol del usuario",
     *     @OA\Response(
     *         response=200,
+    *         description="Se obtuvo el rol correctamente"
     *     ),
     *     @OA\Response(
     *         response="400",
+    *         description="No se pudo obtener el rol correctamente"
     *     )
     * )
     */

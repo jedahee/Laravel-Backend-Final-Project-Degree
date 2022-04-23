@@ -82,4 +82,9 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     // -- Borrar cuenta de usuario --
     Route::delete('delete-account', [UserController::class, 'delAccount']);
     
+    // -- Actualizar foto de perfil --
+    Route::post('upload-image', [UserController::class, 'uploadImage']);
+
+    // -- Obtener foto de perfil --
+    Route::get('get-image', [UserController::class, 'getImage']);
 });

@@ -240,9 +240,11 @@ class AuthController extends Controller
     *     summary="Actualizar contraseña del usuario",
     *     @OA\Response(
     *         response=200,
+    *         description="Se actualizó la contraseña correctamente"
     *     ),
     *     @OA\Response(
     *         response="400",
+    *         description="No se pudo actualizar la contraseña"
     *     )
     * )
     */

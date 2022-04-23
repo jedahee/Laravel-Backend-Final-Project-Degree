@@ -77,9 +77,159 @@
                     }
                 }
             }
+        },
+        "/api/update-password/id/token": {
+            "put": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Actualizar contraseña del usuario",
+                "operationId": "ef54ef9c90b39f595065c2dbac450e5f",
+                "responses": {
+                    "200": {
+                        "description": "Se actualizó la contraseña correctamente"
+                    },
+                    "400": {
+                        "description": "No se pudo actualizar la contraseña"
+                    }
+                }
+            }
+        },
+        "/api/upload-image": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Actualizar la foto de perfil del usuario",
+                "operationId": "51509ba5cd5870c079c2d285b93196dd",
+                "responses": {
+                    "200": {
+                        "description": "La foto se ha actualizado correctamente"
+                    },
+                    "400": {
+                        "description": "No se ha podido actualizar la foto"
+                    }
+                }
+            }
+        },
+        "/api/get-image": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Obtener foto de perfil del usuario",
+                "operationId": "ace29131851c4fc901df6f1de04472c4",
+                "responses": {
+                    "200": {
+                        "description": "Se obtuvo la foto correctamente"
+                    },
+                    "400": {
+                        "description": "No se pudo obtener la foto"
+                    }
+                }
+            }
+        },
+        "/api/add-warning": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Añadir una advertencia a un usuario",
+                "operationId": "e0881c4efe1bc16583c3449e2beb5884",
+                "responses": {
+                    "200": {
+                        "description": "La advertencia se ha añadido con éxito"
+                    },
+                    "400": {
+                        "description": "La advertencia no se ha podido añadir"
+                    }
+                }
+            }
+        },
+        "/api/get-warnings": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Obtener las advertencias del usuario puestas por algún Moderador / Administrador",
+                "operationId": "f166a29816206d1717506e5c008dac69",
+                "responses": {
+                    "200": {
+                        "description": "Se obtuvo las advertencias correctamente"
+                    },
+                    "400": {
+                        "description": "No se pudo obtener las advertencias"
+                    }
+                }
+            }
+        },
+        "/api/delete-account": {
+            "delete": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Borrar cuenta del usuario",
+                "operationId": "336fed4b9d27ea9186a9087a4de22efc",
+                "responses": {
+                    "200": {
+                        "description": "Se ha eliminado la cuenta correctamente"
+                    },
+                    "400": {
+                        "description": "No se ha podido eliminar la cuenta"
+                    }
+                }
+            }
+        },
+        "/api/get-role": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Obtener el rol del usuario",
+                "operationId": "5229d25a47a2bd05458e16fe9ff2266b",
+                "responses": {
+                    "200": {
+                        "description": "Se obtuvo el rol correctamente"
+                    },
+                    "400": {
+                        "description": "No se pudo obtener el rol correctamente"
+                    }
+                }
+            }
+        },
+        "/api/edit-user/id": {
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Actualizar nombre del usuario",
+                "operationId": "e42aa48eebe04ad9e0a154f3378cc1f6",
+                "responses": {
+                    "200": {
+                        "description": "Se ha podido actualizar el nombre de usuario"
+                    },
+                    "400": {
+                        "description": "No se ha podido actualizar el nombre de usuario"
+                    }
+                }
+            }
+        },
+        "/api/edit-email/id": {
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Actualizar correo electrónico del usuario",
+                "operationId": "a0455463dc5c74302ecb34c5f2267716",
+                "responses": {
+                    "200": {
+                        "description": "Se ha podido actualizar el correo del usuario"
+                    },
+                    "400": {
+                        "description": "No se ha podido actualizar el correo del usuario"
+                    }
+                }
+            }
         }
-    },
-    "security": [
-        []
-    ]
+    }
 }
