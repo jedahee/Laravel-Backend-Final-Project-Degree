@@ -29,7 +29,7 @@ class AuthController extends Controller
     /**
     * @OA\Post(
     *     path="/api/register",
-    *     tags = {"Auth"},
+    *     tags = {"Autentificación"},
     *     summary="Registrar usuario en el sistema",
     *     @OA\Response(
     *         response=200,
@@ -85,7 +85,7 @@ class AuthController extends Controller
     /**
     * @OA\Post(
     *     path="/api/login",
-    *     tags = {"Auth"},
+    *     tags = {"Autentificación"},
     *     summary="Logear al usuario en el sistema",
     *     @OA\Response(
     *         response=200,
@@ -148,7 +148,7 @@ class AuthController extends Controller
     /**
     * @OA\Post(
     *     path="/api/logout",
-    *     tags = {"Auth"},
+    *     tags = {"Autentificación"},
     *     summary="Desconectar el usuario del sistema",
     *     @OA\Response(
     *         response=200,
@@ -198,7 +198,7 @@ class AuthController extends Controller
     /**
     * @OA\Post(
     *     path="/api/get-user",
-    *     tags = {"Auth"},
+    *     tags = {"Autentificación"},
     *     summary="Obtener usuario y ver información de este",
     *     @OA\Response(
     *         response=200,
@@ -236,7 +236,7 @@ class AuthController extends Controller
     /**
     * @OA\Put(
     *     path="/api/update-password/id/token",
-    *     tags = {"Auth"},
+    *     tags = {"Autentificación"},
     *     summary="Actualizar contraseña del usuario",
     *     @OA\Response(
     *         response=200,

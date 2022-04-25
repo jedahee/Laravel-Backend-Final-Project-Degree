@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use JWTAuth;
 use App\Models\User;
 use Exception;
+use File;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Validator;
@@ -31,7 +32,7 @@ class UserController extends Controller
     /**
     * @OA\Post(
     *     path="/api/upload-image",
-    *     tags = {"User"},
+    *     tags = {"Usuario"},
     *     summary="Actualizar la foto de perfil del usuario",
     *     @OA\Response(
     *         response=200,
@@ -55,8 +56,8 @@ class UserController extends Controller
         else {
             if ($request->foto_perfil && $request->foto_perfil->isValid()) {
                 $file_name = time() . "." . $request->foto_perfil->extension();
-                $request->foto_perfil->move(public_path('images'), $file_name);
-                $path = "public/images/" . $file_name;
+                $request->foto_perfil->move(public_path('images/user'), $file_name);
+                $path = "public/images/user/" . $file_name;
                 $this->user->rutaImagen = $path;
     
                 $this->user->save();
@@ -76,13 +77,53 @@ class UserController extends Controller
 
     /*
     ###################################################
+    #             ELIMINAR FOTO DE PERFIL             #
+    ###################################################
+    */
+
+    /**
+    * @OA\Delete(
+    *     path="/api/delete-image",
+    *     tags = {"Usuario"},
+    *     summary="Eliminar la foto de perfil del usuario",
+    *     @OA\Response(
+    *         response=200,
+    *         description="La foto se ha eliminado correctamente"
+    *     ),
+    *     @OA\Response(
+    *         response="400",
+    *         description="No se ha podido eliminar la foto"
+    *     )
+    * )
+    */
+    public function deleteImage(Request $request) {
+
+        $file_name = explode("/", $this->user->rutaImagen)[3];
+        
+        if (File::exists(public_path('images/user/'.$file_name))) {
+            File::delete(public_path('images/user/'.$file_name));
+            $this->user->rutaImagen = null;
+            $this->user->save();
+
+            return response()->json([
+                'msg' => 'Se ha eliminado la foto correctamente'
+            ], 200);
+        }
+
+        return response()->json([
+            'msg' => 'No se ha podido eliminar la foto porque no existe'
+        ], 400);
+    }
+
+    /*
+    ###################################################
     #              OBETENER FOTO DE PERFIL            #
     ###################################################
     */
     /**
     * @OA\Get(
     *     path="/api/get-image",
-    *     tags = {"User"},
+    *     tags = {"Usuario"},
     *     summary="Obtener foto de perfil del usuario",
     *     @OA\Response(
     *         response=200,
@@ -112,7 +153,7 @@ class UserController extends Controller
     /**
     * @OA\Post(
     *     path="/api/add-warning",
-    *     tags = {"User"},
+    *     tags = {"Usuario"},
     *     summary="Añadir una advertencia a un usuario",
     *     @OA\Response(
     *         response=200,
@@ -182,7 +223,7 @@ class UserController extends Controller
     /**
     * @OA\Get(
     *     path="/api/get-warnings",
-    *     tags = {"User"},
+    *     tags = {"Usuario"},
     *     summary="Obtener las advertencias del usuario puestas por algún Moderador / Administrador",
     *     @OA\Response(
     *         response=200,
@@ -210,7 +251,7 @@ class UserController extends Controller
     /**
     * @OA\Delete(
     *     path="/api/delete-account",
-    *     tags = {"User"},
+    *     tags = {"Usuario"},
     *     summary="Borrar cuenta del usuario",
     *     @OA\Response(
     *         response=200,
@@ -244,7 +285,7 @@ class UserController extends Controller
     /**
     * @OA\Get(
     *     path="/api/get-role",
-    *     tags = {"User"},
+    *     tags = {"Usuario"},
     *     summary="Obtener el rol del usuario",
     *     @OA\Response(
     *         response=200,
@@ -271,8 +312,8 @@ class UserController extends Controller
 
     /**
     * @OA\Put(
-    *     path="/api/edit-user/id",
-    *     tags = {"User"},
+    *     path="/api/edit-user",
+    *     tags = {"Usuario"},
     *     summary="Actualizar nombre del usuario",
     *     @OA\Response(
     *         response=200,
@@ -309,8 +350,8 @@ class UserController extends Controller
 
     /**
     * @OA\Put(
-    *     path="/api/edit-email/id",
-    *     tags = {"User"},
+    *     path="/api/edit-email",
+    *     tags = {"Usuario"},
     *     summary="Actualizar correo electrónico del usuario",
     *     @OA\Response(
     *         response=200,

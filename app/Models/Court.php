@@ -15,8 +15,8 @@ class Court extends Model
 
     protected $fillable = [
         'nombre',
-//        'horaInicio',
-//        'horaFinalizacion',
+        'horaInicio',
+        'horaFinalizacion',
         'rutaImagen',
         'direccion',
         'aforo',

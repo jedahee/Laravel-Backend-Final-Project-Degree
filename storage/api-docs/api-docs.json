@@ -13,7 +13,7 @@
         "/api/register": {
             "post": {
                 "tags": [
-                    "Auth"
+                    "Autentificación"
                 ],
                 "summary": "Registrar usuario en el sistema",
                 "operationId": "8a56853624e025573120a09a4c75d468",
@@ -30,7 +30,7 @@
         "/api/login": {
             "post": {
                 "tags": [
-                    "Auth"
+                    "Autentificación"
                 ],
                 "summary": "Logear al usuario en el sistema",
                 "operationId": "4d730c449df9d7cd37cc97b2daddf8ad",
@@ -47,7 +47,7 @@
         "/api/logout": {
             "post": {
                 "tags": [
-                    "Auth"
+                    "Autentificación"
                 ],
                 "summary": "Desconectar el usuario del sistema",
                 "operationId": "fe8f3429cd6979b3b4517e186505f9f9",
@@ -64,7 +64,7 @@
         "/api/get-user": {
             "post": {
                 "tags": [
-                    "Auth"
+                    "Autentificación"
                 ],
                 "summary": "Obtener usuario y ver información de este",
                 "operationId": "6c7e6fa6e5fdfc1a2f20618bb8672928",
@@ -81,7 +81,7 @@
         "/api/update-password/id/token": {
             "put": {
                 "tags": [
-                    "Auth"
+                    "Autentificación"
                 ],
                 "summary": "Actualizar contraseña del usuario",
                 "operationId": "ef54ef9c90b39f595065c2dbac450e5f",
@@ -95,10 +95,27 @@
                 }
             }
         },
+        "/api/add-court": {
+            "post": {
+                "tags": [
+                    "Pista"
+                ],
+                "summary": "Añadir una pista nueva",
+                "operationId": "7044ce5d322f51b90aa490e68cdc2e77",
+                "responses": {
+                    "200": {
+                        "description": "La pista se ha añadido correctamente"
+                    },
+                    "400": {
+                        "description": "No se ha podido añadir la pista"
+                    }
+                }
+            }
+        },
         "/api/upload-image": {
             "post": {
                 "tags": [
-                    "User"
+                    "Usuario"
                 ],
                 "summary": "Actualizar la foto de perfil del usuario",
                 "operationId": "51509ba5cd5870c079c2d285b93196dd",
@@ -112,10 +129,27 @@
                 }
             }
         },
+        "/api/delete-image": {
+            "delete": {
+                "tags": [
+                    "Usuario"
+                ],
+                "summary": "Eliminar la foto de perfil del usuario",
+                "operationId": "5f17340c49c3c21af21719422872b543",
+                "responses": {
+                    "200": {
+                        "description": "La foto se ha eliminado correctamente"
+                    },
+                    "400": {
+                        "description": "No se ha podido eliminar la foto"
+                    }
+                }
+            }
+        },
         "/api/get-image": {
             "get": {
                 "tags": [
-                    "User"
+                    "Usuario"
                 ],
                 "summary": "Obtener foto de perfil del usuario",
                 "operationId": "ace29131851c4fc901df6f1de04472c4",
@@ -132,7 +166,7 @@
         "/api/add-warning": {
             "post": {
                 "tags": [
-                    "User"
+                    "Usuario"
                 ],
                 "summary": "Añadir una advertencia a un usuario",
                 "operationId": "e0881c4efe1bc16583c3449e2beb5884",
@@ -149,7 +183,7 @@
         "/api/get-warnings": {
             "get": {
                 "tags": [
-                    "User"
+                    "Usuario"
                 ],
                 "summary": "Obtener las advertencias del usuario puestas por algún Moderador / Administrador",
                 "operationId": "f166a29816206d1717506e5c008dac69",
@@ -166,7 +200,7 @@
         "/api/delete-account": {
             "delete": {
                 "tags": [
-                    "User"
+                    "Usuario"
                 ],
                 "summary": "Borrar cuenta del usuario",
                 "operationId": "336fed4b9d27ea9186a9087a4de22efc",
@@ -183,7 +217,7 @@
         "/api/get-role": {
             "get": {
                 "tags": [
-                    "User"
+                    "Usuario"
                 ],
                 "summary": "Obtener el rol del usuario",
                 "operationId": "5229d25a47a2bd05458e16fe9ff2266b",
@@ -200,7 +234,7 @@
         "/api/edit-user/id": {
             "put": {
                 "tags": [
-                    "User"
+                    "Usuario"
                 ],
                 "summary": "Actualizar nombre del usuario",
                 "operationId": "e42aa48eebe04ad9e0a154f3378cc1f6",
@@ -217,7 +251,7 @@
         "/api/edit-email/id": {
             "put": {
                 "tags": [
-                    "User"
+                    "Usuario"
                 ],
                 "summary": "Actualizar correo electrónico del usuario",
                 "operationId": "a0455463dc5c74302ecb34c5f2267716",

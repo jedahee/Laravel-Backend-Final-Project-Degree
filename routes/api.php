@@ -4,6 +4,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CourtController;
 use App\Http\Controllers\UserController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -21,8 +22,17 @@ use Symfony\Component\HttpFoundation\Response;
 //  NO necesita autenticación
 // ---------------------------
 
+// -- Iniciar sesión --
 Route::post('login', [AuthController::class, 'authenticate']);
+
+// -- Registro --
 Route::post('register', [AuthController::class, 'register']);
+
+// -- Obtener todas las pistas --
+Route::get('get-courts', [CourtController::class, 'getCourts']);
+
+// -- Obtener una pista por su id --
+Route::get('get-court/{id}', [CourtController::class, 'getCourt']);
 
 // -- Envio de email para recuperar la contraseña --  
 Route::get('forgot-password/{email}', function ($email) {
@@ -61,7 +71,11 @@ Route::put('update-password/{email}/{token}', [AuthController::class, 'updatePas
 // Necesita autenticación
 // -----------------------
 Route::group(['middleware' => ['jwt.verify']], function() {
+
+    // -- Desconectar sesion --
     Route::post('logout', [AuthController::class, 'logout']);
+    
+    // -- Obtener usuario --
     Route::post('get-user', [AuthController::class, 'getUser']);
     
     // -- Editar nombre de usuario --
@@ -87,4 +101,13 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 
     // -- Obtener foto de perfil --
     Route::get('get-image', [UserController::class, 'getImage']);
+
+    // -- Eliminar foto de perfil --
+    Route::delete('delete-image', [UserController::class, 'deleteImage']);
+
+    // -- Añadir pista --
+    Route::post('add-court', [CourtController::class, 'addCourt']);
+
+    // -- Eliminar una pista por su id --
+    Route::delete('delete-court/{id}', [CourtController::class, 'deleteCourt']);
 });
