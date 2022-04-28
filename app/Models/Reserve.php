@@ -12,7 +12,9 @@ class Reserve extends Model
     protected $table = 'reservas';
 
     protected $fillable = [
-        'nombre',
+        'horaInicio',
+        'horaFinalizacion',
+        'numLista',
         'users_id',
         'pistas_id'
     ];

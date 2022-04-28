@@ -15,9 +15,7 @@ class Reservas extends Migration
     {
         Schema::create('reservas', function (Blueprint $table) {
             $table->id();
-            
-            $table->longText('texto');
-            
+                    
             $table->timestamps();
 
             $table->string('horaInicio')->nullable();

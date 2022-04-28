@@ -7,6 +7,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CourtController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\FloorController;
+use App\Http\Controllers\SportController;
+use App\Models\Floor;
 use Symfony\Component\HttpFoundation\Response;
 
 /*
@@ -132,4 +135,10 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 
     // -- Eliminar comentario de una pista --
     Route::delete('delete-comment/{id}', [CommentController::class, 'deleteComment']);
+
+    // -- Obtener tipos de suelo --
+    Route::get('get-floors', [FloorController::class, 'getFloors']);
+
+    // -- Obtener deportes --
+    Route::get('get-sports', [SportController::class, 'getSports']);
 });
