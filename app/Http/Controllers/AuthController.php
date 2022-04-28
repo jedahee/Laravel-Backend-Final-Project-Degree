@@ -56,7 +56,7 @@ class AuthController extends Controller
 
         //Devolvemos un error si fallan las validaciones
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->messages()], 400);
+            return response()->json(['error' => $validator->messages()], Response::HTTP_BAD_REQUEST);
         }
 
         //Creamos el nuevo usuario
@@ -109,18 +109,18 @@ class AuthController extends Controller
 
         //Devolvemos un error de validación en caso de fallo en las verificaciones
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->messages()], 400);
+            return response()->json(['error' => $validator->messages()], Response::HTTP_BAD_REQUEST);
         }
 
         //Intentamos hacer login
         try {
             if (!$token = JWTAuth::attempt($credentials)) {
                 //Credenciales incorrectas.
-                return response()->json(['msg' => 'Login falló',], 401);
+                return response()->json(['msg' => 'Login falló',], Response::HTTP_UNAUTHORIZED);
             }
         } catch (JWTException $e) {
             //Error chungo
-            return response()->json(['msg' => 'Error',], 500);
+            return response()->json(['msg' => 'Error',], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         $user = JWTAuth::user();
@@ -134,9 +134,9 @@ class AuthController extends Controller
                     'user' => Auth::user()
                 ]);  
             }
-            return response()->json(['msg' => 'Cuenta bloqueada',], 400);
+            return response()->json(['msg' => 'Cuenta bloqueada',], Response::HTTP_FORBIDDEN);
         }
-        return response()->json(['msg' => 'Usuario no encontrado',], 400);
+        return response()->json(['msg' => 'Usuario no encontrado',], Response::HTTP_NOT_FOUND);
     }
 
     /*
@@ -167,7 +167,7 @@ class AuthController extends Controller
         );
         //Si falla la validación
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->messages()], 400);
+            return response()->json(['error' => $validator->messages()], Response::HTTP_BAD_REQUEST);
         }
         try {
 
@@ -177,7 +177,7 @@ class AuthController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Usuario desconectado'
-            ]);
+            ], Response::HTTP_ACCEPTED);
 
         } catch (JWTException $exception) {
 
@@ -221,10 +221,10 @@ class AuthController extends Controller
 
         //Si no hay usuario es que el token no es valido o que ha expirado
         if(!$user)
-            return response()->json(['message' => 'Token invalido / token expirado',], 401);
+            return response()->json(['message' => 'Token invalido / token expirado',], Response::HTTP_UNAUTHORIZED);
 
         //Devolvemos los datos del usuario si todo va bien.
-        return response()->json(['user' => $user], 200);
+        return response()->json(['user' => $user], Response::HTTP_ACCEPTED);
     }
 
     /*
@@ -268,13 +268,13 @@ class AuthController extends Controller
             // BORRAR --
             return response()->json([
                 'msg' => "Se ha actualizado correctamente la contrasñea del usuario",
-            ], 200);
+            ], Response::HTTP_ACCEPTED);
 
         } // else -> redireccionar a página de "fallo al actualizar la cotraseña" 
         
         // BORRAR --
         return response()->json([
             'msg' => "No se ha podido actualizar la contraseña del usuario",
-        ], 400);
+        ], Response::HTTP_NOT_FOUND);
     }
 }

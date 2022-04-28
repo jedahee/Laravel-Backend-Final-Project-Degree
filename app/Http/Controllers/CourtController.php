@@ -50,7 +50,7 @@ class CourtController extends Controller
 
         return response()->json([
             'courts' => $courts
-        ], 200);
+        ], Response::HTTP_ACCEPTED);
     }
 
     /*
@@ -82,19 +82,19 @@ class CourtController extends Controller
             } catch (Exception $e) {
                 return response()->json([
                     'msg' => 'Esta pista no existe'
-                ], 400);
+                ], Response::HTTP_NOT_FOUND);
             }
 
             $court->delete();
             return response()->json([
                 'msg' => 'Se ha eliminado la pista correctamente'
-            ], 200);
+            ], Response::HTTP_ACCEPTED);
         }
         
 
         return response()->json([
             'msg' => 'Necesitas ser Administrador para realizar esta operación'
-        ], 400);
+        ], Response::HTTP_FORBIDDEN);
     }
 
     /*
@@ -124,12 +124,12 @@ class CourtController extends Controller
             $court = Court::findOrFail($id);
             return response()->json([
                 'court' => $court
-            ], 200);    
+            ], Response::HTTP_ACCEPTED);    
         
         } catch (Exception $e) {
             return response()->json([
                 'msg' => 'Esta pista no existe'
-            ], 400);
+            ], Response::HTTP_NOT_FOUND);
         }
     }
 
@@ -163,7 +163,7 @@ class CourtController extends Controller
             } catch (Exception $e) {
                 return response()->json([
                     'msg' => 'Esta pista no existe'
-                ], 400);
+                ], Response::HTTP_NOT_FOUND);
             }
         
             $data = $request->only('nombre', 'horaInicio', 'horaFinalizacion', 'direccion', 'aforo', 'precioPorHora', 'disponible', 'campoAbierto', 'iluminacion', 'suelo_id', 'deporte_id');
@@ -184,7 +184,7 @@ class CourtController extends Controller
             ]);
 
             if ($validator->fails())
-                return response()->json(['error' => $validator->messages()], 400);
+                return response()->json(['error' => $validator->messages()], Response::HTTP_BAD_REQUEST);
             else {
                     if ($request->deporte_id == "5") {
                         if ($request->aforo != null && $request->horaInicio == null && $request->horaFinalizacion == null) {
@@ -205,11 +205,11 @@ class CourtController extends Controller
                             return response()->json([
                                 'msg' => 'Pista actualizada con éxito',
                                 'court' => $court
-                            ], 200);
+                            ], Response::HTTP_ACCEPTED);
                         } else {
                             return response()->json([
                                 'msg' => 'El rocódromo debe tener aforo y no un horario',
-                            ], 400);
+                            ], Response::HTTP_BAD_REQUEST);
                         }
                     
                     } else {
@@ -231,11 +231,11 @@ class CourtController extends Controller
                             return response()->json([
                                 'msg' => 'Pista actualizada con éxito',
                                 'court' => $court
-                            ], 200);
+                            ], Response::HTTP_ACCEPTED);
                         } else {
                             return response()->json([
                                 'msg' => 'Esta pista debe tener un horario y no aforo',
-                            ], 400);
+                            ], Response::HTTP_BAD_REQUEST);
                         }
                     }
         
@@ -243,7 +243,7 @@ class CourtController extends Controller
         }
         return response()->json([
             'msg' => 'Para hacer esta operación debes ser Administrador',
-        ], 400);
+        ], Response::HTTP_FORBIDDEN);
     }
 
     /*
@@ -288,7 +288,7 @@ class CourtController extends Controller
             ]);
 
             if ($validator->fails())
-                return response()->json(['error' => $validator->messages()], 400);
+                return response()->json(['error' => $validator->messages()], Response::HTTP_BAD_REQUEST);
             else {
                     if ($request->deporte_id == "5") {
                         if ($request->aforo != null && $request->horaInicio == null && $request->horaFinalizacion == null) {
@@ -310,11 +310,11 @@ class CourtController extends Controller
                             return response()->json([
                                 'msg' => 'Pista añadida con éxito',
                                 'court' => $court
-                            ], 200);
+                            ], Response::HTTP_ACCEPTED);
                         } else {
                             return response()->json([
                                 'msg' => 'El rocódromo debe tener aforo y no un horario',
-                            ], 400);
+                            ], Response::HTTP_BAD_REQUEST);
                         }
                     
                     } else {
@@ -337,11 +337,11 @@ class CourtController extends Controller
                             return response()->json([
                                 'msg' => 'Pista añadida con éxito',
                                 'court' => $court
-                            ], 200);
+                            ], Response::HTTP_ACCEPTED);
                         } else {
                             return response()->json([
                                 'msg' => 'Esta pista debe tener un horario y no aforo',
-                            ], 400);
+                            ], Response::HTTP_BAD_REQUEST);
                         }
                     }
         
@@ -349,7 +349,7 @@ class CourtController extends Controller
         }
         return response()->json([
             'msg' => 'Para hacer esta operación debes ser Administrador',
-        ], 400);
+        ], Response::HTTP_FORBIDDEN);
     }
 
     /*
@@ -360,7 +360,7 @@ class CourtController extends Controller
 
     /**
     * @OA\Post(
-    *     path="/api/upload-image",
+    *     path="/api/add-image",
     *     tags = {"Pista"},
     *     summary="Actualizar la foto de la pista",
     *     @OA\Response(
@@ -373,24 +373,24 @@ class CourtController extends Controller
     *     )
     * )
     */
-    public function uploadImage(Request $request, $id) {
+    public function addImage(Request $request, $id) {
         if ($this->user->rol_id == 1) {
             try {
                 $court = Court::findOrFail($id);
             } catch (Exception $e) {
                 return response()->json([
                     'msg' => 'Esta pista no existe'
-                ], 400);
+                ], Response::HTTP_BAD_REQUEST);
             }
 
             $data = $request->only('foto');
 
             $validator = Validator::make($data, [
-                'foto' => 'required|image|mimes:jpg,png,jpeg,svg|max:2048|dimensions:min_width=350,min_height=350,max_width=1980,max_height=1980',
+                'foto' => 'required|image|mimes:jpg,png,jpeg,svg|max:2048|dimensions:min_width=350,min_height=350,max_width=3500,max_height=3500',
             ]);
 
             if ($validator->fails())
-                return response()->json(['error' => $validator->messages()], 400);
+                return response()->json(['error' => $validator->messages()], Response::HTTP_BAD_REQUEST);
             else {
                 if ($request->foto && $request->foto->isValid()) {
                     $file_name = time() . "." . $request->foto->extension();
@@ -402,17 +402,17 @@ class CourtController extends Controller
                     return response()->json([
                         'msg' => 'Foto actulizada con éxito',
                         'path' => $path
-                    ], 200);
+                    ], Response::HTTP_ACCEPTED);
                 }
         
                 return response()->json([
                     'msg' => 'Foto no válida',
-                ], 400);
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
         } else {
             return response()->json([
                 'msg' => 'Necesitas ser Administrador para realizar esta operación'
-            ], 400);
+            ], Response::HTTP_FORBIDDEN);
         }
     }
 
@@ -424,9 +424,9 @@ class CourtController extends Controller
 
     /**
     * @OA\Post(
-    *     path="/api/delete-image",
+    *     path="/api/remove-image",
     *     tags = {"Pista"},
-    *     summary="Eliminar foto de uan pista",
+    *     summary="Eliminar foto de una pista",
     *     @OA\Response(
     *         response=200,
     *         description="La foto se ha eliminado correctamente"
@@ -437,14 +437,14 @@ class CourtController extends Controller
     *     )
     * )
     */
-    public function deleteImage(Request $request, $id) {
+    public function removeImage(Request $request, $id) {
         if ($this->user->rol_id == 1) {
             try {
                 $court = Court::findOrFail($id);
             } catch (Exception $e) {
                 return response()->json([
                     'msg' => 'Esta pista no existe'
-                ], 400);
+                ], Response::HTTP_BAD_REQUEST);
             }
 
             $file_name = explode("/", $court->rutaImagen)[3];
@@ -456,16 +456,16 @@ class CourtController extends Controller
 
                 return response()->json([
                     'msg' => 'Se ha eliminado la foto correctamente'
-                ], 200);
+                ], Response::HTTP_ACCEPTED);
             }
 
             return response()->json([
                 'msg' => 'No se ha podido eliminar la foto porque no existe'
-            ], 400);
+            ], Response::HTTP_BAD_REQUEST);
         } else {
             return response()->json([
                 'msg' => 'Necesitas ser Administrador para realizar esta operación'
-            ], 400);
+            ], Response::HTTP_FORBIDDEN);
         }
     }
 }

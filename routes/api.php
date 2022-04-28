@@ -4,6 +4,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CourtController;
 use App\Http\Controllers\UserController;
 use Symfony\Component\HttpFoundation\Response;
@@ -57,16 +58,19 @@ Route::get('validation-token/{email}/{get_token}', function ($email, $get_token)
     if ($user && $user->token_password_reset == $get_token) {
         return response()->json([
             'message' => 'Token validado',
-        ], Response::HTTP_OK);
+        ], Response::HTTP_ACCEPTED);
     }
     
-    return response()->json(["msg"=>"NO"]);
+    return response()->json(["msg"=>"NO"], Response::HTTP_NOT_FOUND);
     
 });
 
 //  -- Actualización de la contraseña -- 
 Route::put('update-password/{email}/{token}', [AuthController::class, 'updatePassword']);
 
+// -- Obtener comentarios de una pista --
+Route::get('get-comments/{court_id}', [CommentController::class, 'getComments']);
+    
 
 // Necesita autenticación
 // -----------------------
@@ -118,8 +122,14 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::put('edit-court/{id}', [CourtController::class, 'editCourt']);
 
     // -- Actualizar foto de la pista --
-    Route::post('upload-image/{id}', [CourtController::class, 'uploadImage']);
+    Route::post('add-image/{id}', [CourtController::class, 'addImage']);
 
     // -- Borrar foto de la pista --
-    Route::post('delete-image/{id}', [CourtController::class, 'deleteImage']);
+    Route::post('remove-image/{id}', [CourtController::class, 'removeImage']);
+
+    // -- Añadir comentario a una pista --
+    Route::post('add-comment/{court_id}', [CommentController::class, 'addComment']);
+
+    // -- Eliminar comentario de una pista --
+    Route::delete('delete-comment/{id}', [CommentController::class, 'deleteComment']);
 });

@@ -64,12 +64,12 @@ class UserController extends Controller
                 return response()->json([
                     'msg' => 'Foto actulizada con éxito',
                     'path' => $path
-                ], 200);
+                ], Response::HTTP_ACCEPTED);
             }
     
             return response()->json([
                 'msg' => 'Foto no válida',
-            ], 400);
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
     }
 
@@ -105,12 +105,12 @@ class UserController extends Controller
 
             return response()->json([
                 'msg' => 'Se ha eliminado la foto correctamente'
-            ], 200);
+            ], Response::HTTP_ACCEPTED);
         }
 
         return response()->json([
             'msg' => 'No se ha podido eliminar la foto porque no existe'
-        ], 400);
+        ], Response::HTTP_BAD_REQUEST);
     }
 
     /*
@@ -139,7 +139,7 @@ class UserController extends Controller
         
         return response()->json(
             $path_image
-        , 200);
+        , Response::HTTP_ACCEPTED);
     }
 
     /*
@@ -170,7 +170,7 @@ class UserController extends Controller
             return response()->json([
                 'msg' => 'Se han obtenido los usuarios correctamente',
                 'users' => $users
-            ], 200);
+            ], Response::HTTP_ACCEPTED);
         }
 
         //Validamos que la request tenga el token
@@ -183,10 +183,10 @@ class UserController extends Controller
 
         //Si no hay usuario es que el token no es valido o que ha expirado
         if(!$user)
-            return response()->json(['message' => 'Token invalido / token expirado',], 401);
+            return response()->json(['message' => 'Token invalido / token expirado',], Response::HTTP_UNAUTHORIZED);
 
         //Devolvemos los datos del usuario si todo va bien.
-        return response()->json(['user' => $user], 200);
+        return response()->json(['user' => $user], Response::HTTP_ACCEPTED);
     }
 
     /*
@@ -219,14 +219,14 @@ class UserController extends Controller
             ]);
 
             if ($validator->fails())
-                return response()->json(['error' => $validator->messages()], 400);
+                return response()->json(['error' => $validator->messages()], Response::HTTP_BAD_REQUEST);
             
             try {
                 $user = User::findOrFail($id);
             } catch (Exception $e) {
                 return response()->json([
                     'msg' => 'No se encuentra el usuario'
-                ], 400);        
+                ], Response::HTTP_BAD_REQUEST);        
             }
 
             if ($user->numAdvertencias == 0) {
@@ -236,7 +236,7 @@ class UserController extends Controller
 
                 return response()->json([
                     'msg' => 'Primera advertencia añadida con éxito'
-                ], 200);
+                ], Response::HTTP_ACCEPTED);
 
             } else if ($user->numAdvertencias == 1) {
                 $user->adv2 = $request->adv;
@@ -248,7 +248,7 @@ class UserController extends Controller
                 
                 return response()->json([
                     'msg' => 'Segunda advertencia añadida con éxito. La cuenta ha sido bloqueada'
-                ], 200);
+                ], Response::HTTP_ACCEPTED);
             }
 
             $user->save();
@@ -256,7 +256,7 @@ class UserController extends Controller
 
         return response()->json([
             'msg' => 'Esta operación solo lo puede hacer un administrador o un moderador'
-        ], 400);
+        ], Response::HTTP_FORBIDDEN);
     }
 
     /*
@@ -284,7 +284,7 @@ class UserController extends Controller
         return response()->json([
             'adv1' => $this->user->adv1,
             'adv2' => $this->user->adv2,
-        ], 200);
+        ], Response::HTTP_ACCEPTED);
 
     }
 
@@ -313,12 +313,12 @@ class UserController extends Controller
         if ($this->user->delete()) {
             return response()->json([
                 'msg' => 'Se ha eliminado la cuenta correctamente'
-            ], 200);
+            ], Response::HTTP_ACCEPTED);
         }
 
         return response()->json([
             'msg' => 'No se ha podido eliminar la cuenta'
-        ], 200);
+        ], Response::HTTP_NOT_ACCEPTABLE);
 
     }
 
@@ -345,7 +345,7 @@ class UserController extends Controller
     public function getRole(Request $request) {
         return response()->json([
             'rol_id' => $this->user->rol_id,
-        ], 200);
+        ], Response::HTTP_ACCEPTED);
 
     }
 
@@ -381,7 +381,7 @@ class UserController extends Controller
             
         return response()->json([
             'msg' => "Se ha actualizado correctamente el nombre de usuario",
-        ], 200);
+        ], Response::HTTP_ACCEPTED);
 
     } 
         
@@ -420,7 +420,7 @@ class UserController extends Controller
         
         return response()->json([
             'msg' => "Se ha actualizado correctamente el email del usuario",
-        ], 200);
+        ], Response::HTTP_ACCEPTED);
 
     }
 }

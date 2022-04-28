@@ -95,6 +95,125 @@
                 }
             }
         },
+        "/api/get-comments/court_id": {
+            "get": {
+                "tags": [
+                    "Comentarios"
+                ],
+                "summary": "Obtener todos los comentarios de una pista",
+                "operationId": "3033de18e13cf9e190d20fc720501c1e",
+                "responses": {
+                    "200": {
+                        "description": "Se han obtenido los comentarios correctamente"
+                    },
+                    "400": {
+                        "description": "No se han podido obtener los comentarios"
+                    }
+                }
+            }
+        },
+        "/api/add-comment/court_id": {
+            "post": {
+                "tags": [
+                    "Comentarios"
+                ],
+                "summary": "Añadir un comentario",
+                "operationId": "4f48acf742654a7b4b6396d87722d001",
+                "responses": {
+                    "200": {
+                        "description": "Se ha publicado el comentario correctamente"
+                    },
+                    "400": {
+                        "description": "No existe la pista donde se quiere publicar el comentario"
+                    }
+                }
+            }
+        },
+        "/api/delete-comment/court_id": {
+            "delete": {
+                "tags": [
+                    "Comentarios"
+                ],
+                "summary": "Eliminar un comentario",
+                "operationId": "eda3adf97e6e46d498787a9f9c6555b8",
+                "responses": {
+                    "200": {
+                        "description": "Se ha eliminado el comentario correctamente"
+                    },
+                    "400": {
+                        "description": "No se puede eliminar el comentario"
+                    }
+                }
+            }
+        },
+        "/api/get-courts": {
+            "get": {
+                "tags": [
+                    "Pista"
+                ],
+                "summary": "Obtener todas las pistas registradas",
+                "operationId": "9774d2e2a1c497e8bcec5f8403709a31",
+                "responses": {
+                    "200": {
+                        "description": "Se han obtenido las pistas correctamente"
+                    },
+                    "400": {
+                        "description": "No se han podido obtener las pistas"
+                    }
+                }
+            }
+        },
+        "/api/delete-court": {
+            "delete": {
+                "tags": [
+                    "Pista"
+                ],
+                "summary": "Eliminar una pista por su id",
+                "operationId": "8ce7f3f6002c950c5533efea58516456",
+                "responses": {
+                    "200": {
+                        "description": "Se ha eliminado la pista correctamente"
+                    },
+                    "400": {
+                        "description": "No se ha podido eliminar la pista"
+                    }
+                }
+            }
+        },
+        "/api/get-court/id": {
+            "get": {
+                "tags": [
+                    "Pista"
+                ],
+                "summary": "Obtener una pista por su id",
+                "operationId": "44bb929779190cae6e55a3e004ed2555",
+                "responses": {
+                    "200": {
+                        "description": "Se han obtenido la pista correctamente"
+                    },
+                    "400": {
+                        "description": "No se ha podido obtener la pista, el id no es correcto"
+                    }
+                }
+            }
+        },
+        "/api/edit-court": {
+            "put": {
+                "tags": [
+                    "Pista"
+                ],
+                "summary": "Actualizar una pista",
+                "operationId": "3babef9264810dfff464e7d2429067dc",
+                "responses": {
+                    "200": {
+                        "description": "La pista se ha actualizado correctamente"
+                    },
+                    "400": {
+                        "description": "No se ha podido actualizar la pista"
+                    }
+                }
+            }
+        },
         "/api/add-court": {
             "post": {
                 "tags": [
@@ -108,6 +227,40 @@
                     },
                     "400": {
                         "description": "No se ha podido añadir la pista"
+                    }
+                }
+            }
+        },
+        "/api/add-image": {
+            "post": {
+                "tags": [
+                    "Pista"
+                ],
+                "summary": "Actualizar la foto de la pista",
+                "operationId": "5485a8fc586bc4069ff201397c75e107",
+                "responses": {
+                    "200": {
+                        "description": "La foto se ha actualizado correctamente"
+                    },
+                    "400": {
+                        "description": "No se ha podido actualizar la foto"
+                    }
+                }
+            }
+        },
+        "/api/remove-image": {
+            "post": {
+                "tags": [
+                    "Pista"
+                ],
+                "summary": "Eliminar foto de una pista",
+                "operationId": "9691ab04e9a978b6c5c50359e2b39bff",
+                "responses": {
+                    "200": {
+                        "description": "La foto se ha eliminado correctamente"
+                    },
+                    "400": {
+                        "description": "No se ha podido eliminar la foto"
                     }
                 }
             }
@@ -159,6 +312,23 @@
                     },
                     "400": {
                         "description": "No se pudo obtener la foto"
+                    }
+                }
+            }
+        },
+        "/api/get-users": {
+            "get": {
+                "tags": [
+                    "Autentificación"
+                ],
+                "summary": "Obtener todos los usuarios",
+                "operationId": "c82f3b122e391857ed4b1b67d99e5007",
+                "responses": {
+                    "200": {
+                        "description": "Se han obtenido todos los usuarios correctamente"
+                    },
+                    "400": {
+                        "description": "Se necesita ser administrador para realizar esta operación"
                     }
                 }
             }
@@ -231,13 +401,13 @@
                 }
             }
         },
-        "/api/edit-user/id": {
+        "/api/edit-user": {
             "put": {
                 "tags": [
                     "Usuario"
                 ],
                 "summary": "Actualizar nombre del usuario",
-                "operationId": "e42aa48eebe04ad9e0a154f3378cc1f6",
+                "operationId": "863e508776b73cf3968d4e3513aacca0",
                 "responses": {
                     "200": {
                         "description": "Se ha podido actualizar el nombre de usuario"
@@ -248,13 +418,13 @@
                 }
             }
         },
-        "/api/edit-email/id": {
+        "/api/edit-email": {
             "put": {
                 "tags": [
                     "Usuario"
                 ],
                 "summary": "Actualizar correo electrónico del usuario",
-                "operationId": "a0455463dc5c74302ecb34c5f2267716",
+                "operationId": "f35605ee9e134dd3b5f63b248ad56595",
                 "responses": {
                     "200": {
                         "description": "Se ha podido actualizar el correo del usuario"
