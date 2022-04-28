@@ -71,8 +71,6 @@ class UserController extends Controller
                 'msg' => 'Foto no válida',
             ], 400);
         }
-
-        
     }
 
     /*
@@ -142,6 +140,53 @@ class UserController extends Controller
         return response()->json(
             $path_image
         , 200);
+    }
+
+    /*
+    ###################################################
+    #                OBTENER USUARIOS                 #
+    ###################################################
+    */
+
+    /**
+    * @OA\Get(
+    *     path="/api/get-users",
+    *     tags = {"Autentificación"},
+    *     summary="Obtener todos los usuarios",
+    *     @OA\Response(
+    *         response=200,
+    *         description="Se han obtenido todos los usuarios correctamente"
+    *     ),
+    *     @OA\Response(
+    *         response="400",
+    *         description="Se necesita ser administrador para realizar esta operación"
+    *     )
+    * )
+    */
+    public function getUsers(Request $request) {
+        if ($this->user->rol_id == 1 || $this->user->rol_id == 2) {
+            $users = User::all();
+
+            return response()->json([
+                'msg' => 'Se han obtenido los usuarios correctamente',
+                'users' => $users
+            ], 200);
+        }
+
+        //Validamos que la request tenga el token
+        $this->validate($request, [
+            'token' => 'required'
+        ]);
+
+        //Realizamos la autentificación
+        $user = JWTAuth::authenticate($request->token);
+
+        //Si no hay usuario es que el token no es valido o que ha expirado
+        if(!$user)
+            return response()->json(['message' => 'Token invalido / token expirado',], 401);
+
+        //Devolvemos los datos del usuario si todo va bien.
+        return response()->json(['user' => $user], 200);
     }
 
     /*

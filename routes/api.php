@@ -110,4 +110,16 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 
     // -- Eliminar una pista por su id --
     Route::delete('delete-court/{id}', [CourtController::class, 'deleteCourt']);
+
+    // -- Obtener todos los usuarios --
+    Route::get('get-users', [UserController::class, 'getUsers']);
+    
+    // -- Obtener todos los usuarios --
+    Route::put('edit-court/{id}', [CourtController::class, 'editCourt']);
+
+    // -- Actualizar foto de la pista --
+    Route::post('upload-image/{id}', [CourtController::class, 'uploadImage']);
+
+    // -- Borrar foto de la pista --
+    Route::post('delete-image/{id}', [CourtController::class, 'deleteImage']);
 });

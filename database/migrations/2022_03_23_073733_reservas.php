@@ -29,8 +29,8 @@ class Reservas extends Migration
             $table->unsignedBigInteger('pistas_id');
             
             // Relaciones
-            $table->foreign('users_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('pistas_id')->references('id')->on('pistas')->onDelete('cascade');
+            $table->foreign('users_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('pistas_id')->references('id')->on('pistas')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
