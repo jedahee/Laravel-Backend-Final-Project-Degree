@@ -8,6 +8,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CourtController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\FloorController;
+use App\Http\Controllers\ReserveController;
 use App\Http\Controllers\SportController;
 use App\Models\Floor;
 use Symfony\Component\HttpFoundation\Response;
@@ -141,4 +142,10 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 
     // -- Obtener deportes --
     Route::get('get-sports', [SportController::class, 'getSports']);
+
+    // -- Obtener reservas --
+    Route::get('get-bookings', [ReserveController::class, 'getReserves']);
+    
+    // -- Comprobar si existe una reserva por el id de la pista y del usuario --
+    Route::get('exists-reserve/{court_id}/{user_id}', [ReserveController::class, 'existsReserve']);
 });
