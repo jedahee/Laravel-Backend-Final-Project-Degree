@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use JWTAuth;
 use App\Models\User;
 use App\Models\Court;
+use App\Models\Comment;
 use Exception;
 use File;
 use Symfony\Component\HttpFoundation\Response;
@@ -55,9 +56,30 @@ class CourtController extends Controller
 
     /*
     ###################################################
-    #                 ELIMINAR PISTA                  #
+    #            OBTENER LIKES AND DISLIKES           #
     ###################################################
     */
+    /**
+    * @OA\Get(
+    *     path="/api/get-likes-and-dislikes",
+    *     tags = {"Pistas"},
+    *     summary="Obtener todos los likes y dislikes de una pista",
+    *     @OA\Response(
+    *         response=200,
+    *         description="Likes: X, Dislikes: X"
+    *     ),
+    * )
+    */
+    public function getLikesAndDislikes(Request $request, $id)
+    {
+        $likes = Comment::where('pistas_id', $id)->where('like', 1)->count('like');
+        $dislikes = Comment::where('pistas_id', $id)->where('like', 0)->count('like');
+        
+        return response()->json([
+            'likes' => $likes,
+            'dislikes' => $dislikes
+        ], Response::HTTP_ACCEPTED);
+    }
 
     /**
     * @OA\Delete(
@@ -296,7 +318,7 @@ class CourtController extends Controller
                                 'nombre' => $request->nombre,
                                 'horaInicio' => $request->horaInicio,
                                 'rutaImagen' => public_path("images/default.jpg"),
-                                'horaFinalizacion' => $request->horaFinalizaicon,
+                                'horaFinalizacion' => $request->horaFinalizacion,
                                 'direccion' => $request->direccion,
                                 'aforo' => $request->aforo,
                                 'precioPorHora' => $request->precioPorHora,

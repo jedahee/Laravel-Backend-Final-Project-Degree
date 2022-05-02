@@ -33,12 +33,6 @@ Route::post('login', [AuthController::class, 'authenticate']);
 // -- Registro --
 Route::post('register', [AuthController::class, 'register']);
 
-// -- Obtener todas las pistas --
-Route::get('get-courts', [CourtController::class, 'getCourts']);
-
-// -- Obtener una pista por su id --
-Route::get('get-court/{id}', [CourtController::class, 'getCourt']);
-
 // -- Envio de email para recuperar la contraseña --  
 Route::get('forgot-password/{email}', function ($email) {
     $token = Str::random(80);
@@ -72,9 +66,17 @@ Route::get('validation-token/{email}/{get_token}', function ($email, $get_token)
 //  -- Actualización de la contraseña -- 
 Route::put('update-password/{email}/{token}', [AuthController::class, 'updatePassword']);
 
+// -- Obtener todas las pistas --
+Route::get('get-courts', [CourtController::class, 'getCourts']);
+
+// -- Obtener una pista por su id --
+Route::get('get-court/{id}', [CourtController::class, 'getCourt']);
+
 // -- Obtener comentarios de una pista --
 Route::get('get-comments/{court_id}', [CommentController::class, 'getComments']);
-    
+
+// -- Obtener likes y dislikes de una pista por sus comentarios --
+Route::get('get-likes-and-dislikes/{id}', [CourtController::class, 'getLikesAndDislikes']);
 
 // Necesita autenticación
 // -----------------------
@@ -148,4 +150,10 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     
     // -- Comprobar si existe una reserva por el id de la pista y del usuario --
     Route::get('exists-reserve/{court_id}/{user_id}', [ReserveController::class, 'existsReserve']);
+
+    // -- Añadir una reserva --
+    Route::post('add-reserve', [ReserveController::class, 'addReserve']);
+    
+    // -- Eliminar una reserva --
+    Route::delete('delete-reserve/{id}', [ReserveController::class, 'deleteReserve']);
 });

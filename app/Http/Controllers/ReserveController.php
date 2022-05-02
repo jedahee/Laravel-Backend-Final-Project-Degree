@@ -59,7 +59,7 @@ class ReserveController extends Controller
 
     /*
     ###################################################
-    #                AÑADIOR RESERVA                  #
+    #                 AÑADIR RESERVA                  #
     ###################################################
     */
     /**
@@ -100,47 +100,105 @@ class ReserveController extends Controller
         if ($validator->fails())
             return response()->json(['error' => $validator->messages()], Response::HTTP_BAD_REQUEST);
         else {
-            if ($request->numLista != null && $request->horaInicio == null && $request->horaFinalizacion == null) {
-                $reserve = Reserve::create([
-                    'horaInicio' => $request->horaInicio,
-                    'horaFinalizacion' => $request->horaFinalizaicon,
-                    'numLista' => $request->numLista,
-                    'pistas_id' => $request->pistas_id,
-                    'users_id' => $request->users_id,
-                ]);
 
+            try {
+                $court = Court::findOrFail($request->pistas_id);
+            } catch (Exception $e) {
                 return response()->json([
-                    'msg' => 'Reserva añadida con éxito',
-                    'reserve' => $reserve
-                ], Response::HTTP_ACCEPTED);
-            } else {
-                return response()->json([
-                    'msg' => 'Esta reserva debe tener un número de lista y no un horario',
+                    "msg" => "La pista sobre la que se ha hecho la reserva no existe"
                 ], Response::HTTP_BAD_REQUEST);
             }
+            
+            if ($court->disponible == 1) {
+                if ($court->deporte_id == "5") {
+                    if ($request->numLista != null && $request->horaInicio == null && $request->horaFinalizacion == null) {
+                        $reserve = Reserve::create([
+                            'horaInicio' => $request->horaInicio,
+                            'horaFinalizacion' => $request->horaFinalizacion,
+                            'numLista' => $request->numLista,
+                            'pistas_id' => $request->pistas_id,
+                            'users_id' => $request->users_id,
+                        ]);
         
-
-            if ($request->numLista == null && $request->horaInicio != null && $request->horaFinalizacion != null) {
-                $reserve = Reserve::create([
-                    'horaInicio' => $request->horaInicio,
-                    'horaFinalizacion' => $request->horaFinalizaicon,
-                    'numLista' => $request->numLista,
-                    'pistas_id' => $request->pistas_id,
-                    'users_id' => $request->users_id,
-                ]);
-
-                return response()->json([
-                    'msg' => 'Reserva añadida con éxito',
-                    'reserve' => $reserve
-                ], Response::HTTP_ACCEPTED);
+                        return response()->json([
+                            'msg' => 'Reserva añadida con éxito',
+                            'reserve' => $reserve
+                        ], Response::HTTP_ACCEPTED);
+                    } else {
+                        return response()->json([
+                            'msg' => 'Esta reserva debe tener un número de lista y no un horario',
+                        ], Response::HTTP_BAD_REQUEST);
+                    }
+                } else {
+                    if ($request->numLista == null && $request->horaInicio != null && $request->horaFinalizacion != null) {
+                        $reserve = Reserve::create([
+                            'horaInicio' => $request->horaInicio,
+                            'horaFinalizacion' => $request->horaFinalizacion,
+                            'numLista' => $request->numLista,
+                            'pistas_id' => $request->pistas_id,
+                            'users_id' => $request->users_id,
+                        ]);
+        
+                        return response()->json([
+                            'msg' => 'Reserva añadida con éxito',
+                            'reserve' => $reserve
+                        ], Response::HTTP_ACCEPTED);
+                    } else {
+                        return response()->json([
+                            'msg' => 'Esta reserva debe tener un horario y no un número de lista',
+                        ], Response::HTTP_BAD_REQUEST);
+                    }
+                }
             } else {
                 return response()->json([
-                    'msg' => 'Esta reserva debe tener un horario y no un número de lista',
-                ], Response::HTTP_BAD_REQUEST);
+                    'msg' => 'Esta pista no esta disponible',
+                ], Response::HTTP_NOT_FOUND);
             }
-                
-        
         }
+    }
+
+    /*
+    ###################################################
+    #                ELIMINAR RESERVA                 #
+    ###################################################
+    */
+
+    /**
+    * @OA\Delete(
+    *     path="/api/delete-reserve",
+    *     tags = {"Reservas"},
+    *     summary="Eliminar una reserva",
+    *     @OA\Response(
+    *         response=200,
+    *         description="Se ha eliminado la reserva correctamente"
+    *     ),
+    *     @OA\Response(
+    *         response="400",
+    *         description="No se ha podido eliminar la reserva"
+    *     )
+    * )
+    */
+    public function deleteReserve(Request $request, $id)
+    {
+        try {
+            $booking = Reserve::findOrFail($id);
+        } catch (Exception $e) {
+            return response()->json([
+                'msg' => 'Esta reserva no existe'
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        if ($this->user->id == $booking->users_id  || $this->user->rol_id == 1) {
+            $booking->delete();
+            return response()->json([
+                'msg' => 'Se ha eliminado la reserva correctamente'
+            ], Response::HTTP_ACCEPTED);
+        }
+        
+
+        return response()->json([
+            'msg' => 'Necesitas ser Administrador o dueño de esta reserva para realizar esta operación'
+        ], Response::HTTP_FORBIDDEN);
     }
 
     /*
