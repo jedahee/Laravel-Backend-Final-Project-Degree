@@ -1,16 +1,17 @@
 <?php
 
 use App\Models\User;
+use App\Models\Floor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CourtController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\FloorController;
 use App\Http\Controllers\ReserveController;
 use App\Http\Controllers\SportController;
-use App\Models\Floor;
 use Symfony\Component\HttpFoundation\Response;
 
 /*
@@ -81,30 +82,45 @@ Route::get('get-likes-and-dislikes/{id}', [CourtController::class, 'getLikesAndD
 // Necesita autenticación
 // -----------------------
 Route::group(['middleware' => ['jwt.verify']], function() {
+        
+    // -- Obtener todos los usuarios --
+    Route::get('get-users', [AdminController::class, 'getUsers']);
 
     // -- Desconectar sesion --
     Route::post('logout', [AuthController::class, 'logout']);
     
     // -- Obtener usuario --
     Route::post('get-user', [AuthController::class, 'getUser']);
+
+    // -- Obtener usuario por su id (Admin) --
+    Route::post('get-user/{id}', [AdminController::class, 'getUser']);
     
     // -- Editar nombre de usuario --
     Route::put('edit-user', [UserController::class, 'editUser']);
 
+    // -- Editar nombre de usuario por su id (Admin) --
+    Route::put('edit-user/{id}', [AdminController::class, 'editUser']);
+
     // -- Editar correo del usuario --
     Route::put('edit-email', [UserController::class, 'editEmail']);
+
+    // -- Editar correo del usuario por su id (Admin) --
+    Route::put('edit-email/{id}', [AdminController::class, 'editEmail']);
 
     // -- Obtener advertencias --
     Route::get('get-warnings', [UserController::class, 'getWarnings']);
 
     // -- Añadir advertencia --
-    Route::post('add-warning/{id}', [UserController::class, 'addWarning']);
+    Route::post('add-warning/{id}', [AdminController::class, 'addWarning']);
 
     // -- Obtener rol del usuario --
     Route::get('get-role', [UserController::class, 'getRole']);
 
     // -- Borrar cuenta de usuario --
     Route::delete('delete-account', [UserController::class, 'delAccount']);
+
+    // -- Borrar cuenta de usuario por su id (Admin) --
+    Route::delete('delete-account/{id}', [AdminController::class, 'delAccount']);
     
     // -- Actualizar foto de perfil --
     Route::post('upload-image', [UserController::class, 'uploadImage']);
@@ -120,9 +136,6 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 
     // -- Eliminar una pista por su id --
     Route::delete('delete-court/{id}', [CourtController::class, 'deleteCourt']);
-
-    // -- Obtener todos los usuarios --
-    Route::get('get-users', [UserController::class, 'getUsers']);
     
     // -- Obtener todos los usuarios --
     Route::put('edit-court/{id}', [CourtController::class, 'editCourt']);
@@ -156,4 +169,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     
     // -- Eliminar una reserva --
     Route::delete('delete-reserve/{id}', [ReserveController::class, 'deleteReserve']);
+
+    // -- Activar o desactivar cuenta de usuario --
+    Route::put('active-desactive-account/{user_id}', [AdminController::class, 'activeDesactiveAccount']);
 });

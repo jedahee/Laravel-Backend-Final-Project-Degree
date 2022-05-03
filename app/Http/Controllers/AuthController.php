@@ -33,7 +33,7 @@ class AuthController extends Controller
     *     summary="Registrar usuario en el sistema",
     *     @OA\Response(
     *         response=200,
-    *         description="Se ha registrado correctamente"
+    *         description="Usuario creado"
     *     ),
     *     @OA\Response(
     *         response="400",
@@ -73,7 +73,7 @@ class AuthController extends Controller
         return response()->json([
             'msg' => 'Usuario creado',
             'user' => $user,
-        ], Response::HTTP_OK);
+        ], Response::HTTP_ACCEPTED);
     }
 
     /*
