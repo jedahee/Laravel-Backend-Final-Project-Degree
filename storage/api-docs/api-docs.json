@@ -38,7 +38,7 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "\n    *           Operación realizada con éxito\n    *           Primera advertencia añadida con éxito\n    *           Segunda advertencia añadida con éxito. La cuenta ha sido bloqueada"
                     },
                     "400": {
@@ -63,7 +63,7 @@
                 "summary": "Obtener todos los usuarios",
                 "operationId": "36d93c62e98bba46af2f67392fb0b2b3",
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "\n    *           Se han obtenido los usuarios correctamente\n    *           $users (Object)"
                     }
                 },
@@ -93,7 +93,7 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "\n    *           $user (Object)"
                     },
                     "400": {
@@ -124,7 +124,7 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "\n    *           Se ha eliminado la cuenta correctamente"
                     },
                     "400": {
@@ -172,7 +172,7 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "\n    *           Se ha actualizado correctamente el nombre de usuario"
                     },
                     "400": {
@@ -220,7 +220,7 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "\n    *           Se ha actualizado correctamente el email del usuario"
                     },
                     "400": {
@@ -268,7 +268,7 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "\n    *           Se ha actualizado correctamente el usuario"
                     },
                     "400": {
@@ -343,7 +343,7 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "\n    *           Usuario creado\n    *           $user (Object)"
                     },
                     "400": {
@@ -380,7 +380,7 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "\n    *           True\n    *           $token (string)\n    *           Auth::user (Loguea al usuario)"
                     },
                     "400": {
@@ -420,7 +420,7 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "\n    *           Usuario desconectado"
                     },
                     "400": {
@@ -429,7 +429,12 @@
                     "500": {
                         "description": "\n    *           false (bool)\n    *           Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/get-user": {
@@ -451,13 +456,18 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "\n    *           $user (Object)"
                     },
                     "401": {
                         "description": "\n    *           Token invalido / token expirado"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/update-password/{email}/{token}": {
@@ -497,7 +507,7 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "\n    *           Se ha actualizado correctamente la contraseña del usuario"
                     },
                     "404": {
@@ -525,7 +535,7 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "\n    *           Los comentarios se han obtenido correctamente\n    *           No hay comentarios de esta pista"
                     },
                     "404": {
@@ -571,7 +581,7 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "\n    *           Se ha publicado el comentario correctamente"
                     },
                     "400": {
@@ -580,7 +590,12 @@
                     "404": {
                         "description": "\n    *           No existe la pista donde se quiere publicar el comentario"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/delete-comment/{id}": {
@@ -602,7 +617,7 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "\n    *           Se ha borrado el comentario correctamente"
                     },
                     "403": {
@@ -611,7 +626,12 @@
                     "404": {
                         "description": "\n    *           Este comentario no existe"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/get-courts": {
@@ -622,7 +642,7 @@
                 "summary": "Obtener todas las pistas registradas",
                 "operationId": "9774d2e2a1c497e8bcec5f8403709a31",
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "\n    *           $courts (Object [])"
                     }
                 }
@@ -647,7 +667,7 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "\n    *           Likes: X, Dislikes: X"
                     }
                 }
@@ -672,7 +692,7 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "\n    *           Se ha eliminado la pista correctamente"
                     },
                     "404": {
@@ -705,7 +725,7 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "\n    *           $court (Object)"
                     },
                     "404": {
@@ -823,7 +843,7 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "\n    *           Pista actualizada con éxito"
                     },
                     "400": {
@@ -940,7 +960,7 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "\n    *           Pista añadida con éxito"
                     },
                     "400": {
@@ -985,7 +1005,7 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "\n    *           Foto actulizada con éxito"
                     },
                     "400": {
@@ -1024,7 +1044,7 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "Se ha eliminado la foto correctamente"
                     },
                     "400": {
@@ -1049,7 +1069,7 @@
                 "summary": "Obtener todos los tipos de suelos",
                 "operationId": "f21494a0e6ede8f71764588b874ac98e",
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "\n    *           $floors (Object [])"
                     }
                 }
@@ -1063,13 +1083,18 @@
                 "summary": "Obtener todas las reservas registradas",
                 "operationId": "1b9c2ebc3b43604f8812ab74c7049b74",
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "\n    *           $bookings (Object [])"
                     },
                     "403": {
                         "description": "\n    *           Necesitas ser Administrador para realizar esta operación"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/add-reserve": {
@@ -1127,7 +1152,7 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "\n    *           Reserva añadida con éxito"
                     },
                     "400": {
@@ -1136,7 +1161,12 @@
                     "404": {
                         "description": "\n    *           Esta pista no está disponible"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/delete-reserve/{id}": {
@@ -1158,7 +1188,7 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "\n    *           Se ha eliminado la reserva correctamente"
                     },
                     "400": {
@@ -1167,7 +1197,12 @@
                     "403": {
                         "description": "\n    *           Necesitas ser Administrador o dueño de esta reserva para realizar esta operación"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/exists-reserve/{court_id}/{user_id}": {
@@ -1198,13 +1233,18 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "\n    *           True"
                     },
                     "404": {
                         "description": "\n    *           False"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/get-sports": {
@@ -1215,7 +1255,7 @@
                 "summary": "Obtener todos los tipos de deporte",
                 "operationId": "8b401faa959871b6e39d979b8a54d669",
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "\n    *           $sports (Object [])"
                     }
                 }
@@ -1240,7 +1280,7 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "\n    *           Foto actulizada con éxito\n    *           $path (string)"
                     },
                     "422": {
@@ -1262,7 +1302,7 @@
                 "summary": "Eliminar la foto de perfil del usuario",
                 "operationId": "5f17340c49c3c21af21719422872b543",
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "Se ha eliminado la foto correctamente"
                     },
                     "400": {
@@ -1284,7 +1324,7 @@
                 "summary": "Obtener foto de perfil del usuario",
                 "operationId": "ace29131851c4fc901df6f1de04472c4",
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "\n    *           $path_image (string)"
                     }
                 },
@@ -1303,7 +1343,7 @@
                 "summary": "Obtener las advertencias del usuario puestas por algún Moderador / Administrador",
                 "operationId": "f166a29816206d1717506e5c008dac69",
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "\n    *           $adv1 (string)\n    *           $adv2 (string)"
                     }
                 },
@@ -1322,7 +1362,7 @@
                 "summary": "Borrar cuenta del usuario",
                 "operationId": "336fed4b9d27ea9186a9087a4de22efc",
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "\n    *           Se ha eliminado la cuenta correctamente"
                     },
                     "406": {
@@ -1344,7 +1384,7 @@
                 "summary": "Obtener el rol del usuario",
                 "operationId": "5229d25a47a2bd05458e16fe9ff2266b",
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "\n    *           $rol_id (integer)"
                     }
                 },
@@ -1374,7 +1414,7 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "\n    *           Se ha actualizado correctamente el nombre de usuario"
                     }
                 },
@@ -1404,7 +1444,7 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "Se ha actualizado correctamente el email del usuario"
                     }
                 },

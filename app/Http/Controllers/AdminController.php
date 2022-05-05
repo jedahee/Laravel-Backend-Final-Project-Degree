@@ -441,7 +441,7 @@ class AdminController extends Controller
         ], Response::HTTP_FORBIDDEN);
     }
 
-        /*
+    /*
     ###################################################
     #           ACTIVAR O DESACTIVAR CUENTA           #
     ###################################################
@@ -510,6 +510,90 @@ class AdminController extends Controller
 
             if ($request->activo == 0 || $request->activo == 1) {
                 $user->activo = $request->activo;
+                $user->save();
+                return response()->json([
+                    'msg' => 'Se ha actualizado correctamente el usuario',
+                ], Response::HTTP_ACCEPTED);
+            }
+            
+            return response()->json([
+                'msg' => 'Valor no permitido',
+            ], Response::HTTP_NOT_ACCEPTABLE);
+        }
+
+        return response()->json([
+            'msg' => 'Esta operación solo lo puede hacer un administrador'
+        ], Response::HTTP_FORBIDDEN);
+    }
+
+    /*
+    ###################################################
+    #          ACTUALIZAR ROL DE UN USUARIO           #
+    ###################################################
+    */
+    /**
+    * @OA\Put(
+    *     path="/api/update-role/{user_id}",
+    *     security={{"bearerAuth":{}}},
+    *     tags = {"Admin"},
+    *     summary="Actualizar rol de un usuario",
+    *     @OA\Parameter(
+    *        name="user_id",
+    *        in="path",
+    *        description="ID del usuario",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="integer"
+    *        )
+    *     ),
+    *     @OA\Parameter(
+    *        name="rol_id",
+    *        in="query",
+    *        description="El rol que va a tomar el usuario",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="integer"
+    *        )
+    *     ),
+    *     @OA\Response(
+    *         response=202,
+    *         description="
+    *           Se ha actualizado correctamente el usuario"    
+    *     ),
+    *     @OA\Response(
+    *         response=400,
+    *         description="
+    *           Este usuario no existe"
+    *     ),
+    *     @OA\Response(
+    *         response=403,
+    *         description="
+    *           Esta operación solo lo puede hacer un administrador"
+    *     ),
+    *     @OA\Response(
+    *         response=406,
+    *         description="
+    *           Valor no permitido"
+    *     ),
+    * )
+    */
+
+    public function updateRole(Request $request, $user_id) {
+        if ($this->user->rol_id == 1) {
+            try {
+                $user = User::findOrFail($user_id);
+            } catch (Exception $e) {
+                return response()->json([
+                    'msg' => 'Este usuario no existe'
+                ], Response::HTTP_BAD_REQUEST);
+            }
+
+            $this->validate($request, [
+                'rol_id' => 'required|integer',
+            ]);
+
+            if ($request->rol_id >= 1 && $request->rol_id <= 3) {
+                $user->rol_id = $request->rol_id;
                 $user->save();
                 return response()->json([
                     'msg' => 'Se ha actualizado correctamente el usuario',

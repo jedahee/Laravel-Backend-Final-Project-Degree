@@ -131,6 +131,9 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     // -- Editar correo del usuario por su id (Admin) --
     Route::put('edit-email/{id}', [AdminController::class, 'editEmail']);
 
+    // -- Editar rol de un usuario por su id (Admin) --
+    Route::put('update-role/{user_id}', [AdminController::class, 'updateRole']);
+
     // -- Borrar cuenta de usuario por su id (Admin) --
     Route::delete('delete-account/{id}', [AdminController::class, 'delAccount']);
 
