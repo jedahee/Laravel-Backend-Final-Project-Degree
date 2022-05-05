@@ -161,6 +161,7 @@ class AdminController extends Controller
     /**
     * @OA\Post(
     *     path="/api/get-user/{id}",
+    *     security={{"bearerAuth":{}}},
     *     tags = {"Admin"},
     *     summary="Obtener usuario y ver información de este",
     *     @OA\Parameter(

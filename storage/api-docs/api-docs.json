@@ -102,7 +102,12 @@
                     "403": {
                         "description": "\n    *           Esta operación solo lo puede hacer un administrador o un moderador"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/delete-account/{id}": {
@@ -261,6 +266,54 @@
                         "name": "activo",
                         "in": "query",
                         "description": "Parámetro que define si el usuario esta activo o no",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "\n    *           Se ha actualizado correctamente el usuario"
+                    },
+                    "400": {
+                        "description": "\n    *           Este usuario no existe"
+                    },
+                    "403": {
+                        "description": "\n    *           Esta operación solo lo puede hacer un administrador"
+                    },
+                    "406": {
+                        "description": "\n    *           Valor no permitido"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/update-role/{user_id}": {
+            "put": {
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Actualizar rol de un usuario",
+                "operationId": "ef663b3024df3fc9acdbf7f2987747ae",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "ID del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "rol_id",
+                        "in": "query",
+                        "description": "El rol que va a tomar el usuario",
                         "required": true,
                         "schema": {
                             "type": "integer"
