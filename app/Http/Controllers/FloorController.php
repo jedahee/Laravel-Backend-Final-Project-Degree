@@ -33,12 +33,9 @@ class FloorController extends Controller
     *     summary="Obtener todos los tipos de suelos",
     *     @OA\Response(
     *         response=200,
-    *         description="Se han obtenido los tipos de suelo correctamente"
+    *         description="
+    *           $floors (Object [])"
     *     ),
-    *     @OA\Response(
-    *         response="400",
-    *         description="No se han podido obtener los tipos de suelo"
-    *     )
     * )
     */
     public function getFloors(Request $request)

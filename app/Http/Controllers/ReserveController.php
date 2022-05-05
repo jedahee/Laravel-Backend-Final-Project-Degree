@@ -30,15 +30,18 @@ class ReserveController extends Controller
     /**
     * @OA\Get(
     *     path="/api/get-bookings",
+    *     security={{"bearerAuth":{}}},
     *     tags = {"Reservas"},
     *     summary="Obtener todas las reservas registradas",
     *     @OA\Response(
     *         response=200,
-    *         description="Se devuelven todas las reservas"
+    *         description="
+    *           $bookings (Object [])"
     *     ),
     *     @OA\Response(
     *         response=403,
-    *         description="Necesitas ser Administrador para realizar esta operación"
+    *         description="
+    *           Necesitas ser Administrador para realizar esta operación"
     *     )
     * )
     */
@@ -65,24 +68,72 @@ class ReserveController extends Controller
     /**
     * @OA\Post(
     *     path="/api/add-reserve",
+    *     security={{"bearerAuth":{}}},
     *     tags = {"Reservas"},
     *     summary="Registra una nueva reserva",
+    *     @OA\Parameter(
+    *        name="horaInicio",
+    *        in="query",
+    *        description="Define a la hora que empieza la reserva",
+    *        required=false,
+    *        @OA\Schema(
+    *            type="string"
+    *        )
+    *     ),
+    *     @OA\Parameter(
+    *        name="horaFinalizacion",
+    *        in="query",
+    *        description="Define a la hora que acaba la reserva",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="string"
+    *        )
+    *     ),
+    *     @OA\Parameter(
+    *        name="numLista",
+    *        in="query",
+    *        description="Define el número en la lista en las pitas que tengan un aforo y no un horario",
+    *        required=false,
+    *        @OA\Schema(
+    *            type="integer"
+    *        )
+    *     ),
+    *     @OA\Parameter(
+    *        name="users_id",
+    *        in="query",
+    *        description="ID del usuario",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="integer"
+    *        )
+    *     ),
+    *     @OA\Parameter(
+    *        name="pistas_id",
+    *        in="query",
+    *        description="ID de la pista",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="integer"
+    *        )
+    *     ),
     *     @OA\Response(
     *         response=200,
-    *         description="Reserva añadida con éxito"
+    *         description="
+    *           Reserva añadida con éxito"
     *     ),
     *     @OA\Response(
     *         response=400,
-    *         description="Falló validación"
+    *         description="
+    *           Falló validación
+    *           Esta reserva debe tener un número de lista y no un horario
+    *           Esta reserva debe tener un horario y no un número de lista
+    *           La pista sobre la que se ha hecho la reserva no existe"
     *     ),
     *     @OA\Response(
-    *         response=400,
-    *         description="Esta reserva debe tener un número de lista y no un horario"
+    *         response=404,
+    *         description="
+    *           Esta pista no está disponible"
     *     ),
-    *     @OA\Response(
-    *         response=400,
-    *         description="Esta reserva debe tener un horario y no un número de lista"
-    *     )
     * )
     */
     public function addReserve(Request $request)
@@ -165,16 +216,33 @@ class ReserveController extends Controller
 
     /**
     * @OA\Delete(
-    *     path="/api/delete-reserve",
+    *     path="/api/delete-reserve/{id}",
+    *     security={{"bearerAuth":{}}},
     *     tags = {"Reservas"},
     *     summary="Eliminar una reserva",
-    *     @OA\Response(
-    *         response=200,
-    *         description="Se ha eliminado la reserva correctamente"
+    *     @OA\Parameter(
+    *        name="id",
+    *        in="path",
+    *        description="ID de la reserva",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="integer"
+    *        )
     *     ),
     *     @OA\Response(
-    *         response="400",
-    *         description="No se ha podido eliminar la reserva"
+    *         response=200,
+    *         description="
+    *           Se ha eliminado la reserva correctamente"
+    *     ),
+    *     @OA\Response(
+    *         response=400,
+    *         description="
+    *           Esta reserva no existe"
+    *     ),
+    *     @OA\Response(
+    *         response=403,
+    *         description="
+    *           Necesitas ser Administrador o dueño de esta reserva para realizar esta operación"
     *     )
     * )
     */
@@ -208,16 +276,37 @@ class ReserveController extends Controller
     */
     /**
     * @OA\Get(
-    *     path="/api/exists-reserve/court_id/user_id",
+    *     path="/api/exists-reserve/{court_id}/{user_id}",
+    *     security={{"bearerAuth":{}}},
     *     tags = {"Reservas"},
     *     summary="Comprueba si existe una reserva",
+    *     @OA\Parameter(
+    *        name="court_id",
+    *        in="path",
+    *        description="ID de la pista",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="integer"
+    *        )
+    *     ),
+    *     @OA\Parameter(
+    *        name="user_id",
+    *        in="path",
+    *        description="ID del usuario",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="integer"
+    *        )
+    *     ),
     *     @OA\Response(
     *         response=200,
-    *         description="True"
+    *         description="
+    *           True"
     *     ),
     *     @OA\Response(
     *         response=404,
-    *         description="False"
+    *         description="
+    *           False"
     *     )
     * )
     */

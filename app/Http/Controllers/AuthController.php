@@ -31,13 +31,61 @@ class AuthController extends Controller
     *     path="/api/register",
     *     tags = {"Autentificación"},
     *     summary="Registrar usuario en el sistema",
-    *     @OA\Response(
-    *         response=200,
-    *         description="Usuario creado"
+    *     @OA\Parameter(
+    *        name="nombre",
+    *        in="query",
+    *        description="Nombre del usuario",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="string"
+    *        )
+    *     ),
+    *     @OA\Parameter(
+    *        name="apellidos",
+    *        in="query",
+    *        description="Apellidos del usuario",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="string"
+    *        )
+    *     ),
+    *     @OA\Parameter(
+    *        name="rol_id",
+    *        in="query",
+    *        description="Rol del usuario",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="integer"
+    *        )
+    *     ),
+    *     @OA\Parameter(
+    *        name="email",
+    *        in="query",
+    *        description="Email del usuario",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="string"
+    *        )
+    *     ),
+    *     @OA\Parameter(
+    *        name="password",
+    *        in="query",
+    *        description="Contraseña del usuario",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="string"
+    *        )
     *     ),
     *     @OA\Response(
-    *         response="400",
-    *         description="No se ha podido registrar"
+    *         response=200,
+    *         description="
+    *           Usuario creado
+    *           $user (Object)"
+    *     ),
+    *     @OA\Response(
+    *         response=400,
+    *         description="
+    *           Error de validacción"
     *     )
     * )
     */
@@ -87,13 +135,55 @@ class AuthController extends Controller
     *     path="/api/login",
     *     tags = {"Autentificación"},
     *     summary="Logear al usuario en el sistema",
-    *     @OA\Response(
-    *         response=200,
-    *         description="Se ha logeado correctamente"
+    *     @OA\Parameter(
+    *        name="email",
+    *        in="query",
+    *        description="Correo del usuario",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="string"
+    *        )
+    *     ),
+    *     @OA\Parameter(
+    *        name="password",
+    *        in="query",
+    *        description="Contraseña del usuario",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="string"
+    *        )
     *     ),
     *     @OA\Response(
-    *         response="400",
-    *         description="No se ha podido logear el usuario"
+    *         response=200,
+    *         description="
+    *           True
+    *           $token (string)
+    *           Auth::user (Loguea al usuario)"
+    *     ),
+    *     @OA\Response(
+    *         response=400,
+    *         description="
+    *           Error de validacción"
+    *     ),
+    *     @OA\Response(
+    *         response=401,
+    *         description="
+    *           Login falló"
+    *     ),
+    *     @OA\Response(
+    *         response=403,
+    *         description="
+    *           Cuenta bloqueada"
+    *     ),
+    *     @OA\Response(
+    *         response=404,
+    *         description="
+    *           Usuario no encontrado"
+    *     ),
+    *     @OA\Response(
+    *         response=500,
+    *         description="
+    *           Error (del servidor)"
     *     )
     * )
     */
@@ -132,7 +222,7 @@ class AuthController extends Controller
                     'success' => true,
                     'token' => $token,
                     'user' => Auth::user()
-                ]);  
+                ], Response::HTTP_ACCEPTED);  
             }
             return response()->json(['msg' => 'Cuenta bloqueada',], Response::HTTP_FORBIDDEN);
         }
@@ -148,16 +238,34 @@ class AuthController extends Controller
     /**
     * @OA\Post(
     *     path="/api/logout",
+    *     security={{"bearerAuth":{}}},
     *     tags = {"Autentificación"},
     *     summary="Desconectar el usuario del sistema",
-    *     @OA\Response(
-    *         response=200,
-    *         description="Se ha desconectado correctamente"
+    *     @OA\Parameter(
+    *        name="token",
+    *        in="query",
+    *        description="Token para validar que usuario se va a desconectar",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="string"
+    *        )
     *     ),
     *     @OA\Response(
-    *         response="400",
-    *         description="No se ha podido desconectar el usuario"
-    *     )
+    *         response=200,
+    *         description="
+    *           Usuario desconectado"
+    *     ),
+    *     @OA\Response(
+    *         response=400,
+    *         description="
+    *           Error de validacción"
+    *     ),
+    *     @OA\Response(
+    *         response=500,
+    *         description="
+    *           false (bool)
+    *           Error"
+    *     ),
     * )
     */
     public function logout(Request $request) {
@@ -198,15 +306,27 @@ class AuthController extends Controller
     /**
     * @OA\Post(
     *     path="/api/get-user",
+    *     security={{"bearerAuth":{}}},
     *     tags = {"Autentificación"},
     *     summary="Obtener usuario y ver información de este",
-    *     @OA\Response(
-    *         response=200,
-    *         description="Se ha obtenido el usuario correctamente"
+    *     @OA\Parameter(
+    *        name="token",
+    *        in="query",
+    *        description="Token para validar que usuario se va a obtener",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="string"
+    *        )
     *     ),
     *     @OA\Response(
-    *         response="400",
-    *         description="No se ha podido obetener la información del usuario"
+    *         response=200,
+    *         description="
+    *           $user (Object)"
+    *     ),
+    *     @OA\Response(
+    *         response=401,
+    *         description="
+    *           Token invalido / token expirado"
     *     )
     * )
     */
@@ -235,16 +355,45 @@ class AuthController extends Controller
 
     /**
     * @OA\Put(
-    *     path="/api/update-password/id/token",
+    *     path="/api/update-password/{email}/{token}",
     *     tags = {"Autentificación"},
     *     summary="Actualizar contraseña del usuario",
-    *     @OA\Response(
-    *         response=200,
-    *         description="Se actualizó la contraseña correctamente"
+    *     @OA\Parameter(
+    *        name="email",
+    *        in="path",
+    *        description="Email del usuario al que se le va a cambiar la contraseña",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="string"
+    *        )
+    *     ),
+    *     @OA\Parameter(
+    *        name="token",
+    *        in="path",
+    *        description="Token para validar que usuario se va a cambiar la contraseña",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="string"
+    *        )
+    *     ),
+    *     @OA\Parameter(
+    *        name="password",
+    *        in="query",
+    *        description="Contraseña nuevo a actualizar",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="string"
+    *        )
     *     ),
     *     @OA\Response(
-    *         response="400",
-    *         description="No se pudo actualizar la contraseña"
+    *         response=200,
+    *         description="
+    *           Se ha actualizado correctamente la contraseña del usuario"
+    *     ),
+    *     @OA\Response(
+    *         response=404,
+    *         description="
+    *           No se ha podido actualizar la contraseña del usuario"
     *     )
     * )
     */
@@ -263,16 +412,12 @@ class AuthController extends Controller
             $user->token_password_reset = null;
             $user->save();
 
-            // Redireccionar a pagina "se actualizó la contraseña correctamente"
-            
-            // BORRAR --
             return response()->json([
-                'msg' => "Se ha actualizado correctamente la contrasñea del usuario",
+                'msg' => "Se ha actualizado correctamente la contraseña del usuario",
             ], Response::HTTP_ACCEPTED);
 
-        } // else -> redireccionar a página de "fallo al actualizar la cotraseña" 
-        
-        // BORRAR --
+        } 
+
         return response()->json([
             'msg' => "No se ha podido actualizar la contraseña del usuario",
         ], Response::HTTP_NOT_FOUND);

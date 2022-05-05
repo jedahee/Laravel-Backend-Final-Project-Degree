@@ -30,17 +30,46 @@ class AdminController extends Controller
 
     /**
     * @OA\Post(
-    *     path="/api/add-warning",
+    *     security={{"bearerAuth":{}}},
+    *     path="/api/add-warning/{id}",
     *     tags = {"Admin"},
     *     summary="Añadir una advertencia a un usuario",
-    *     @OA\Response(
-    *         response=200,
-    *         description="La advertencia se ha añadido con éxito"
+    *     @OA\Parameter(
+    *        name="id",
+    *        in="path",
+    *        description="ID del usuario",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="integer"
+    *        )
+    *     ),
+    *     @OA\Parameter(
+    *        name="adv",
+    *        in="header",
+    *        description="El texto de advertencia para el usuario",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="string"
+    *        )
     *     ),
     *     @OA\Response(
-    *         response="400",
-    *         description="La advertencia no se ha podido añadir"
-    *     )
+    *         response=200,
+    *         description="
+    *           Operación realizada con éxito
+    *           Primera advertencia añadida con éxito
+    *           Segunda advertencia añadida con éxito. La cuenta ha sido bloqueada"
+    *     ),
+    *     @OA\Response(
+    *         response=400,
+    *         description="
+    *           No se encuentra el usuario
+    *           Error de validacion",
+    *     ),
+    *     @OA\Response(
+    *         response=403,
+    *         description="
+    *           Esta operación solo lo puede hacer un administrador o un moderador"
+    *     ),
     * )
     */
     public function addWarning(Request $request, $id) {
@@ -103,14 +132,13 @@ class AdminController extends Controller
     *     path="/api/get-users",
     *     tags = {"Admin"},
     *     summary="Obtener todos los usuarios",
+    *     security={{"bearerAuth":{}}},
     *     @OA\Response(
     *         response=200,
-    *         description="Se han obtenido todos los usuarios correctamente"
+    *         description="
+    *           Se han obtenido los usuarios correctamente
+    *           $users (Object)"
     *     ),
-    *     @OA\Response(
-    *         response="400",
-    *         description="Se necesita ser administrador para realizar esta operación"
-    *     )
     * )
     */
     public function getUsers(Request $request) {
@@ -122,21 +150,6 @@ class AdminController extends Controller
                 'users' => $users
             ], Response::HTTP_ACCEPTED);
         }
-
-        //Validamos que la request tenga el token
-        $this->validate($request, [
-            'token' => 'required'
-        ]);
-
-        //Realizamos la autentificación
-        $user = JWTAuth::authenticate($request->token);
-
-        //Si no hay usuario es que el token no es valido o que ha expirado
-        if(!$user)
-            return response()->json(['message' => 'Token invalido / token expirado',], Response::HTTP_UNAUTHORIZED);
-
-        //Devolvemos los datos del usuario si todo va bien.
-        return response()->json(['user' => $user], Response::HTTP_ACCEPTED);
     }
 
     /*
@@ -147,16 +160,32 @@ class AdminController extends Controller
 
     /**
     * @OA\Post(
-    *     path="/api/get-user/id",
+    *     path="/api/get-user/{id}",
     *     tags = {"Admin"},
     *     summary="Obtener usuario y ver información de este",
-    *     @OA\Response(
-    *         response=200,
-    *         description="Se ha obtenido el usuario correctamente"
+    *     @OA\Parameter(
+    *        name="id",
+    *        in="path",
+    *        description="ID del usuario",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="integer"
+    *        )
     *     ),
     *     @OA\Response(
-    *         response="400",
-    *         description="No se ha podido obetener la información del usuario"
+    *         response=200,
+    *         description="
+    *           $user (Object)"
+    *     ),
+    *     @OA\Response(
+    *         response=400,
+    *         description="
+    *           Este usuario no existe"
+    *     ),
+    *     @OA\Response(
+    *         response=403,
+    *         description="
+    *           Esta operación solo lo puede hacer un administrador o un moderador"
     *     )
     * )
     */
@@ -186,18 +215,39 @@ class AdminController extends Controller
     */
     /**
     * @OA\Delete(
-    *     path="/api/delete-account/id",
+    *     path="/api/delete-account/{id}",
     *     tags = {"Admin"},
+    *     security={{"bearerAuth":{}}},
     *     summary="Borrar cuenta de un usuario",
-    *     @OA\Response(
-    *         response=200,
-    *         description="Se ha eliminado la cuenta correctamente"
-    *          
+    *     @OA\Parameter(
+    *        name="id",
+    *        in="path",
+    *        description="ID del usuario",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="integer"
+    *        )
     *     ),
     *     @OA\Response(
-    *         response="400",
-    *         description="No se ha podido eliminar la cuenta"
-    *     )
+    *         response=200,
+    *         description="
+    *           Se ha eliminado la cuenta correctamente"    
+    *     ),
+    *     @OA\Response(
+    *         response=400,
+    *         description="
+    *           Este usuario no existe"
+    *     ),
+    *     @OA\Response(
+    *         response=403,
+    *         description="
+    *           Esta operación solo lo puede hacer un administrador"
+    *     ),
+    *     @OA\Response(
+    *         response=406,
+    *         description="
+    *           No se ha podido eliminar la cuenta"
+    *     ),
     * )
     */
     public function delAccount(Request $request, $id) {
@@ -234,17 +284,48 @@ class AdminController extends Controller
 
     /**
     * @OA\Put(
-    *     path="/api/edit-user/id",
+    *     path="/api/edit-user/{id}",
+    *     security={{"bearerAuth":{}}},
     *     tags = {"Admin"},
     *     summary="Actualizar nombre de un usuario",
-    *     @OA\Response(
-    *         response=200,
-    *         description="Se ha podido actualizar el nombre de usuario"
+    *     @OA\Parameter(
+    *        name="id",
+    *        in="path",
+    *        description="ID del usuario",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="integer"
+    *        )
+    *     ),
+    *     @OA\Parameter(
+    *        name="nombre",
+    *        in="query",
+    *        description="Nombre a actualizar",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="string"
+    *        )
     *     ),
     *     @OA\Response(
-    *         response="400",
-    *         description="No se ha podido actualizar el nombre de usuario"
-    *     )
+    *         response=200,
+    *         description="
+    *           Se ha actualizado correctamente el nombre de usuario"    
+    *     ),
+    *     @OA\Response(
+    *         response=400,
+    *         description="
+    *           Este usuario no existe"
+    *     ),
+    *     @OA\Response(
+    *         response=403,
+    *         description="
+    *           Esta operación solo lo puede hacer un administrador"
+    *     ),
+    *     @OA\Response(
+    *         response=406,
+    *         description="
+    *           No se ha podido actualizar el nombre de usuario"
+    *     ),
     * )
     */
     public function editUser(Request $request, $id) {
@@ -285,17 +366,48 @@ class AdminController extends Controller
 
     /**
     * @OA\Put(
-    *     path="/api/edit-email/id",
+    *     path="/api/edit-email/{id}",
+    *     security={{"bearerAuth":{}}},
     *     tags = {"Admin"},
     *     summary="Actualizar correo electrónico de un usuario",
-    *     @OA\Response(
-    *         response=200,
-    *         description="Se ha podido actualizar el correo del usuario"
+    *     @OA\Parameter(
+    *        name="id",
+    *        in="path",
+    *        description="ID del usuario",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="integer"
+    *        )
+    *     ),
+    *     @OA\Parameter(
+    *        name="email",
+    *        in="query",
+    *        description="Email a actualizar",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="string"
+    *        )
     *     ),
     *     @OA\Response(
-    *         response="400",
-    *         description="No se ha podido actualizar el correo del usuario"
-    *     )
+    *         response=200,
+    *         description="
+    *           Se ha actualizado correctamente el email del usuario"    
+    *     ),
+    *     @OA\Response(
+    *         response=400,
+    *         description="
+    *           Este usuario no existe"
+    *     ),
+    *     @OA\Response(
+    *         response=403,
+    *         description="
+    *           Esta operación solo lo puede hacer un administrador"
+    *     ),
+    *     @OA\Response(
+    *         response=406,
+    *         description="
+    *           No se ha podido actualizar correctamente el email del usuario"
+    *     ),
     * )
     */
 
@@ -337,17 +449,48 @@ class AdminController extends Controller
 
     /**
     * @OA\Put(
-    *     path="/api/active-desactive-account/user_id",
+    *     path="/api/active-desactive-account/{user_id}",
+    *     security={{"bearerAuth":{}}},
     *     tags = {"Admin"},
     *     summary="Activar o desactivar cuenta de usuario",
-    *     @OA\Response(
-    *         response=200,
-    *         description="Se ha podido activar la cuenta del usuario"
+    *     @OA\Parameter(
+    *        name="user_id",
+    *        in="path",
+    *        description="ID del usuario",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="integer"
+    *        )
+    *     ),
+    *     @OA\Parameter(
+    *        name="activo",
+    *        in="query",
+    *        description="Parámetro que define si el usuario esta activo o no",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="integer"
+    *        )
     *     ),
     *     @OA\Response(
-    *         response="400",
-    *         description="No se ha podido activar la cuenta del usuario"
-    *     )
+    *         response=200,
+    *         description="
+    *           Se ha actualizado correctamente el usuario"    
+    *     ),
+    *     @OA\Response(
+    *         response=400,
+    *         description="
+    *           Este usuario no existe"
+    *     ),
+    *     @OA\Response(
+    *         response=403,
+    *         description="
+    *           Esta operación solo lo puede hacer un administrador"
+    *     ),
+    *     @OA\Response(
+    *         response=406,
+    *         description="
+    *           Valor no permitido"
+    *     ),
     * )
     */
 

@@ -37,12 +37,9 @@ class CourtController extends Controller
     *     summary="Obtener todas las pistas registradas",
     *     @OA\Response(
     *         response=200,
-    *         description="Se han obtenido las pistas correctamente"
+    *         description="
+    *           $courts (Object [])"
     *     ),
-    *     @OA\Response(
-    *         response="400",
-    *         description="No se han podido obtener las pistas"
-    *     )
     * )
     */
     public function getCourts(Request $request)
@@ -61,12 +58,22 @@ class CourtController extends Controller
     */
     /**
     * @OA\Get(
-    *     path="/api/get-likes-and-dislikes",
-    *     tags = {"Pistas"},
+    *     path="/api/get-likes-and-dislikes/{id}",
+    *     tags = {"Pista"},
     *     summary="Obtener todos los likes y dislikes de una pista",
+    *     @OA\Parameter(
+    *        name="id",
+    *        in="path",
+    *        description="ID de la pista",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="integer"
+    *        )
+    *     ),
     *     @OA\Response(
     *         response=200,
-    *         description="Likes: X, Dislikes: X"
+    *         description="
+    *           Likes: X, Dislikes: X"
     *     ),
     * )
     */
@@ -83,16 +90,27 @@ class CourtController extends Controller
 
     /**
     * @OA\Delete(
-    *     path="/api/delete-court",
+    *     path="/api/delete-court/{id}",
+    *     security={{"bearerAuth":{}}},
     *     tags = {"Pista"},
     *     summary="Eliminar una pista por su id",
-    *     @OA\Response(
-    *         response=200,
-    *         description="Se ha eliminado la pista correctamente"
+    *     @OA\Parameter(
+    *        name="id",
+    *        in="path",
+    *        description="ID de la pista",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="integer"
+    *        )
     *     ),
     *     @OA\Response(
-    *         response="400",
-    *         description="No se ha podido eliminar la pista"
+    *         response=200,
+    *         description="
+    *           Se ha eliminado la pista correctamente"
+    *     ),
+    *     @OA\Response(
+    *         response=404,
+    *         description="Esta pista no existe"
     *     )
     * )
     */
@@ -127,16 +145,27 @@ class CourtController extends Controller
 
     /**
     * @OA\Get(
-    *     path="/api/get-court/id",
+    *     path="/api/get-court/{id}",
     *     tags = {"Pista"},
     *     summary="Obtener una pista por su id",
-    *     @OA\Response(
-    *         response=200,
-    *         description="Se han obtenido la pista correctamente"
+    *     @OA\Parameter(
+    *        name="id",
+    *        in="path",
+    *        description="ID de la pista",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="integer"
+    *        )
     *     ),
     *     @OA\Response(
-    *         response="400",
-    *         description="No se ha podido obtener la pista, el id no es correcto"
+    *         response=200,
+    *         description="
+    *           $court (Object)"
+    *     ),
+    *     @OA\Response(
+    *         response=404,
+    *         description="
+    *           Esta pista no existe"
     *     )
     * )
     */
@@ -163,16 +192,125 @@ class CourtController extends Controller
 
     /**
     * @OA\Put(
-    *     path="/api/edit-court",
+    *     path="/api/edit-court/{id}",
     *     tags = {"Pista"},
+    *     security={{"bearerAuth":{}}},
     *     summary="Actualizar una pista",
-    *     @OA\Response(
-    *         response=200,
-    *         description="La pista se ha actualizado correctamente"
+    *     @OA\Parameter(
+    *        name="id",
+    *        in="path",
+    *        description="ID de la pista",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="integer"
+    *        )
+    *     ),
+    *     @OA\Parameter(
+    *        name="nombre",
+    *        in="query",
+    *        description="Nombre de la pista a editar",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="string"
+    *        )
+    *     ),
+    *     @OA\Parameter(
+    *        name="horaFinalizacion",
+    *        in="query",
+    *        description="A partir de esta hora se pueden hacer citas",
+    *        required=false,
+    *        @OA\Schema(
+    *            type="string"
+    *        )
+    *     ),
+    *     @OA\Parameter(
+    *        name="direccion",
+    *        in="query",
+    *        description="Dirección de la pista",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="string"
+    *        )
+    *     ),
+    *     @OA\Parameter(
+    *        name="aforo",
+    *        in="query",
+    *        description="Capacidad máxima de personas en una pista",
+    *        required=false,
+    *        @OA\Schema(
+    *            type="integer"
+    *        )
+    *     ),
+    *     @OA\Parameter(
+    *        name="precioPorHora",
+    *        in="query",
+    *        description="Precio de la pista por hora",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="numeric"
+    *        )
+    *     ),
+    *     @OA\Parameter(
+    *        name="disponible",
+    *        in="query",
+    *        description="Especifica si la pista esta disponible para reservar",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="tinyInt"
+    *        )
+    *     ),
+    *     @OA\Parameter(
+    *        name="campoAbierto",
+    *        in="query",
+    *        description="Especifica si el campo es al aire libre o es en un sitio cerrado",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="tinyInt"
+    *        )
+    *     ),
+    *     @OA\Parameter(
+    *        name="iluminacion",
+    *        in="query",
+    *        description="Especifica si la pista tiene iluminación de calidad",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="tinyInt"
+    *        )
+    *     ),
+    *     @OA\Parameter(
+    *        name="suelo_id",
+    *        in="query",
+    *        description="ID del suelo",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="integer"
+    *        )
+    *     ),
+    *     @OA\Parameter(
+    *        name="deporte_id",
+    *        in="query",
+    *        description="ID del deporte",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="integer"
+    *        )
     *     ),
     *     @OA\Response(
-    *         response="400",
-    *         description="No se ha podido actualizar la pista"
+    *         response=200,
+    *         description="
+    *           Pista actualizada con éxito"
+    *     ),
+    *     @OA\Response(
+    *         response=400,
+    *         description="
+    *           Error de validación
+    *           El rocódromo debe tener aforo y no un horario
+    *           Esta pista debe tener un horario y no aforo"
+    *     ),
+    *     @OA\Response(
+    *         response=404,
+    *         description="
+    *           Esta pista no existe"
     *     )
     * )
     */
@@ -278,15 +416,115 @@ class CourtController extends Controller
     * @OA\Post(
     *     path="/api/add-court",
     *     tags = {"Pista"},
+    *     security={{"bearerAuth":{}}},
     *     summary="Añadir una pista nueva",
-    *     @OA\Response(
-    *         response=200,
-    *         description="La pista se ha añadido correctamente"
+    *     @OA\Parameter(
+    *        name="nombre",
+    *        in="query",
+    *        description="Nombre de la pista a editar",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="string"
+    *        )
+    *     ),
+    *     @OA\Parameter(
+    *        name="horaFinalizacion",
+    *        in="query",
+    *        description="A partir de esta hora se pueden hacer citas",
+    *        required=false,
+    *        @OA\Schema(
+    *            type="string"
+    *        )
+    *     ),
+    *     @OA\Parameter(
+    *        name="direccion",
+    *        in="query",
+    *        description="Dirección de la pista",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="string"
+    *        )
+    *     ),
+    *     @OA\Parameter(
+    *        name="aforo",
+    *        in="query",
+    *        description="Capacidad máxima de personas en una pista",
+    *        required=false,
+    *        @OA\Schema(
+    *            type="integer"
+    *        )
+    *     ),
+    *     @OA\Parameter(
+    *        name="precioPorHora",
+    *        in="query",
+    *        description="Precio de la pista por hora",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="numeric"
+    *        )
+    *     ),
+    *     @OA\Parameter(
+    *        name="disponible",
+    *        in="query",
+    *        description="Especifica si la pista esta disponible para reservar",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="tinyInt"
+    *        )
+    *     ),
+    *     @OA\Parameter(
+    *        name="campoAbierto",
+    *        in="query",
+    *        description="Especifica si el campo es al aire libre o es en un sitio cerrado",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="tinyInt"
+    *        )
+    *     ),
+    *     @OA\Parameter(
+    *        name="iluminacion",
+    *        in="query",
+    *        description="Especifica si la pista tiene iluminación de calidad",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="tinyInt"
+    *        )
+    *     ),
+    *     @OA\Parameter(
+    *        name="suelo_id",
+    *        in="query",
+    *        description="ID del suelo",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="integer"
+    *        )
+    *     ),
+    *     @OA\Parameter(
+    *        name="deporte_id",
+    *        in="query",
+    *        description="ID del deporte",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="integer"
+    *        )
     *     ),
     *     @OA\Response(
-    *         response="400",
-    *         description="No se ha podido añadir la pista"
-    *     )
+    *         response=200,
+    *         description="
+    *           Pista añadida con éxito"
+    *     ),
+    *     @OA\Response(
+    *         response=400,
+    *         description="
+    *           Error de validación
+    *           El rocódromo debe tener aforo y no un horario
+    *           Esta pista debe tener un horario y no aforo"
+    *     ),
+    *     @OA\Response(
+    *         response=404,
+    *         description="
+    *           Esta pista no existe"
+    *     ),
     * )
     */
     public function addCourt(Request $request) {
@@ -382,17 +620,49 @@ class CourtController extends Controller
 
     /**
     * @OA\Post(
-    *     path="/api/add-image",
+    *     path="/api/add-image/{id}",
+    *     security={{"bearerAuth":{}}},
     *     tags = {"Pista"},
     *     summary="Actualizar la foto de la pista",
-    *     @OA\Response(
-    *         response=200,
-    *         description="La foto se ha actualizado correctamente"
+    *     @OA\Parameter(
+    *        name="id",
+    *        in="path",
+    *        description="ID de la pista",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="integer"
+    *        )
+    *     ),
+    *     @OA\Parameter(
+    *        name="foto",
+    *        in="query",
+    *        description="Foto a actualizar de la pista",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="image"
+    *        )
     *     ),
     *     @OA\Response(
-    *         response="400",
-    *         description="No se ha podido actualizar la foto"
-    *     )
+    *         response=200,
+    *         description="
+    *           Foto actulizada con éxito"
+    *     ),
+    *     @OA\Response(
+    *         response=400,
+    *         description="
+    *           Esta pista no existe
+    *           Error de validación"
+    *     ),
+    *     @OA\Response(
+    *         response=403,
+    *         description="
+    *           Necesitas ser Administrador para realizar esta operación"
+    *     ),
+    *     @OA\Response(
+    *         response=422,
+    *         description="
+    *           Foto no válida"
+    *     ),
     * )
     */
     public function addImage(Request $request, $id) {
@@ -446,16 +716,33 @@ class CourtController extends Controller
 
     /**
     * @OA\Post(
-    *     path="/api/remove-image",
+    *     path="/api/remove-image/{id}",
+    *     security={{"bearerAuth":{}}},
     *     tags = {"Pista"},
     *     summary="Eliminar foto de una pista",
-    *     @OA\Response(
-    *         response=200,
-    *         description="La foto se ha eliminado correctamente"
+    *     @OA\Parameter(
+    *        name="id",
+    *        in="path",
+    *        description="ID de la pista",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="integer"
+    *        )
     *     ),
     *     @OA\Response(
-    *         response="400",
-    *         description="No se ha podido eliminar la foto"
+    *         response=200,
+    *         description="Se ha eliminado la foto correctamente"
+    *     ),
+    *     @OA\Response(
+    *         response=400,
+    *         description="
+    *           Esta pista no existe
+    *           No se ha podido eliminar la foto porque no existe"
+    *     ),
+    *     @OA\Response(
+    *         response=403,
+    *         description="
+    *           Necesitas ser Administrador para realizar esta operación"
     *     )
     * )
     */

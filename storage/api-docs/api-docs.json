@@ -10,6 +10,284 @@
         }
     ],
     "paths": {
+        "/api/add-warning/{id}": {
+            "post": {
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Añadir una advertencia a un usuario",
+                "operationId": "6569f007ffbc9694473b25171a107faf",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "adv",
+                        "in": "header",
+                        "description": "El texto de advertencia para el usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\n    *           Operación realizada con éxito\n    *           Primera advertencia añadida con éxito\n    *           Segunda advertencia añadida con éxito. La cuenta ha sido bloqueada"
+                    },
+                    "400": {
+                        "description": "\n    *           No se encuentra el usuario\n    *           Error de validacion"
+                    },
+                    "403": {
+                        "description": "\n    *           Esta operación solo lo puede hacer un administrador o un moderador"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/get-users": {
+            "get": {
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Obtener todos los usuarios",
+                "operationId": "36d93c62e98bba46af2f67392fb0b2b3",
+                "responses": {
+                    "200": {
+                        "description": "\n    *           Se han obtenido los usuarios correctamente\n    *           $users (Object)"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/get-user/{id}": {
+            "post": {
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Obtener usuario y ver información de este",
+                "operationId": "6061bd3baaa2141c0499ae28e3d36426",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\n    *           $user (Object)"
+                    },
+                    "400": {
+                        "description": "\n    *           Este usuario no existe"
+                    },
+                    "403": {
+                        "description": "\n    *           Esta operación solo lo puede hacer un administrador o un moderador"
+                    }
+                }
+            }
+        },
+        "/api/delete-account/{id}": {
+            "delete": {
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Borrar cuenta de un usuario",
+                "operationId": "cc62c09cd4f72796834e9c4b2d6eca76",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\n    *           Se ha eliminado la cuenta correctamente"
+                    },
+                    "400": {
+                        "description": "\n    *           Este usuario no existe"
+                    },
+                    "403": {
+                        "description": "\n    *           Esta operación solo lo puede hacer un administrador"
+                    },
+                    "406": {
+                        "description": "\n    *           No se ha podido eliminar la cuenta"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/edit-user/{id}": {
+            "put": {
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Actualizar nombre de un usuario",
+                "operationId": "948833be8312920f0c6984432b8ffd36",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "nombre",
+                        "in": "query",
+                        "description": "Nombre a actualizar",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\n    *           Se ha actualizado correctamente el nombre de usuario"
+                    },
+                    "400": {
+                        "description": "\n    *           Este usuario no existe"
+                    },
+                    "403": {
+                        "description": "\n    *           Esta operación solo lo puede hacer un administrador"
+                    },
+                    "406": {
+                        "description": "\n    *           No se ha podido actualizar el nombre de usuario"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/edit-email/{id}": {
+            "put": {
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Actualizar correo electrónico de un usuario",
+                "operationId": "165cd8ef15ce443c065e336272879fc9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "Email a actualizar",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\n    *           Se ha actualizado correctamente el email del usuario"
+                    },
+                    "400": {
+                        "description": "\n    *           Este usuario no existe"
+                    },
+                    "403": {
+                        "description": "\n    *           Esta operación solo lo puede hacer un administrador"
+                    },
+                    "406": {
+                        "description": "\n    *           No se ha podido actualizar correctamente el email del usuario"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/active-desactive-account/{user_id}": {
+            "put": {
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Activar o desactivar cuenta de usuario",
+                "operationId": "4e6e964485fc90e3c78a636588c9558f",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "ID del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "activo",
+                        "in": "query",
+                        "description": "Parámetro que define si el usuario esta activo o no",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\n    *           Se ha actualizado correctamente el usuario"
+                    },
+                    "400": {
+                        "description": "\n    *           Este usuario no existe"
+                    },
+                    "403": {
+                        "description": "\n    *           Esta operación solo lo puede hacer un administrador"
+                    },
+                    "406": {
+                        "description": "\n    *           Valor no permitido"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/register": {
             "post": {
                 "tags": [
@@ -17,12 +295,59 @@
                 ],
                 "summary": "Registrar usuario en el sistema",
                 "operationId": "8a56853624e025573120a09a4c75d468",
+                "parameters": [
+                    {
+                        "name": "nombre",
+                        "in": "query",
+                        "description": "Nombre del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "apellidos",
+                        "in": "query",
+                        "description": "Apellidos del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "rol_id",
+                        "in": "query",
+                        "description": "Rol del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "Email del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "Contraseña del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Se ha registrado correctamente"
+                        "description": "\n    *           Usuario creado\n    *           $user (Object)"
                     },
                     "400": {
-                        "description": "No se ha podido registrar"
+                        "description": "\n    *           Error de validacción"
                     }
                 }
             }
@@ -34,12 +359,44 @@
                 ],
                 "summary": "Logear al usuario en el sistema",
                 "operationId": "4d730c449df9d7cd37cc97b2daddf8ad",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "Correo del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "Contraseña del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Se ha logeado correctamente"
+                        "description": "\n    *           True\n    *           $token (string)\n    *           Auth::user (Loguea al usuario)"
                     },
                     "400": {
-                        "description": "No se ha podido logear el usuario"
+                        "description": "\n    *           Error de validacción"
+                    },
+                    "401": {
+                        "description": "\n    *           Login falló"
+                    },
+                    "403": {
+                        "description": "\n    *           Cuenta bloqueada"
+                    },
+                    "404": {
+                        "description": "\n    *           Usuario no encontrado"
+                    },
+                    "500": {
+                        "description": "\n    *           Error (del servidor)"
                     }
                 }
             }
@@ -51,12 +408,26 @@
                 ],
                 "summary": "Desconectar el usuario del sistema",
                 "operationId": "fe8f3429cd6979b3b4517e186505f9f9",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "Token para validar que usuario se va a desconectar",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Se ha desconectado correctamente"
+                        "description": "\n    *           Usuario desconectado"
                     },
                     "400": {
-                        "description": "No se ha podido desconectar el usuario"
+                        "description": "\n    *           Error de validacción"
+                    },
+                    "500": {
+                        "description": "\n    *           false (bool)\n    *           Error"
                     }
                 }
             }
@@ -68,80 +439,177 @@
                 ],
                 "summary": "Obtener usuario y ver información de este",
                 "operationId": "6c7e6fa6e5fdfc1a2f20618bb8672928",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "Token para validar que usuario se va a obtener",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Se ha obtenido el usuario correctamente"
+                        "description": "\n    *           $user (Object)"
                     },
-                    "400": {
-                        "description": "No se ha podido obetener la información del usuario"
+                    "401": {
+                        "description": "\n    *           Token invalido / token expirado"
                     }
                 }
             }
         },
-        "/api/update-password/id/token": {
+        "/api/update-password/{email}/{token}": {
             "put": {
                 "tags": [
                     "Autentificación"
                 ],
                 "summary": "Actualizar contraseña del usuario",
-                "operationId": "ef54ef9c90b39f595065c2dbac450e5f",
+                "operationId": "004c8177d25b0dc6f742df382f90eead",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "path",
+                        "description": "Email del usuario al que se le va a cambiar la contraseña",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "token",
+                        "in": "path",
+                        "description": "Token para validar que usuario se va a cambiar la contraseña",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "Contraseña nuevo a actualizar",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Se actualizó la contraseña correctamente"
+                        "description": "\n    *           Se ha actualizado correctamente la contraseña del usuario"
                     },
-                    "400": {
-                        "description": "No se pudo actualizar la contraseña"
+                    "404": {
+                        "description": "\n    *           No se ha podido actualizar la contraseña del usuario"
                     }
                 }
             }
         },
-        "/api/get-comments/court_id": {
+        "/api/get-comments/{court_id}": {
             "get": {
                 "tags": [
                     "Comentarios"
                 ],
                 "summary": "Obtener todos los comentarios de una pista",
-                "operationId": "3033de18e13cf9e190d20fc720501c1e",
+                "operationId": "5331ce82bdb7dcb375fafc86b5a8d210",
+                "parameters": [
+                    {
+                        "name": "court_id",
+                        "in": "path",
+                        "description": "ID de la pista",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Se han obtenido los comentarios correctamente"
+                        "description": "\n    *           Los comentarios se han obtenido correctamente\n    *           No hay comentarios de esta pista"
                     },
-                    "400": {
-                        "description": "No se han podido obtener los comentarios"
+                    "404": {
+                        "description": "\n    *           La pista no existe"
                     }
                 }
             }
         },
-        "/api/add-comment/court_id": {
+        "/api/add-comment/{court_id}": {
             "post": {
                 "tags": [
                     "Comentarios"
                 ],
                 "summary": "Añadir un comentario",
-                "operationId": "4f48acf742654a7b4b6396d87722d001",
+                "operationId": "52f6b721971d73e3d7b5a5e0aef1dad3",
+                "parameters": [
+                    {
+                        "name": "court_id",
+                        "in": "path",
+                        "description": "ID de la pista",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "texto",
+                        "in": "query",
+                        "description": "Texto del comentario a añadir",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "like",
+                        "in": "query",
+                        "description": "Este parámetro representa si el comentario es positivo o negativo",
+                        "required": true,
+                        "schema": {
+                            "type": "bool"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Se ha publicado el comentario correctamente"
+                        "description": "\n    *           Se ha publicado el comentario correctamente"
                     },
                     "400": {
-                        "description": "No existe la pista donde se quiere publicar el comentario"
+                        "description": "\n    *           Error de validación"
+                    },
+                    "404": {
+                        "description": "\n    *           No existe la pista donde se quiere publicar el comentario"
                     }
                 }
             }
         },
-        "/api/delete-comment/court_id": {
+        "/api/delete-comment/{id}": {
             "delete": {
                 "tags": [
                     "Comentarios"
                 ],
                 "summary": "Eliminar un comentario",
-                "operationId": "eda3adf97e6e46d498787a9f9c6555b8",
+                "operationId": "4f992bb7f74f1c4a6be77177c01c545b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del comentario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Se ha eliminado el comentario correctamente"
+                        "description": "\n    *           Se ha borrado el comentario correctamente"
                     },
-                    "400": {
-                        "description": "No se puede eliminar el comentario"
+                    "403": {
+                        "description": "\n    *           Debes ser Administrador, Moderador o propietario de este comentario para poder borrarlo"
+                    },
+                    "404": {
+                        "description": "\n    *           Este comentario no existe"
                     }
                 }
             }
@@ -155,63 +623,221 @@
                 "operationId": "9774d2e2a1c497e8bcec5f8403709a31",
                 "responses": {
                     "200": {
-                        "description": "Se han obtenido las pistas correctamente"
-                    },
-                    "400": {
-                        "description": "No se han podido obtener las pistas"
+                        "description": "\n    *           $courts (Object [])"
                     }
                 }
             }
         },
-        "/api/delete-court": {
+        "/api/get-likes-and-dislikes/{id}": {
+            "get": {
+                "tags": [
+                    "Pista"
+                ],
+                "summary": "Obtener todos los likes y dislikes de una pista",
+                "operationId": "996e9be53af14fcfeb8bb035f8faec49",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la pista",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\n    *           Likes: X, Dislikes: X"
+                    }
+                }
+            }
+        },
+        "/api/delete-court/{id}": {
             "delete": {
                 "tags": [
                     "Pista"
                 ],
                 "summary": "Eliminar una pista por su id",
-                "operationId": "8ce7f3f6002c950c5533efea58516456",
+                "operationId": "07a8362ba753052c74ebe94edbabde20",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la pista",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Se ha eliminado la pista correctamente"
+                        "description": "\n    *           Se ha eliminado la pista correctamente"
                     },
-                    "400": {
-                        "description": "No se ha podido eliminar la pista"
+                    "404": {
+                        "description": "Esta pista no existe"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
-        "/api/get-court/id": {
+        "/api/get-court/{id}": {
             "get": {
                 "tags": [
                     "Pista"
                 ],
                 "summary": "Obtener una pista por su id",
-                "operationId": "44bb929779190cae6e55a3e004ed2555",
+                "operationId": "a8ab765f618fadf82513c0edf783c551",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la pista",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Se han obtenido la pista correctamente"
+                        "description": "\n    *           $court (Object)"
                     },
-                    "400": {
-                        "description": "No se ha podido obtener la pista, el id no es correcto"
+                    "404": {
+                        "description": "\n    *           Esta pista no existe"
                     }
                 }
             }
         },
-        "/api/edit-court": {
+        "/api/edit-court/{id}": {
             "put": {
                 "tags": [
                     "Pista"
                 ],
                 "summary": "Actualizar una pista",
-                "operationId": "3babef9264810dfff464e7d2429067dc",
+                "operationId": "62adeddfda9d9fbe37768df42b464cc3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la pista",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "nombre",
+                        "in": "query",
+                        "description": "Nombre de la pista a editar",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "horaFinalizacion",
+                        "in": "query",
+                        "description": "A partir de esta hora se pueden hacer citas",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "direccion",
+                        "in": "query",
+                        "description": "Dirección de la pista",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "aforo",
+                        "in": "query",
+                        "description": "Capacidad máxima de personas en una pista",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "precioPorHora",
+                        "in": "query",
+                        "description": "Precio de la pista por hora",
+                        "required": true,
+                        "schema": {
+                            "type": "numeric"
+                        }
+                    },
+                    {
+                        "name": "disponible",
+                        "in": "query",
+                        "description": "Especifica si la pista esta disponible para reservar",
+                        "required": true,
+                        "schema": {
+                            "type": "tinyInt"
+                        }
+                    },
+                    {
+                        "name": "campoAbierto",
+                        "in": "query",
+                        "description": "Especifica si el campo es al aire libre o es en un sitio cerrado",
+                        "required": true,
+                        "schema": {
+                            "type": "tinyInt"
+                        }
+                    },
+                    {
+                        "name": "iluminacion",
+                        "in": "query",
+                        "description": "Especifica si la pista tiene iluminación de calidad",
+                        "required": true,
+                        "schema": {
+                            "type": "tinyInt"
+                        }
+                    },
+                    {
+                        "name": "suelo_id",
+                        "in": "query",
+                        "description": "ID del suelo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "deporte_id",
+                        "in": "query",
+                        "description": "ID del deporte",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "La pista se ha actualizado correctamente"
+                        "description": "\n    *           Pista actualizada con éxito"
                     },
                     "400": {
-                        "description": "No se ha podido actualizar la pista"
+                        "description": "\n    *           Error de validación\n    *           El rocódromo debe tener aforo y no un horario\n    *           Esta pista debe tener un horario y no aforo"
+                    },
+                    "404": {
+                        "description": "\n    *           Esta pista no existe"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/add-court": {
@@ -221,46 +847,376 @@
                 ],
                 "summary": "Añadir una pista nueva",
                 "operationId": "7044ce5d322f51b90aa490e68cdc2e77",
+                "parameters": [
+                    {
+                        "name": "nombre",
+                        "in": "query",
+                        "description": "Nombre de la pista a editar",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "horaFinalizacion",
+                        "in": "query",
+                        "description": "A partir de esta hora se pueden hacer citas",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "direccion",
+                        "in": "query",
+                        "description": "Dirección de la pista",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "aforo",
+                        "in": "query",
+                        "description": "Capacidad máxima de personas en una pista",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "precioPorHora",
+                        "in": "query",
+                        "description": "Precio de la pista por hora",
+                        "required": true,
+                        "schema": {
+                            "type": "numeric"
+                        }
+                    },
+                    {
+                        "name": "disponible",
+                        "in": "query",
+                        "description": "Especifica si la pista esta disponible para reservar",
+                        "required": true,
+                        "schema": {
+                            "type": "tinyInt"
+                        }
+                    },
+                    {
+                        "name": "campoAbierto",
+                        "in": "query",
+                        "description": "Especifica si el campo es al aire libre o es en un sitio cerrado",
+                        "required": true,
+                        "schema": {
+                            "type": "tinyInt"
+                        }
+                    },
+                    {
+                        "name": "iluminacion",
+                        "in": "query",
+                        "description": "Especifica si la pista tiene iluminación de calidad",
+                        "required": true,
+                        "schema": {
+                            "type": "tinyInt"
+                        }
+                    },
+                    {
+                        "name": "suelo_id",
+                        "in": "query",
+                        "description": "ID del suelo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "deporte_id",
+                        "in": "query",
+                        "description": "ID del deporte",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "La pista se ha añadido correctamente"
+                        "description": "\n    *           Pista añadida con éxito"
                     },
                     "400": {
-                        "description": "No se ha podido añadir la pista"
+                        "description": "\n    *           Error de validación\n    *           El rocódromo debe tener aforo y no un horario\n    *           Esta pista debe tener un horario y no aforo"
+                    },
+                    "404": {
+                        "description": "\n    *           Esta pista no existe"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
-        "/api/add-image": {
+        "/api/add-image/{id}": {
             "post": {
                 "tags": [
                     "Pista"
                 ],
                 "summary": "Actualizar la foto de la pista",
-                "operationId": "5485a8fc586bc4069ff201397c75e107",
+                "operationId": "c3d83761192261949811e8a7469e106e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la pista",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "foto",
+                        "in": "query",
+                        "description": "Foto a actualizar de la pista",
+                        "required": true,
+                        "schema": {
+                            "type": "image"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "La foto se ha actualizado correctamente"
+                        "description": "\n    *           Foto actulizada con éxito"
                     },
                     "400": {
-                        "description": "No se ha podido actualizar la foto"
+                        "description": "\n    *           Esta pista no existe\n    *           Error de validación"
+                    },
+                    "403": {
+                        "description": "\n    *           Necesitas ser Administrador para realizar esta operación"
+                    },
+                    "422": {
+                        "description": "\n    *           Foto no válida"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
-        "/api/remove-image": {
+        "/api/remove-image/{id}": {
             "post": {
                 "tags": [
                     "Pista"
                 ],
                 "summary": "Eliminar foto de una pista",
-                "operationId": "9691ab04e9a978b6c5c50359e2b39bff",
+                "operationId": "9e110ab22f0a62400e203fb682faa88c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la pista",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "La foto se ha eliminado correctamente"
+                        "description": "Se ha eliminado la foto correctamente"
                     },
                     "400": {
-                        "description": "No se ha podido eliminar la foto"
+                        "description": "\n    *           Esta pista no existe\n    *           No se ha podido eliminar la foto porque no existe"
+                    },
+                    "403": {
+                        "description": "\n    *           Necesitas ser Administrador para realizar esta operación"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/get-floors": {
+            "get": {
+                "tags": [
+                    "Suelo"
+                ],
+                "summary": "Obtener todos los tipos de suelos",
+                "operationId": "f21494a0e6ede8f71764588b874ac98e",
+                "responses": {
+                    "200": {
+                        "description": "\n    *           $floors (Object [])"
+                    }
+                }
+            }
+        },
+        "/api/get-bookings": {
+            "get": {
+                "tags": [
+                    "Reservas"
+                ],
+                "summary": "Obtener todas las reservas registradas",
+                "operationId": "1b9c2ebc3b43604f8812ab74c7049b74",
+                "responses": {
+                    "200": {
+                        "description": "\n    *           $bookings (Object [])"
+                    },
+                    "403": {
+                        "description": "\n    *           Necesitas ser Administrador para realizar esta operación"
+                    }
+                }
+            }
+        },
+        "/api/add-reserve": {
+            "post": {
+                "tags": [
+                    "Reservas"
+                ],
+                "summary": "Registra una nueva reserva",
+                "operationId": "d97f1d47cdad0beefa95962b5eb8a45a",
+                "parameters": [
+                    {
+                        "name": "horaInicio",
+                        "in": "query",
+                        "description": "Define a la hora que empieza la reserva",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "horaFinalizacion",
+                        "in": "query",
+                        "description": "Define a la hora que acaba la reserva",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "numLista",
+                        "in": "query",
+                        "description": "Define el número en la lista en las pitas que tengan un aforo y no un horario",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "users_id",
+                        "in": "query",
+                        "description": "ID del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "pistas_id",
+                        "in": "query",
+                        "description": "ID de la pista",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\n    *           Reserva añadida con éxito"
+                    },
+                    "400": {
+                        "description": "\n    *           Falló validación\n    *           Esta reserva debe tener un número de lista y no un horario\n    *           Esta reserva debe tener un horario y no un número de lista\n    *           La pista sobre la que se ha hecho la reserva no existe"
+                    },
+                    "404": {
+                        "description": "\n    *           Esta pista no está disponible"
+                    }
+                }
+            }
+        },
+        "/api/delete-reserve/{id}": {
+            "delete": {
+                "tags": [
+                    "Reservas"
+                ],
+                "summary": "Eliminar una reserva",
+                "operationId": "9f86a1e9f95bfee4cfd9de75781bad49",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la reserva",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\n    *           Se ha eliminado la reserva correctamente"
+                    },
+                    "400": {
+                        "description": "\n    *           Esta reserva no existe"
+                    },
+                    "403": {
+                        "description": "\n    *           Necesitas ser Administrador o dueño de esta reserva para realizar esta operación"
+                    }
+                }
+            }
+        },
+        "/api/exists-reserve/{court_id}/{user_id}": {
+            "get": {
+                "tags": [
+                    "Reservas"
+                ],
+                "summary": "Comprueba si existe una reserva",
+                "operationId": "764d5ea93731c7f46bd79d103e44776a",
+                "parameters": [
+                    {
+                        "name": "court_id",
+                        "in": "path",
+                        "description": "ID de la pista",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "ID del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\n    *           True"
+                    },
+                    "404": {
+                        "description": "\n    *           False"
+                    }
+                }
+            }
+        },
+        "/api/get-sports": {
+            "get": {
+                "tags": [
+                    "Deporte"
+                ],
+                "summary": "Obtener todos los tipos de deporte",
+                "operationId": "8b401faa959871b6e39d979b8a54d669",
+                "responses": {
+                    "200": {
+                        "description": "\n    *           $sports (Object [])"
                     }
                 }
             }
@@ -272,14 +1228,30 @@
                 ],
                 "summary": "Actualizar la foto de perfil del usuario",
                 "operationId": "51509ba5cd5870c079c2d285b93196dd",
+                "parameters": [
+                    {
+                        "name": "foto_perfil",
+                        "in": "query",
+                        "description": "Foto de perfil del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "image"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "La foto se ha actualizado correctamente"
+                        "description": "\n    *           Foto actulizada con éxito\n    *           $path (string)"
                     },
-                    "400": {
-                        "description": "No se ha podido actualizar la foto"
+                    "422": {
+                        "description": "\n    *           Foto no válida"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/delete-image": {
@@ -291,12 +1263,17 @@
                 "operationId": "5f17340c49c3c21af21719422872b543",
                 "responses": {
                     "200": {
-                        "description": "La foto se ha eliminado correctamente"
+                        "description": "Se ha eliminado la foto correctamente"
                     },
                     "400": {
-                        "description": "No se ha podido eliminar la foto"
+                        "description": "No se ha podido eliminar la foto porque no existe"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/get-image": {
@@ -308,46 +1285,14 @@
                 "operationId": "ace29131851c4fc901df6f1de04472c4",
                 "responses": {
                     "200": {
-                        "description": "Se obtuvo la foto correctamente"
-                    },
-                    "400": {
-                        "description": "No se pudo obtener la foto"
+                        "description": "\n    *           $path_image (string)"
                     }
-                }
-            }
-        },
-        "/api/get-users": {
-            "get": {
-                "tags": [
-                    "Autentificación"
-                ],
-                "summary": "Obtener todos los usuarios",
-                "operationId": "c82f3b122e391857ed4b1b67d99e5007",
-                "responses": {
-                    "200": {
-                        "description": "Se han obtenido todos los usuarios correctamente"
-                    },
-                    "400": {
-                        "description": "Se necesita ser administrador para realizar esta operación"
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
                     }
-                }
-            }
-        },
-        "/api/add-warning": {
-            "post": {
-                "tags": [
-                    "Usuario"
-                ],
-                "summary": "Añadir una advertencia a un usuario",
-                "operationId": "e0881c4efe1bc16583c3449e2beb5884",
-                "responses": {
-                    "200": {
-                        "description": "La advertencia se ha añadido con éxito"
-                    },
-                    "400": {
-                        "description": "La advertencia no se ha podido añadir"
-                    }
-                }
+                ]
             }
         },
         "/api/get-warnings": {
@@ -359,12 +1304,14 @@
                 "operationId": "f166a29816206d1717506e5c008dac69",
                 "responses": {
                     "200": {
-                        "description": "Se obtuvo las advertencias correctamente"
-                    },
-                    "400": {
-                        "description": "No se pudo obtener las advertencias"
+                        "description": "\n    *           $adv1 (string)\n    *           $adv2 (string)"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/delete-account": {
@@ -376,12 +1323,17 @@
                 "operationId": "336fed4b9d27ea9186a9087a4de22efc",
                 "responses": {
                     "200": {
-                        "description": "Se ha eliminado la cuenta correctamente"
+                        "description": "\n    *           Se ha eliminado la cuenta correctamente"
                     },
-                    "400": {
-                        "description": "No se ha podido eliminar la cuenta"
+                    "406": {
+                        "description": "\n    *           No se ha podido eliminar la cuenta"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/get-role": {
@@ -393,12 +1345,14 @@
                 "operationId": "5229d25a47a2bd05458e16fe9ff2266b",
                 "responses": {
                     "200": {
-                        "description": "Se obtuvo el rol correctamente"
-                    },
-                    "400": {
-                        "description": "No se pudo obtener el rol correctamente"
+                        "description": "\n    *           $rol_id (integer)"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/edit-user": {
@@ -408,14 +1362,27 @@
                 ],
                 "summary": "Actualizar nombre del usuario",
                 "operationId": "863e508776b73cf3968d4e3513aacca0",
+                "parameters": [
+                    {
+                        "name": "nombre",
+                        "in": "query",
+                        "description": "Nombre a actualizar",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Se ha podido actualizar el nombre de usuario"
-                    },
-                    "400": {
-                        "description": "No se ha podido actualizar el nombre de usuario"
+                        "description": "\n    *           Se ha actualizado correctamente el nombre de usuario"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/edit-email": {
@@ -425,12 +1392,43 @@
                 ],
                 "summary": "Actualizar correo electrónico del usuario",
                 "operationId": "f35605ee9e134dd3b5f63b248ad56595",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "Email a actualizar",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Se ha podido actualizar el correo del usuario"
-                    },
-                    "400": {
-                        "description": "No se ha podido actualizar el correo del usuario"
+                        "description": "Se ha actualizado correctamente el email del usuario"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "apiKey",
+                "description": "Laravel passport oauth2 security.",
+                "in": "header",
+                "scheme": "http",
+                "flows": {
+                    "password": {
+                        "authorizationUrl": "http://localhost/oauth/authorize",
+                        "tokenUrl": "http://localhost/oauth/token",
+                        "refreshUrl": "http://localhost/token/refresh",
+                        "scopes": []
                     }
                 }
             }

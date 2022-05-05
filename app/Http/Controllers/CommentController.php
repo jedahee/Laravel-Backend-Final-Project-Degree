@@ -33,16 +33,28 @@ class CommentController extends Controller
 
     /**
     * @OA\Get(
-    *     path="/api/get-comments/court_id",
+    *     path="/api/get-comments/{court_id}",
     *     tags = {"Comentarios"},
     *     summary="Obtener todos los comentarios de una pista",
-    *     @OA\Response(
-    *         response=200,
-    *         description="Se han obtenido los comentarios correctamente"
+    *     @OA\Parameter(
+    *        name="court_id",
+    *        in="path",
+    *        description="ID de la pista",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="integer"
+    *        )
     *     ),
     *     @OA\Response(
-    *         response="400",
-    *         description="No se han podido obtener los comentarios"
+    *         response=200,
+    *         description="
+    *           Los comentarios se han obtenido correctamente
+    *           No hay comentarios de esta pista"
+    *     ),
+    *     @OA\Response(
+    *         response=404,
+    *         description="
+    *           La pista no existe"
     *     )
     * )
     */
@@ -75,17 +87,52 @@ class CommentController extends Controller
 
     /**
     * @OA\Post(
-    *     path="/api/add-comment/court_id",
+    *     path="/api/add-comment/{court_id}",
+    *     security={{"bearerAuth":{}}},
     *     tags = {"Comentarios"},
     *     summary="Añadir un comentario",
-    *     @OA\Response(
-    *         response=200,
-    *         description="Se ha publicado el comentario correctamente"
+    *     @OA\Parameter(
+    *        name="court_id",
+    *        in="path",
+    *        description="ID de la pista",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="integer"
+    *        )
+    *     ),
+    *     @OA\Parameter(
+    *        name="texto",
+    *        in="query",
+    *        description="Texto del comentario a añadir",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="string"
+    *        )
+    *     ),
+    *     @OA\Parameter(
+    *        name="like",
+    *        in="query",
+    *        description="Este parámetro representa si el comentario es positivo o negativo",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="bool"
+    *        )
     *     ),
     *     @OA\Response(
-    *         response="400",
-    *         description="No existe la pista donde se quiere publicar el comentario"
-    *     )
+    *         response=200,
+    *         description="
+    *           Se ha publicado el comentario correctamente"
+    *     ),
+    *     @OA\Response(
+    *         response=400,
+    *         description="
+    *           Error de validación"
+    *     ),
+    *     @OA\Response(
+    *         response=404,
+    *         description="
+    *           No existe la pista donde se quiere publicar el comentario"
+    *     ),
     * )
     */
     public function addComment(Request $request, $court_id)
@@ -129,16 +176,33 @@ class CommentController extends Controller
 
     /**
     * @OA\Delete(
-    *     path="/api/delete-comment/court_id",
+    *     path="/api/delete-comment/{id}",
+    *     security={{"bearerAuth":{}}},
     *     tags = {"Comentarios"},
     *     summary="Eliminar un comentario",
-    *     @OA\Response(
-    *         response=200,
-    *         description="Se ha eliminado el comentario correctamente"
+    *     @OA\Parameter(
+    *        name="id",
+    *        in="path",
+    *        description="ID del comentario",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="integer"
+    *        )
     *     ),
     *     @OA\Response(
-    *         response="400",
-    *         description="No se puede eliminar el comentario"
+    *         response=200,
+    *         description="
+    *           Se ha borrado el comentario correctamente"
+    *     ),
+    *     @OA\Response(
+    *         response=403,
+    *         description="
+    *           Debes ser Administrador, Moderador o propietario de este comentario para poder borrarlo"
+    *     ),
+    *     @OA\Response(
+    *         response=404,
+    *         description="
+    *           Este comentario no existe"
     *     )
     * )
     */

@@ -20,16 +20,13 @@ class SportController extends Controller
     /**
     * @OA\Get(
     *     path="/api/get-sports",
-    *     tags = {"Suelo"},
+    *     tags = {"Deporte"},
     *     summary="Obtener todos los tipos de deporte",
     *     @OA\Response(
     *         response=200,
-    *         description="Se han obtenido los deportes correctamente"
+    *         description="
+    *           $sports (Object [])"
     *     ),
-    *     @OA\Response(
-    *         response="400",
-    *         description="No se han podido obtener los deportes"
-    *     )
     * )
     */
     public function getSports(Request $request)

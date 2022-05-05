@@ -32,15 +32,28 @@ class UserController extends Controller
     /**
     * @OA\Post(
     *     path="/api/upload-image",
+    *     security={{"bearerAuth":{}}},
     *     tags = {"Usuario"},
     *     summary="Actualizar la foto de perfil del usuario",
-    *     @OA\Response(
-    *         response=200,
-    *         description="La foto se ha actualizado correctamente"
+    *     @OA\Parameter(
+    *        name="foto_perfil",
+    *        in="query",
+    *        description="Foto de perfil del usuario",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="image"
+    *        )
     *     ),
     *     @OA\Response(
-    *         response="400",
-    *         description="No se ha podido actualizar la foto"
+    *         response=200,
+    *         description="
+    *           Foto actulizada con éxito
+    *           $path (string)"
+    *     ),
+    *     @OA\Response(
+    *         response=422,
+    *         description="
+    *           Foto no válida"
     *     )
     * )
     */
@@ -82,15 +95,16 @@ class UserController extends Controller
     /**
     * @OA\Delete(
     *     path="/api/delete-image",
+    *     security={{"bearerAuth":{}}},
     *     tags = {"Usuario"},
     *     summary="Eliminar la foto de perfil del usuario",
     *     @OA\Response(
     *         response=200,
-    *         description="La foto se ha eliminado correctamente"
+    *         description="Se ha eliminado la foto correctamente"
     *     ),
     *     @OA\Response(
-    *         response="400",
-    *         description="No se ha podido eliminar la foto"
+    *         response=400,
+    *         description="No se ha podido eliminar la foto porque no existe"
     *     )
     * )
     */
@@ -121,16 +135,14 @@ class UserController extends Controller
     /**
     * @OA\Get(
     *     path="/api/get-image",
+    *     security={{"bearerAuth":{}}},
     *     tags = {"Usuario"},
     *     summary="Obtener foto de perfil del usuario",
     *     @OA\Response(
     *         response=200,
-    *         description="Se obtuvo la foto correctamente"
+    *         description="
+    *           $path_image (string)"
     *     ),
-    *     @OA\Response(
-    *         response="400",
-    *         description="No se pudo obtener la foto"
-    *     )
     * )
     */
     public function getImage(Request $request) {
@@ -152,15 +164,14 @@ class UserController extends Controller
     * @OA\Get(
     *     path="/api/get-warnings",
     *     tags = {"Usuario"},
+    *     security={{"bearerAuth":{}}},
     *     summary="Obtener las advertencias del usuario puestas por algún Moderador / Administrador",
     *     @OA\Response(
     *         response=200,
-    *         description="Se obtuvo las advertencias correctamente"
+    *         description="
+    *           $adv1 (string)
+    *           $adv2 (string)"
     *     ),
-    *     @OA\Response(
-    *         response="400",
-    *         description="No se pudo obtener las advertencias"
-    *     )
     * )
     */
     public function getWarnings(Request $request) {
@@ -179,16 +190,19 @@ class UserController extends Controller
     /**
     * @OA\Delete(
     *     path="/api/delete-account",
+    *     security={{"bearerAuth":{}}},
     *     tags = {"Usuario"},
     *     summary="Borrar cuenta del usuario",
     *     @OA\Response(
     *         response=200,
-    *         description="Se ha eliminado la cuenta correctamente"
+    *         description="
+    *           Se ha eliminado la cuenta correctamente"
     *          
     *     ),
     *     @OA\Response(
-    *         response="400",
-    *         description="No se ha podido eliminar la cuenta"
+    *         response=406,
+    *         description="
+    *           No se ha podido eliminar la cuenta"
     *     )
     * )
     */
@@ -213,16 +227,14 @@ class UserController extends Controller
     /**
     * @OA\Get(
     *     path="/api/get-role",
+    *     security={{"bearerAuth":{}}},
     *     tags = {"Usuario"},
     *     summary="Obtener el rol del usuario",
     *     @OA\Response(
     *         response=200,
-    *         description="Se obtuvo el rol correctamente"
+    *         description="
+    *           $rol_id (integer)"
     *     ),
-    *     @OA\Response(
-    *         response="400",
-    *         description="No se pudo obtener el rol correctamente"
-    *     )
     * )
     */
     public function getRole(Request $request) {
@@ -241,16 +253,23 @@ class UserController extends Controller
     /**
     * @OA\Put(
     *     path="/api/edit-user",
+    *     security={{"bearerAuth":{}}},
     *     tags = {"Usuario"},
     *     summary="Actualizar nombre del usuario",
-    *     @OA\Response(
-    *         response=200,
-    *         description="Se ha podido actualizar el nombre de usuario"
+    *     @OA\Parameter(
+    *        name="nombre",
+    *        in="query",
+    *        description="Nombre a actualizar",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="string"
+    *        )
     *     ),
     *     @OA\Response(
-    *         response="400",
-    *         description="No se ha podido actualizar el nombre de usuario"
-    *     )
+    *         response=200,
+    *         description="
+    *           Se ha actualizado correctamente el nombre de usuario"
+    *     ),
     * )
     */
     public function editUser(Request $request) {
@@ -267,8 +286,6 @@ class UserController extends Controller
         ], Response::HTTP_ACCEPTED);
 
     } 
-        
-
 
     /*
     ###################################################
@@ -279,16 +296,22 @@ class UserController extends Controller
     /**
     * @OA\Put(
     *     path="/api/edit-email",
+    *     security={{"bearerAuth":{}}},
     *     tags = {"Usuario"},
     *     summary="Actualizar correo electrónico del usuario",
-    *     @OA\Response(
-    *         response=200,
-    *         description="Se ha podido actualizar el correo del usuario"
+    *     @OA\Parameter(
+    *        name="email",
+    *        in="query",
+    *        description="Email a actualizar",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="string"
+    *        )
     *     ),
     *     @OA\Response(
-    *         response="400",
-    *         description="No se ha podido actualizar el correo del usuario"
-    *     )
+    *         response=200,
+    *         description="Se ha actualizado correctamente el email del usuario"
+    *     ),
     * )
     */
 
