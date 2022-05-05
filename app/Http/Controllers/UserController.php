@@ -45,7 +45,7 @@ class UserController extends Controller
     *        )
     *     ),
     *     @OA\Response(
-    *         response=200,
+    *         response=202,
     *         description="
     *           Foto actulizada con éxito
     *           $path (string)"
@@ -99,7 +99,7 @@ class UserController extends Controller
     *     tags = {"Usuario"},
     *     summary="Eliminar la foto de perfil del usuario",
     *     @OA\Response(
-    *         response=200,
+    *         response=202,
     *         description="Se ha eliminado la foto correctamente"
     *     ),
     *     @OA\Response(
@@ -139,7 +139,7 @@ class UserController extends Controller
     *     tags = {"Usuario"},
     *     summary="Obtener foto de perfil del usuario",
     *     @OA\Response(
-    *         response=200,
+    *         response=202,
     *         description="
     *           $path_image (string)"
     *     ),
@@ -167,7 +167,7 @@ class UserController extends Controller
     *     security={{"bearerAuth":{}}},
     *     summary="Obtener las advertencias del usuario puestas por algún Moderador / Administrador",
     *     @OA\Response(
-    *         response=200,
+    *         response=202,
     *         description="
     *           $adv1 (string)
     *           $adv2 (string)"
@@ -194,7 +194,7 @@ class UserController extends Controller
     *     tags = {"Usuario"},
     *     summary="Borrar cuenta del usuario",
     *     @OA\Response(
-    *         response=200,
+    *         response=202,
     *         description="
     *           Se ha eliminado la cuenta correctamente"
     *          
@@ -231,7 +231,7 @@ class UserController extends Controller
     *     tags = {"Usuario"},
     *     summary="Obtener el rol del usuario",
     *     @OA\Response(
-    *         response=200,
+    *         response=202,
     *         description="
     *           $rol_id (integer)"
     *     ),
@@ -266,7 +266,7 @@ class UserController extends Controller
     *        )
     *     ),
     *     @OA\Response(
-    *         response=200,
+    *         response=202,
     *         description="
     *           Se ha actualizado correctamente el nombre de usuario"
     *     ),
@@ -309,7 +309,7 @@ class UserController extends Controller
     *        )
     *     ),
     *     @OA\Response(
-    *         response=200,
+    *         response=202,
     *         description="Se ha actualizado correctamente el email del usuario"
     *     ),
     * )

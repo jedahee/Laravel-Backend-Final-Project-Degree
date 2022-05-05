@@ -34,7 +34,7 @@ class ReserveController extends Controller
     *     tags = {"Reservas"},
     *     summary="Obtener todas las reservas registradas",
     *     @OA\Response(
-    *         response=200,
+    *         response=202,
     *         description="
     *           $bookings (Object [])"
     *     ),
@@ -117,7 +117,7 @@ class ReserveController extends Controller
     *        )
     *     ),
     *     @OA\Response(
-    *         response=200,
+    *         response=202,
     *         description="
     *           Reserva añadida con éxito"
     *     ),
@@ -230,7 +230,7 @@ class ReserveController extends Controller
     *        )
     *     ),
     *     @OA\Response(
-    *         response=200,
+    *         response=202,
     *         description="
     *           Se ha eliminado la reserva correctamente"
     *     ),
@@ -299,7 +299,7 @@ class ReserveController extends Controller
     *        )
     *     ),
     *     @OA\Response(
-    *         response=200,
+    *         response=202,
     *         description="
     *           True"
     *     ),

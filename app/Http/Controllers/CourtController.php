@@ -36,7 +36,7 @@ class CourtController extends Controller
     *     tags = {"Pista"},
     *     summary="Obtener todas las pistas registradas",
     *     @OA\Response(
-    *         response=200,
+    *         response=202,
     *         description="
     *           $courts (Object [])"
     *     ),
@@ -71,7 +71,7 @@ class CourtController extends Controller
     *        )
     *     ),
     *     @OA\Response(
-    *         response=200,
+    *         response=202,
     *         description="
     *           Likes: X, Dislikes: X"
     *     ),
@@ -104,7 +104,7 @@ class CourtController extends Controller
     *        )
     *     ),
     *     @OA\Response(
-    *         response=200,
+    *         response=202,
     *         description="
     *           Se ha eliminado la pista correctamente"
     *     ),
@@ -158,7 +158,7 @@ class CourtController extends Controller
     *        )
     *     ),
     *     @OA\Response(
-    *         response=200,
+    *         response=202,
     *         description="
     *           $court (Object)"
     *     ),
@@ -296,7 +296,7 @@ class CourtController extends Controller
     *        )
     *     ),
     *     @OA\Response(
-    *         response=200,
+    *         response=202,
     *         description="
     *           Pista actualizada con éxito"
     *     ),
@@ -509,7 +509,7 @@ class CourtController extends Controller
     *        )
     *     ),
     *     @OA\Response(
-    *         response=200,
+    *         response=202,
     *         description="
     *           Pista añadida con éxito"
     *     ),
@@ -643,7 +643,7 @@ class CourtController extends Controller
     *        )
     *     ),
     *     @OA\Response(
-    *         response=200,
+    *         response=202,
     *         description="
     *           Foto actulizada con éxito"
     *     ),
@@ -730,7 +730,7 @@ class CourtController extends Controller
     *        )
     *     ),
     *     @OA\Response(
-    *         response=200,
+    *         response=202,
     *         description="Se ha eliminado la foto correctamente"
     *     ),
     *     @OA\Response(

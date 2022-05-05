@@ -53,7 +53,7 @@ class AdminController extends Controller
     *        )
     *     ),
     *     @OA\Response(
-    *         response=200,
+    *         response=202,
     *         description="
     *           Operación realizada con éxito
     *           Primera advertencia añadida con éxito
@@ -134,7 +134,7 @@ class AdminController extends Controller
     *     summary="Obtener todos los usuarios",
     *     security={{"bearerAuth":{}}},
     *     @OA\Response(
-    *         response=200,
+    *         response=202,
     *         description="
     *           Se han obtenido los usuarios correctamente
     *           $users (Object)"
@@ -173,7 +173,7 @@ class AdminController extends Controller
     *        )
     *     ),
     *     @OA\Response(
-    *         response=200,
+    *         response=202,
     *         description="
     *           $user (Object)"
     *     ),
@@ -229,7 +229,7 @@ class AdminController extends Controller
     *        )
     *     ),
     *     @OA\Response(
-    *         response=200,
+    *         response=202,
     *         description="
     *           Se ha eliminado la cuenta correctamente"    
     *     ),
@@ -307,7 +307,7 @@ class AdminController extends Controller
     *        )
     *     ),
     *     @OA\Response(
-    *         response=200,
+    *         response=202,
     *         description="
     *           Se ha actualizado correctamente el nombre de usuario"    
     *     ),
@@ -389,7 +389,7 @@ class AdminController extends Controller
     *        )
     *     ),
     *     @OA\Response(
-    *         response=200,
+    *         response=202,
     *         description="
     *           Se ha actualizado correctamente el email del usuario"    
     *     ),
@@ -472,7 +472,7 @@ class AdminController extends Controller
     *        )
     *     ),
     *     @OA\Response(
-    *         response=200,
+    *         response=202,
     *         description="
     *           Se ha actualizado correctamente el usuario"    
     *     ),

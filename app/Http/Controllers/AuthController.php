@@ -77,7 +77,7 @@ class AuthController extends Controller
     *        )
     *     ),
     *     @OA\Response(
-    *         response=200,
+    *         response=202,
     *         description="
     *           Usuario creado
     *           $user (Object)"
@@ -154,7 +154,7 @@ class AuthController extends Controller
     *        )
     *     ),
     *     @OA\Response(
-    *         response=200,
+    *         response=202,
     *         description="
     *           True
     *           $token (string)
@@ -251,7 +251,7 @@ class AuthController extends Controller
     *        )
     *     ),
     *     @OA\Response(
-    *         response=200,
+    *         response=202,
     *         description="
     *           Usuario desconectado"
     *     ),
@@ -319,7 +319,7 @@ class AuthController extends Controller
     *        )
     *     ),
     *     @OA\Response(
-    *         response=200,
+    *         response=202,
     *         description="
     *           $user (Object)"
     *     ),
@@ -386,7 +386,7 @@ class AuthController extends Controller
     *        )
     *     ),
     *     @OA\Response(
-    *         response=200,
+    *         response=202,
     *         description="
     *           Se ha actualizado correctamente la contraseña del usuario"
     *     ),

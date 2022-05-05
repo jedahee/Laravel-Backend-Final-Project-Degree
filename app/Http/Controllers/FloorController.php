@@ -32,7 +32,7 @@ class FloorController extends Controller
     *     tags = {"Suelo"},
     *     summary="Obtener todos los tipos de suelos",
     *     @OA\Response(
-    *         response=200,
+    *         response=202,
     *         description="
     *           $floors (Object [])"
     *     ),

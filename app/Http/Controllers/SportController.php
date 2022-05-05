@@ -23,7 +23,7 @@ class SportController extends Controller
     *     tags = {"Deporte"},
     *     summary="Obtener todos los tipos de deporte",
     *     @OA\Response(
-    *         response=200,
+    *         response=202,
     *         description="
     *           $sports (Object [])"
     *     ),

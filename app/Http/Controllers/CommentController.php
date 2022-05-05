@@ -46,7 +46,7 @@ class CommentController extends Controller
     *        )
     *     ),
     *     @OA\Response(
-    *         response=200,
+    *         response=202,
     *         description="
     *           Los comentarios se han obtenido correctamente
     *           No hay comentarios de esta pista"
@@ -119,7 +119,7 @@ class CommentController extends Controller
     *        )
     *     ),
     *     @OA\Response(
-    *         response=200,
+    *         response=202,
     *         description="
     *           Se ha publicado el comentario correctamente"
     *     ),
@@ -190,7 +190,7 @@ class CommentController extends Controller
     *        )
     *     ),
     *     @OA\Response(
-    *         response=200,
+    *         response=202,
     *         description="
     *           Se ha borrado el comentario correctamente"
     *     ),
