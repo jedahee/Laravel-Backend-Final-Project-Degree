@@ -206,7 +206,7 @@ class AuthController extends Controller
         try {
             if (!$token = JWTAuth::attempt($credentials)) {
                 //Credenciales incorrectas.
-                return response()->json(['msg' => 'Login falló',], Response::HTTP_UNAUTHORIZED);
+                return response()->json(['msg' => 'Credenciales incorrectas',], Response::HTTP_UNAUTHORIZED);
             }
         } catch (JWTException $e) {
             //Error chungo

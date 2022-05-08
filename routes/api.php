@@ -13,6 +13,8 @@ use App\Http\Controllers\FloorController;
 use App\Http\Controllers\ReserveController;
 use App\Http\Controllers\SportController;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Http\RedirectResponse;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -43,10 +45,12 @@ Route::get('forgot-password/{email}', function ($email) {
     if ($user) {
         $user->token_password_reset = $token;
         $user->save();
-    } // else -> redireccionar a página de "fallo al actualizar la cotraseña" 
+        // Envio de email
+        Mail::to($email)->send(new \App\Mail\PasswordReset($email, $token));
+        return response()->json(["msg"=>"Se ha enviado un correo para cambiar tu contraseña"], Response::HTTP_ACCEPTED);
+    } 
 
-    // Envio de email
-    Mail::to($email)->send(new \App\Mail\PasswordReset($email, $token));
+    return response()->json(["msg"=>"El email no existe"], Response::HTTP_NOT_FOUND);
 });
 
 // -- Validación del token enviado por parámetro y el token generado -- 
@@ -54,12 +58,10 @@ Route::get('validation-token/{email}/{get_token}', function ($email, $get_token)
     $user = User::where('email', $email)->firstOrFail();
     
     if ($user && $user->token_password_reset == $get_token) {
-        return response()->json([
-            'message' => 'Token validado',
-        ], Response::HTTP_ACCEPTED);
+        return new RedirectResponse('http://localhost:4200/update-password/' . $email . "/". $get_token);
     }
     
-    return response()->json(["msg"=>"NO"], Response::HTTP_NOT_FOUND);
+    return response()->json(["msg"=>"Error al validar el email"], Response::HTTP_NOT_FOUND);
     
 });
 

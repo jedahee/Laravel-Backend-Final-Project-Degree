@@ -8,6 +8,6 @@
 </head>
 <body>
     <p style="font-weight: bold; color: green">{{ $token }}</p>
-    <a href="http://127.0.0.1:8000/api/update-password/{{ $email }}/{{ $token }}">Recuperar contraseña</a>
+    <a href="http://127.0.0.1:8000/api/validation-token/{{ $email }}/{{ $token }}">Recuperar contraseña</a>
 </body>
 </html>
