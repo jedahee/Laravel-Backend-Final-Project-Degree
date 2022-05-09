@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
+use Illuminate\Support\Facades\DB;
 class CreateUsersTable extends Migration
 {
     /**
@@ -38,6 +38,22 @@ class CreateUsersTable extends Migration
             // Relaciones
             $table->foreign('rol_id')->references('id')->on('roles');
         });
+
+        // Datos insertados después de la migración
+
+        DB::table("users")->insert([
+            [
+                "nombre" => "admin", 
+                "apellidos" => "gestionpistas",
+                "rutaImagen" => null,
+                "adv1" => null,
+                "adv2" => null, 
+                "email" => "admin@gmail.com", 
+                "password" => bcrypt("admin"),
+                "token_password_reset" => null,
+                "rol_id" => 1
+            ],
+        ]);
     }
 
     /**
