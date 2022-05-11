@@ -1300,6 +1300,36 @@
                 ]
             }
         },
+        "/api/get-booking-user/{user_id}": {
+            "get": {
+                "tags": [
+                    "Reservas"
+                ],
+                "summary": "Devuelve todas las reservas de un usuario",
+                "operationId": "e8e68cd32c809901aa4f0a256def55d2",
+                "parameters": [
+                    {
+                        "name": "users_id",
+                        "in": "path",
+                        "description": "ID del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "\n    *           $bookings (Object [])\n    *           No tienes reservas"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/get-sports": {
             "get": {
                 "tags": [

@@ -96,6 +96,20 @@ Route::get('get-likes-and-dislikes/{id}', [CourtController::class, 'getLikesAndD
 // -- Obtener comentarios de una pista --
 Route::get('get-comments/{court_id}', [CommentController::class, 'getComments']);
 
+// ######################
+// ## FLOOR CONTROLLER ##
+// ######################
+
+// -- Obtener tipos de suelo --
+Route::get('get-floors', [FloorController::class, 'getFloors']);
+
+
+// ######################
+// ## SPORT CONTROLLER ##
+// ######################
+
+// -- Obtener deportes --
+Route::get('get-sports', [SportController::class, 'getSports']);
 
 // Necesita autenticación
 // -----------------------
@@ -198,23 +212,6 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 
     // -- Eliminar comentario de una pista --
     Route::delete('delete-comment/{id}', [CommentController::class, 'deleteComment']);
-
-    
-    // ######################
-    // ## FLOOR CONTROLLER ##
-    // ######################
-
-    // -- Obtener tipos de suelo --
-    Route::get('get-floors', [FloorController::class, 'getFloors']);
-
-    
-    // ######################
-    // ## SPORT CONTROLLER ##
-    // ######################
-
-    // -- Obtener deportes --
-    Route::get('get-sports', [SportController::class, 'getSports']);
-
     
     // ########################
     // ## RESERVE CONTROLLER ##
@@ -223,6 +220,9 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     // -- Obtener reservas --
     Route::get('get-bookings', [ReserveController::class, 'getReserves']);
     
+    // -- Obtener reservas de un usuario --
+    Route::get('get-booking-user/{user_id}', [ReserveController::class, 'getBookingUser']);
+
     // -- Comprobar si existe una reserva por el id de la pista y del usuario --
     Route::get('exists-reserve/{court_id}/{user_id}', [ReserveController::class, 'existsReserve']);
 

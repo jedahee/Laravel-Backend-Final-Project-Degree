@@ -324,6 +324,49 @@ class ReserveController extends Controller
         return response()->json([
             'exists' => false
         ], Response::HTTP_NOT_FOUND);
+    }
+
+    /*
+    ###################################################
+    #          OBTENER RESERVAS POR USUARIO           #
+    ###################################################
+    */
+    /**
+    * @OA\Get(
+    *     path="/api/get-booking-user/{user_id}",
+    *     security={{"bearerAuth":{}}},
+    *     tags = {"Reservas"},
+    *     summary="Devuelve todas las reservas de un usuario",
+    *     @OA\Parameter(
+    *        name="users_id",
+    *        in="path",
+    *        description="ID del usuario",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="integer"
+    *        )
+    *     ),
+    *     @OA\Response(
+    *         response=202,
+    *         description="
+    *           $bookings (Object [])
+    *           No tienes reservas"
+    *     ),
+    * )
+    */
+    public function getBookingUser(Request $request, $user_id)
+    {
+
+        $bookings = Reserve::where('users_id', $user_id)->where('users_id', $user_id)->get();
+        if (count($bookings) != 0) {
+            return response()->json([
+                'bookings' => $bookings,
+            ], Response::HTTP_ACCEPTED); 
+        }
+
+        return response()->json([
+            'msg' => 'No tienes reservas',
+        ], Response::HTTP_ACCEPTED);
     }   
     
 }
