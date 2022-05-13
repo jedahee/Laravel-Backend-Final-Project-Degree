@@ -61,7 +61,7 @@ class UserController extends Controller
         $data = $request->only('foto_perfil');
 
         $validator = Validator::make($data, [
-            'foto_perfil' => 'required|image|mimes:jpg,png,jpeg,svg|max:2048|dimensions:min_width=100,min_height=100,max_width=600,max_height=600',
+            'foto_perfil' => 'required|image|mimes:jpg,png,jpeg,svg|max:2048|dimensions:min_width=100,min_height=100,max_width=3000,max_height=3000',
         ]);
 
         if ($validator->fails())

@@ -555,7 +555,7 @@ class CourtController extends Controller
                             $court = Court::create([
                                 'nombre' => $request->nombre,
                                 'horaInicio' => $request->horaInicio,
-                                'rutaImagen' => public_path("images/default.jpg"),
+                                'rutaImagen' => "public/images/court/default.svg",
                                 'horaFinalizacion' => $request->horaFinalizacion,
                                 'direccion' => $request->direccion,
                                 'aforo' => $request->aforo,
@@ -582,7 +582,7 @@ class CourtController extends Controller
                             $court = Court::create([
                                 'nombre' => $request->nombre,
                                 'horaInicio' => $request->horaInicio,
-                                'rutaImagen' => public_path("images/default.jpg"),
+                                'rutaImagen' => "public/images/court/default.svg",
                                 'horaFinalizacion' => $request->horaFinalizacion,
                                 'direccion' => $request->direccion,
                                 'aforo' => $request->aforo,
