@@ -20,7 +20,7 @@ class Reservas extends Migration
 
             $table->string('horaInicio')->nullable();
             $table->string('horaFinalizacion')->nullable();
-
+            $table->date('fechaCita');
             $table->integer('numLista')->nullable();
             
             $table->unsignedBigInteger('users_id');

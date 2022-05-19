@@ -90,6 +90,15 @@ class ReserveController extends Controller
     *        )
     *     ),
     *     @OA\Parameter(
+    *        name="fechaCita",
+    *        in="query",
+    *        description="Espcifica la fecha de la reserva",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="date"
+    *        )
+    *     ),
+    *     @OA\Parameter(
     *        name="numLista",
     *        in="query",
     *        description="Define el número en la lista en las pitas que tengan un aforo y no un horario",
@@ -138,11 +147,12 @@ class ReserveController extends Controller
     */
     public function addReserve(Request $request)
     {
-        $data = $request->only('horaInicio', 'horaFinalizacion', 'numLista', 'pistas_id', 'users_id');
+        $data = $request->only('horaInicio', 'horaFinalizacion', 'fechaCita','numLista', 'pistas_id', 'users_id');
 
         $validator = Validator::make($data, [
             'horaInicio' => 'nullable|string',
             'horaFinalizacion' => 'nullable|string',
+            'fechaCita' => 'required|date',
             'numLista' => 'nullable|integer',
             'pistas_id' => 'required|integer',
             'users_id' => 'required|integer',
@@ -166,6 +176,7 @@ class ReserveController extends Controller
                         $reserve = Reserve::create([
                             'horaInicio' => $request->horaInicio,
                             'horaFinalizacion' => $request->horaFinalizacion,
+                            'fechaCita' => 'required|date',
                             'numLista' => $request->numLista,
                             'pistas_id' => $request->pistas_id,
                             'users_id' => $request->users_id,
@@ -185,6 +196,7 @@ class ReserveController extends Controller
                         $reserve = Reserve::create([
                             'horaInicio' => $request->horaInicio,
                             'horaFinalizacion' => $request->horaFinalizacion,
+                            'fechaCita' => $request->fechaCita,
                             'numLista' => $request->numLista,
                             'pistas_id' => $request->pistas_id,
                             'users_id' => $request->users_id,
@@ -357,7 +369,16 @@ class ReserveController extends Controller
     public function getBookingUser(Request $request, $user_id)
     {
 
-        $bookings = Reserve::where('users_id', $user_id)->where('users_id', $user_id)->get();
+        $bookings = Reserve::where('users_id', $user_id)->get();
+        
+        foreach ($bookings as $booking) {
+            $field_reserved = Court::find($booking["pistas_id"]);
+            $booking["nombre_pista"] = $field_reserved["nombre"];
+            $booking["pista_activa"] = $field_reserved["disponible"];
+            $booking["aforo_pista"] = $field_reserved["aforo"];
+            $booking["rutaImagen_pista"] = $field_reserved["rutaImagen"];             
+        }
+
         if (count($bookings) != 0) {
             return response()->json([
                 'bookings' => $bookings,

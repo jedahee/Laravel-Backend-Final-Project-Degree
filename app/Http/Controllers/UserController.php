@@ -61,7 +61,7 @@ class UserController extends Controller
         $data = $request->only('foto_perfil');
 
         $validator = Validator::make($data, [
-            'foto_perfil' => 'required|image|mimes:jpg,png,jpeg,svg|max:2048|dimensions:min_width=100,min_height=100,max_width=3000,max_height=3000',
+            'foto_perfil' => 'image|mimes:jpg,png,jpeg,svg|max:2048|dimensions:min_width=100,min_height=100,max_width=3000,max_height=3000',
         ]);
 
         if ($validator->fails())
@@ -265,6 +265,15 @@ class UserController extends Controller
     *            type="string"
     *        )
     *     ),
+    *     @OA\Parameter(
+    *        name="apellidos",
+    *        in="query",
+    *        description="Nombre a actualizar",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="string"
+    *        )
+    *     ),
     *     @OA\Response(
     *         response=202,
     *         description="
@@ -275,10 +284,12 @@ class UserController extends Controller
     public function editUser(Request $request) {
         $this->validate($request, [
             'nombre' => 'required|string|max:30',
+            'apellidos' => 'required|string|max:60',
         ]);
         
         $this->user->update([
             'nombre' => $request->nombre,
+            'apellidos' => $request->apellidos,
         ]);
             
         return response()->json([

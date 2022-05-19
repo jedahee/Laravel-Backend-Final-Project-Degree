@@ -14,6 +14,7 @@ class Reserve extends Model
     protected $fillable = [
         'horaInicio',
         'horaFinalizacion',
+        'fechaCita',
         'numLista',
         'users_id',
         'pistas_id'
