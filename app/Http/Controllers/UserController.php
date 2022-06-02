@@ -86,6 +86,83 @@ class UserController extends Controller
         }
     }
 
+
+    /*
+    ###################################################
+    #              AÑADIR FOTO DE PERFIL              #
+    ###################################################
+    */
+
+    /**
+    * @OA\Post(
+    *     path="/api/upload-image/{id}",
+    *     security={{"bearerAuth":{}}},
+    *     tags = {"Usuario"},
+    *     summary="Actualizar la foto de perfil del usuario por su id",
+    *     @OA\Parameter(
+    *        name="foto_perfil",
+    *        in="query",
+    *        description="Foto de perfil del usuario",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="image"
+    *        )
+    *     ),
+    *     @OA\Response(
+    *         response=202,
+    *         description="
+    *           Foto actulizada con éxito
+    *           $path (string)"
+    *     ),
+    *     @OA\Response(
+    *         response=400,
+    *         description="
+    *           Usuario no existe"
+    *     ),
+    *     @OA\Response(
+    *         response=422,
+    *         description="
+    *           Foto no válida"
+    *     )
+    * )
+    */
+    public function uploadImageById(Request $request, $id) {
+        $data = $request->only('foto_perfil');
+
+        $validator = Validator::make($data, [
+            'foto_perfil' => 'image|mimes:jpg,png,jpeg,svg|max:2048|dimensions:min_width=100,min_height=100,max_width=3000,max_height=3000',
+        ]);
+
+        try {
+            $user = User::findOrFail($id);
+        } catch (Exception $e) {
+            return response()->json([
+                'msg' => 'Este usuario no existe'
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        if ($validator->fails())
+            return response()->json(['error' => $validator->messages()], 400);
+        else {
+            if ($request->foto_perfil && $request->foto_perfil->isValid()) {
+                $file_name = time() . "." . $request->foto_perfil->extension();
+                $request->foto_perfil->move(public_path('images/user'), $file_name);
+                $path = "public/images/user/" . $file_name;
+                $user->rutaImagen = $path;
+    
+                $user->save();
+                return response()->json([
+                    'msg' => 'Foto actulizada con éxito',
+                    'path' => $path
+                ], Response::HTTP_ACCEPTED);
+            }
+    
+            return response()->json([
+                'msg' => 'Foto no válida',
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+    }
+
     /*
     ###################################################
     #             ELIMINAR FOTO DE PERFIL             #
@@ -116,6 +193,56 @@ class UserController extends Controller
             File::delete(public_path('images/user/'.$file_name));
             $this->user->rutaImagen = null;
             $this->user->save();
+
+            return response()->json([
+                'msg' => 'Se ha eliminado la foto correctamente'
+            ], Response::HTTP_ACCEPTED);
+        }
+
+        return response()->json([
+            'msg' => 'No se ha podido eliminar la foto porque no existe'
+        ], Response::HTTP_BAD_REQUEST);
+    }
+    /*
+    ###################################################
+    #             ELIMINAR FOTO DE PERFIL             #
+    ###################################################
+    */
+
+    /**
+    * @OA\Delete(
+    *     path="/api/delete-image/{id}",
+    *     security={{"bearerAuth":{}}},
+    *     tags = {"Usuario"},
+    *     summary="Eliminar la foto de perfil del usuario",
+    *     @OA\Response(
+    *         response=202,
+    *         description="Se ha eliminado la foto correctamente"
+    *     ),
+    *     @OA\Response(
+    *         response=400,
+    *         description="
+    *         Este usuario no existe
+    *         No se ha podido eliminar la foto porque no existe"
+    *     )
+    * )
+    */
+    public function deleteImageById(Request $request, $id) {
+
+        try {
+            $user = User::findOrFail($id);
+        } catch (Exception $e) {
+            return response()->json([
+                'msg' => 'Este usuario no existe'
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        $file_name = explode("/", $user->rutaImagen)[3];
+        
+        if (File::exists(public_path('images/user/'.$file_name))) {
+            File::delete(public_path('images/user/'.$file_name));
+            $user->rutaImagen = null;
+            $user->save();
 
             return response()->json([
                 'msg' => 'Se ha eliminado la foto correctamente'
@@ -339,5 +466,46 @@ class UserController extends Controller
             'msg' => "Se ha actualizado correctamente el email del usuario",
         ], Response::HTTP_ACCEPTED);
 
+    }
+
+    /**
+    * @OA\Get(
+    *     path="/api/get-user/{id}",
+    *     security={{"bearerAuth":{}}},
+    *     tags = {"User"},
+    *     summary="Obtener usuario y ver información de este",
+    *     @OA\Parameter(
+    *        name="id",
+    *        in="path",
+    *        description="ID del usuario",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="integer"
+    *        )
+    *     ),
+    *     @OA\Response(
+    *         response=202,
+    *         description="
+    *           $user (Object)"
+    *     ),
+    *     @OA\Response(
+    *         response=400,
+    *         description="
+    *           Este usuario no existe"
+    *     ),
+    * )
+    */
+    public function getUserById(Request $request, $id) {
+       
+        try {
+            $user = User::findOrFail($id);
+        } catch (Exception $e) {
+            return response()->json([
+                'msg' => 'Este usuario no existe'
+            ], Response::HTTP_BAD_REQUEST);
+        }
+        
+        //Devolvemos los datos del usuario si todo va bien.
+        return response()->json(['user' => $user], Response::HTTP_ACCEPTED);
     }
 }

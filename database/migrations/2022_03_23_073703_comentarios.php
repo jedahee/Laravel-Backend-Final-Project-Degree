@@ -26,6 +26,7 @@ class Comentarios extends Migration
             // Relaciones
             $table->foreign('users_id')->references('id')->on('users');
             $table->foreign('pistas_id')->references('id')->on('pistas');
+            
         });
     }
 

@@ -123,6 +123,85 @@ class AdminController extends Controller
 
     /*
     ###################################################
+    #                   OBETENER ROL                  #
+    ###################################################
+    */
+    /**
+    * @OA\Get(
+    *     path="/api/get-role/{id}",
+    *     security={{"bearerAuth":{}}},
+    *     tags = {"Usuario"},
+    *     summary="Obtener el rol del usuario por su id",
+    *     @OA\Response(
+    *         response=202,
+    *         description="
+    *           $rol_id (integer)"
+    *     ),
+    *     @OA\Response(
+    *         response=400,
+    *         description="
+    *           $Este usuario no existe"
+    *     ),
+    * )
+    */
+    public function getRoleById(Request $request, $id) {
+        try {
+            $user = User::findOrFail($id);
+        } catch (Exception $e) {
+            return response()->json([
+                'msg' => 'Este usuario no existe'
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        return response()->json([
+            'rol_id' => $user->rol_id,
+        ], Response::HTTP_ACCEPTED);
+
+    }
+
+    /*
+    ###################################################
+    #               OBETENER ADVERTENCIAS             #
+    ###################################################
+    */
+
+    /**
+    * @OA\Get(
+    *     path="/api/get-warnings/{id}",
+    *     tags = {"Admin"},
+    *     security={{"bearerAuth":{}}},
+    *     summary="Obtener las advertencias del usuario puestas por algún Moderador / Administrador",
+    *     @OA\Response(
+    *         response=202,
+    *         description="
+    *           $adv1 (string)
+    *           $adv2 (string)"
+    *     ),
+    *     @OA\Response(
+    *         response=400,
+    *         description="
+    *           Este usuario no existe"
+    *     ),
+    * )
+    */
+    public function getWarningsById(Request $request, $id) {
+        try {
+            $user = User::findOrFail($id);
+        } catch (Exception $e) {
+            return response()->json([
+                'msg' => 'Este usuario no existe'
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        return response()->json([
+            'adv1' => $user->adv1,
+            'adv2' => $user->adv2,
+        ], Response::HTTP_ACCEPTED);
+
+    }
+
+    /*
+    ###################################################
     #                OBTENER USUARIOS                 #
     ###################################################
     */

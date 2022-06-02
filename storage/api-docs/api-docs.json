@@ -55,6 +55,50 @@
                 ]
             }
         },
+        "/api/get-role/{id}": {
+            "get": {
+                "tags": [
+                    "Usuario"
+                ],
+                "summary": "Obtener el rol del usuario por su id",
+                "operationId": "a58383bb077c321c0988c770515cf43d",
+                "responses": {
+                    "202": {
+                        "description": "\n    *           $rol_id (integer)"
+                    },
+                    "400": {
+                        "description": "\n    *           $Este usuario no existe"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/get-warnings/{id}": {
+            "get": {
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Obtener las advertencias del usuario puestas por algún Moderador / Administrador",
+                "operationId": "b5aca3d7f81c52eeaefbad6af746d65d",
+                "responses": {
+                    "202": {
+                        "description": "\n    *           $adv1 (string)\n    *           $adv2 (string)"
+                    },
+                    "400": {
+                        "description": "\n    *           Este usuario no existe"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/get-users": {
             "get": {
                 "tags": [
@@ -75,6 +119,37 @@
             }
         },
         "/api/get-user/{id}": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Obtener usuario y ver información de este",
+                "operationId": "8676e42cf7da7995603730250593a5db",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "\n    *           $user (Object)"
+                    },
+                    "400": {
+                        "description": "\n    *           Este usuario no existe"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
             "post": {
                 "tags": [
                     "Admin"
@@ -1128,6 +1203,20 @@
                 }
             }
         },
+        "/api/get-floor/{id}": {
+            "get": {
+                "tags": [
+                    "Suelo"
+                ],
+                "summary": "Obtener el nombre del suelo por el id",
+                "operationId": "da302d49617f23acbab043dba8bf1b9d",
+                "responses": {
+                    "202": {
+                        "description": "\n    *           $floor (Object)"
+                    }
+                }
+            }
+        },
         "/api/get-bookings": {
             "get": {
                 "tags": [
@@ -1174,6 +1263,15 @@
                         "required": true,
                         "schema": {
                             "type": "string"
+                        }
+                    },
+                    {
+                        "name": "fechaCita",
+                        "in": "query",
+                        "description": "Espcifica la fecha de la reserva",
+                        "required": true,
+                        "schema": {
+                            "type": "date"
                         }
                     },
                     {
@@ -1330,6 +1428,36 @@
                 ]
             }
         },
+        "/api/get-booking-court/{court_id}": {
+            "get": {
+                "tags": [
+                    "Reservas"
+                ],
+                "summary": "Devuelve todas las reservas que tiene una pista",
+                "operationId": "c9ab68ad4aacb3587233ada6bf26d57a",
+                "parameters": [
+                    {
+                        "name": "court_id",
+                        "in": "path",
+                        "description": "ID de la pista",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "\n    *           $bookings (Object [])\n    *           No tienes reservas"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/get-sports": {
             "get": {
                 "tags": [
@@ -1340,6 +1468,20 @@
                 "responses": {
                     "202": {
                         "description": "\n    *           $sports (Object [])"
+                    }
+                }
+            }
+        },
+        "/api/get-sport/{id}": {
+            "get": {
+                "tags": [
+                    "Deporte"
+                ],
+                "summary": "Obtener el nombre del deporte por el id",
+                "operationId": "a1fe15978d8a5f16c982cd0a567deb41",
+                "responses": {
+                    "202": {
+                        "description": "\n    *           $sport (Object)"
                     }
                 }
             }
@@ -1377,6 +1519,42 @@
                 ]
             }
         },
+        "/api/upload-image/{id}": {
+            "post": {
+                "tags": [
+                    "Usuario"
+                ],
+                "summary": "Actualizar la foto de perfil del usuario por su id",
+                "operationId": "885ef9b2eee27cb3ece5613be297c105",
+                "parameters": [
+                    {
+                        "name": "foto_perfil",
+                        "in": "query",
+                        "description": "Foto de perfil del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "image"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "\n    *           Foto actulizada con éxito\n    *           $path (string)"
+                    },
+                    "400": {
+                        "description": "\n    *           Usuario no existe"
+                    },
+                    "422": {
+                        "description": "\n    *           Foto no válida"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/delete-image": {
             "delete": {
                 "tags": [
@@ -1390,6 +1568,28 @@
                     },
                     "400": {
                         "description": "No se ha podido eliminar la foto porque no existe"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/delete-image/{id}": {
+            "delete": {
+                "tags": [
+                    "Usuario"
+                ],
+                "summary": "Eliminar la foto de perfil del usuario",
+                "operationId": "e4024e9ef2a607fb345369ff9a3fced7",
+                "responses": {
+                    "202": {
+                        "description": "Se ha eliminado la foto correctamente"
+                    },
+                    "400": {
+                        "description": "\n    *         Este usuario no existe\n    *         No se ha podido eliminar la foto porque no existe"
                     }
                 },
                 "security": [
@@ -1488,6 +1688,15 @@
                 "parameters": [
                     {
                         "name": "nombre",
+                        "in": "query",
+                        "description": "Nombre a actualizar",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "apellidos",
                         "in": "query",
                         "description": "Nombre a actualizar",
                         "required": true,

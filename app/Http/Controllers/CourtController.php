@@ -335,9 +335,9 @@ class CourtController extends Controller
                 'direccion' => 'required|string|min:0|max:100',
                 'aforo' => 'nullable|integer',
                 'precioPorHora' => 'required|numeric',
-                'disponible' => 'required|integer|min:0|max:1',
-                'campoAbierto' => 'required|integer|min:0|max:1',
-                'iluminacion' => 'required|integer|min:0|max:1',
+                'disponible' => 'required|boolean',
+                'campoAbierto' => 'required|boolean',
+                'iluminacion' => 'required|boolean',
                 'suelo_id' => 'required|integer',
                 'deporte_id' => 'required|integer',
                 
@@ -351,7 +351,7 @@ class CourtController extends Controller
                             $court->update([
                                 'nombre' => $request->nombre,
                                 'horaInicio' => $request->horaInicio,
-                                'horaFinalizacion' => $request->horaFinalizaicon,
+                                'horaFinalizacion' => $request->horaFinalizacion,
                                 'direccion' => $request->direccion,
                                 'aforo' => $request->aforo,
                                 'precioPorHora' => $request->precioPorHora,
@@ -377,7 +377,7 @@ class CourtController extends Controller
                             $court->update([
                                 'nombre' => $request->nombre,
                                 'horaInicio' => $request->horaInicio,
-                                'horaFinalizacion' => $request->horaFinalizaicon,
+                                'horaFinalizacion' => $request->horaFinalizacion,
                                 'direccion' => $request->direccion,
                                 'aforo' => $request->aforo,
                                 'precioPorHora' => $request->precioPorHora,
@@ -539,9 +539,9 @@ class CourtController extends Controller
                 'direccion' => 'required|string|min:0|max:100',
                 'aforo' => 'nullable|integer',
                 'precioPorHora' => 'required|numeric',
-                'disponible' => 'required|integer|min:0|max:1',
-                'campoAbierto' => 'required|integer|min:0|max:1',
-                'iluminacion' => 'required|integer|min:0|max:1',
+                'disponible' => 'required|boolean',
+                'campoAbierto' => 'required|boolean',
+                'iluminacion' => 'required|boolean',
                 'suelo_id' => 'required|integer',
                 'deporte_id' => 'required|integer',
                 
@@ -678,7 +678,7 @@ class CourtController extends Controller
             $data = $request->only('foto');
 
             $validator = Validator::make($data, [
-                'foto' => 'required|image|mimes:jpg,png,jpeg,svg|max:2048|dimensions:min_width=350,min_height=350,max_width=3500,max_height=3500',
+                'foto' => 'image|mimes:jpg,png,jpeg,svg|max:3096|dimensions:min_width=350,min_height=350,max_width=4000,max_height=4000',
             ]);
 
             if ($validator->fails())
@@ -760,7 +760,7 @@ class CourtController extends Controller
         
             if (File::exists(public_path('images/court/'.$file_name))) {
                 File::delete(public_path('images/court/'.$file_name));
-                $court->rutaImagen = public_path('images/default.jpg');
+                $court->rutaImagen = 'public/images/court/default.svg';
                 $court->save();
 
                 return response()->json([

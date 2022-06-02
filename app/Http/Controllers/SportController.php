@@ -37,5 +37,39 @@ class SportController extends Controller
             'sports' => $sports
         ], Response::HTTP_ACCEPTED);
     }
+
+    /*
+    ###################################################
+    #           OBTENER NOMBRE DEL DEPORTE            #
+    ###################################################
+    */
+
+    /**
+    * @OA\Get(
+    *     path="/api/get-sport/{id}",
+    *     tags = {"Deporte"},
+    *     summary="Obtener el nombre del deporte por el id",
+    *     @OA\Response(
+    *         response=202,
+    *         description="
+    *           $sport (Object)"
+    *     ),
+    * )
+    */
+    public function getSport(Request $request, $id)
+    {
+
+        try {
+            $sport = Sport::findOrFail($id);
+        } catch (Exception $e) {
+            return response()->json([
+                'msg' => 'Este deporte no existe'
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        return response()->json([
+            'sport' => $sport
+        ], Response::HTTP_ACCEPTED);
+    }
     
 }

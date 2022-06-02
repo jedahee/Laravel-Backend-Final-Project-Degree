@@ -30,6 +30,12 @@ use Illuminate\Http\RedirectResponse;
 //  NO necesita autenticación
 // ---------------------------
 
+// #####################
+// ## USER CONTROLLER ##
+// #####################
+
+// -- Obtener usuario por id --
+Route::get('get-user/{id}', [UserController::class, 'getUserById']);
 
 // #####################
 // ## AUTH CONTROLLER ##
@@ -103,6 +109,9 @@ Route::get('get-comments/{court_id}', [CommentController::class, 'getComments'])
 // -- Obtener tipos de suelo --
 Route::get('get-floors', [FloorController::class, 'getFloors']);
 
+// -- Obtener suelo por su id --
+Route::get('get-floor/{id}', [FloorController::class, 'getFloor']);
+
 
 // ######################
 // ## SPORT CONTROLLER ##
@@ -110,6 +119,9 @@ Route::get('get-floors', [FloorController::class, 'getFloors']);
 
 // -- Obtener deportes --
 Route::get('get-sports', [SportController::class, 'getSports']);
+
+// -- Obtener deporte por su id --
+Route::get('get-sport/{id}', [SportController::class, 'getSport']);
 
 // Necesita autenticación
 // -----------------------
@@ -131,6 +143,12 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     
     // -- Obtener todos los usuarios --
     Route::get('get-users', [AdminController::class, 'getUsers']);
+
+    // -- Obtener advertencias de un usuario por su id --
+    Route::get('get-warnings/{id}', [AdminController::class, 'getWarningsById']);
+
+    // -- Obtener rol de un usuario por su id --
+    Route::get('get-role/{id}', [AdminController::class, 'getRoleById']);
 
     // -- Obtener usuario por su id (Admin) --
     Route::post('get-user/{id}', [AdminController::class, 'getUser']);
@@ -170,6 +188,9 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     // -- Actualizar foto de perfil --
     Route::post('upload-image', [UserController::class, 'uploadImage']);
 
+    // -- Actualizar foto de perfil por el id del usuario --
+    Route::post('upload-image/{id}', [UserController::class, 'uploadImageById']);
+
     // -- Editar nombre de usuario --
     Route::put('edit-user', [UserController::class, 'editUser']);
 
@@ -181,6 +202,9 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 
     // -- Eliminar foto de perfil --
     Route::delete('delete-image', [UserController::class, 'deleteImage']);
+
+    // -- Eliminar foto de perfil por el id del usuario --
+    Route::delete('delete-image/{id}', [UserController::class, 'deleteImageById']);
 
     
     // ######################
@@ -222,6 +246,9 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     
     // -- Obtener reservas de un usuario --
     Route::get('get-booking-user/{user_id}', [ReserveController::class, 'getBookingUser']);
+
+    // -- Obtener reservas de una pista --
+    Route::get('get-booking-court/{court_id}', [ReserveController::class, 'getBookingCourt']);
 
     // -- Comprobar si existe una reserva por el id de la pista y del usuario --
     Route::get('exists-reserve/{court_id}/{user_id}', [ReserveController::class, 'existsReserve']);

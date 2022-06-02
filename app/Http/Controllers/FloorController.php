@@ -10,15 +10,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class FloorController extends Controller
 {
-    protected $user;
-
-    public function __construct(Request $request)
-    {
-        $token = $request->header('Authorization');
-        if($token != '')
-            $this->user = JWTAuth::parseToken()->authenticate();
-    }
-
 
     /*
     ###################################################
@@ -44,6 +35,40 @@ class FloorController extends Controller
 
         return response()->json([
             'floors' => $floors
+        ], Response::HTTP_ACCEPTED);
+    }
+
+    /*
+    ###################################################
+    #            OBTENER NOMBRE DEL SUELO             #
+    ###################################################
+    */
+
+    /**
+    * @OA\Get(
+    *     path="/api/get-floor/{id}",
+    *     tags = {"Suelo"},
+    *     summary="Obtener el nombre del suelo por el id",
+    *     @OA\Response(
+    *         response=202,
+    *         description="
+    *           $floor (Object)"
+    *     ),
+    * )
+    */
+    public function getFloor(Request $request, $id)
+    {
+
+        try {
+            $floor = Floor::findOrFail($id);
+        } catch (Exception $e) {
+            return response()->json([
+                'msg' => 'Esta suelo no existe'
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        return response()->json([
+            'floor' => $floor
         ], Response::HTTP_ACCEPTED);
     }
     

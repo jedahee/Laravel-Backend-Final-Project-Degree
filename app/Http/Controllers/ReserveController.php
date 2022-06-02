@@ -152,7 +152,7 @@ class ReserveController extends Controller
         $validator = Validator::make($data, [
             'horaInicio' => 'nullable|string',
             'horaFinalizacion' => 'nullable|string',
-            'fechaCita' => 'required|date',
+            'fechaCita' => 'required|string',
             'numLista' => 'nullable|integer',
             'pistas_id' => 'required|integer',
             'users_id' => 'required|integer',
@@ -176,7 +176,7 @@ class ReserveController extends Controller
                         $reserve = Reserve::create([
                             'horaInicio' => $request->horaInicio,
                             'horaFinalizacion' => $request->horaFinalizacion,
-                            'fechaCita' => 'required|date',
+                            'fechaCita' => $request->fechaCita,
                             'numLista' => $request->numLista,
                             'pistas_id' => $request->pistas_id,
                             'users_id' => $request->users_id,
@@ -388,6 +388,44 @@ class ReserveController extends Controller
         return response()->json([
             'msg' => 'No tienes reservas',
         ], Response::HTTP_ACCEPTED);
-    }   
+    }
+    
+    /*
+    ###################################################
+    #           OBTENER RESERVAS POR PISTA            #
+    ###################################################
+    */
+    /**
+    * @OA\Get(
+    *     path="/api/get-booking-court/{court_id}",
+    *     security={{"bearerAuth":{}}},
+    *     tags = {"Reservas"},
+    *     summary="Devuelve todas las reservas que tiene una pista",
+    *     @OA\Parameter(
+    *        name="court_id",
+    *        in="path",
+    *        description="ID de la pista",
+    *        required=true,
+    *        @OA\Schema(
+    *            type="integer"
+    *        )
+    *     ),
+    *     @OA\Response(
+    *         response=202,
+    *         description="
+    *           $bookings (Object [])
+    *           No tienes reservas"
+    *     ),
+    * )
+    */
+    public function getBookingCourt(Request $request, $court_id)
+    {
+        $bookings = Reserve::where('pistas_id', $court_id)->get();
+
+        return response()->json([
+            'bookings' => $bookings,
+        ], Response::HTTP_ACCEPTED); 
+    
+    }  
     
 }

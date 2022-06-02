@@ -150,7 +150,7 @@ class CommentController extends Controller
             $court = Court::where('id', $court_id)->first();
 
             if ($court) {
-                Comment::create([
+                $comment = Comment::create([
                     'texto' => $request->texto,
                     'like' => $request->like,
                     'users_id' => $this->user->id,
@@ -159,6 +159,7 @@ class CommentController extends Controller
 
                 return response()->json([
                     'msg' => 'Se ha publicado el comentario correctamente',
+                    'comment' => $comment
                 ], Response::HTTP_ACCEPTED);
             }
 
