@@ -3,12 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use JWTAuth;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Tymon\JWTAuth\Exceptions\JWTException;
+use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Validator;
 
@@ -203,30 +202,21 @@ class AuthController extends Controller
         }
 
         //Intentamos hacer login
-        try {
-            if (!$token = JWTAuth::attempt($credentials)) {
-                //Credenciales incorrectas.
-                return response()->json(['msg' => 'Credenciales incorrectas',], Response::HTTP_UNAUTHORIZED);
-            }
-        } catch (JWTException $e) {
-            //Error chungo
-            return response()->json(['msg' => 'Error',], Response::HTTP_INTERNAL_SERVER_ERROR);
+        $user = User::where('email', $credentials['email'])->first();
+
+        if (!$user || !Hash::check($credentials['password'], $user->password)) {
+            return response()->json(['msg' => 'Credenciales incorrectas',], Response::HTTP_UNAUTHORIZED);
         }
 
-        $user = JWTAuth::user();
-
-        if ($user) {
-            if ($user->activo == 1) {
-                //Devolvemos el token
-                return response()->json([
-                    'success' => true,
-                    'token' => $token,
-                    'user' => Auth::user()
-                ], Response::HTTP_ACCEPTED);  
-            }
-            return response()->json(['msg' => 'Cuenta bloqueada',], Response::HTTP_FORBIDDEN);
+        if ($user->activo == 1) {
+            //Devolvemos el token
+            return response()->json([
+                'success' => true,
+                'token' => $user->createToken('auth-token')->plainTextToken,
+                'user' => $user
+            ], Response::HTTP_ACCEPTED);  
         }
-        return response()->json(['msg' => 'Usuario no encontrado',], Response::HTTP_NOT_FOUND);
+        return response()->json(['msg' => 'Cuenta bloqueada',], Response::HTTP_FORBIDDEN);
     }
 
     /*
@@ -280,14 +270,14 @@ class AuthController extends Controller
         try {
 
             //Si el token es valido eliminamos el token desconectando al usuario.
-            JWTAuth::invalidate($request->token);
+            $request->user()->currentAccessToken()->delete();
 
             return response()->json([
                 'success' => true,
                 'message' => 'Usuario desconectado'
             ], Response::HTTP_ACCEPTED);
 
-        } catch (JWTException $exception) {
+        } catch (Exception $exception) {
 
             //Error chungo
             return response()->json([
@@ -337,7 +327,7 @@ class AuthController extends Controller
         ]);
 
         //Realizamos la autentificación
-        $user = JWTAuth::authenticate($request->token);
+        $user = $request->user('sanctum');
 
         //Si no hay usuario es que el token no es valido o que ha expirado
         if(!$user)

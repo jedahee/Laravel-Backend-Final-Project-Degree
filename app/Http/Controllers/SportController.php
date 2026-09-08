@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use JWTAuth;
 use Exception;
 use App\Models\Sport;
 use Symfony\Component\HttpFoundation\Response;

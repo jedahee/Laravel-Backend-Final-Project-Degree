@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use JWTAuth;
 use App\Models\User;
 use Exception;
 use File;
@@ -17,9 +16,7 @@ class AdminController extends Controller
 
     public function __construct(Request $request)
     {
-        $token = $request->header('Authorization');
-        if($token != '')
-            $this->user = JWTAuth::parseToken()->authenticate();
+        $this->user = $request->user('sanctum');
     }
 
     /*

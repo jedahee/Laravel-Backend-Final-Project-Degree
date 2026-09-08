@@ -125,7 +125,7 @@ Route::get('get-sport/{id}', [SportController::class, 'getSport']);
 
 // Necesita autenticación
 // -----------------------
-Route::group(['middleware' => ['jwt.verify']], function() {
+Route::group(['middleware' => ['auth:sanctum']], function() {
     // #####################
     // ## AUTH CONTROLLER ##
     // #####################

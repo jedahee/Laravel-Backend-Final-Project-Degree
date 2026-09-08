@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use JWTAuth;
 use App\Models\User;
 use App\Models\Reserve;
 use App\Models\Court;
@@ -17,9 +16,7 @@ class ReserveController extends Controller
 
     public function __construct(Request $request)
     {
-        $token = $request->header('Authorization');
-        if($token != '')
-            $this->user = JWTAuth::parseToken()->authenticate();
+        $this->user = $request->user('sanctum');
     }
 
     /*
